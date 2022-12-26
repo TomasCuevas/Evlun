@@ -21,7 +21,7 @@ export const AuthLayout: React.FC<Props> = ({
         />
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-bluedark px-[5%]">
-        <div className="max-w-[500px]">{children}</div>
+        <div className="max-w-[450px]">{children}</div>
       </main>
     </>
   );
