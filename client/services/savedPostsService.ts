@@ -20,7 +20,6 @@ export const savedPostsService = async (
       console.log(error);
       return error.response.data;
     }
-  } else {
   }
 
   if (method === "post") {
