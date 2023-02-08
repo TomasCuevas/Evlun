@@ -1,11 +1,10 @@
 import { AppProps } from "next/app";
+import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 //* providers *//
-import { AuthProvider } from "../context/AuthContext";
-import { UIProvider } from "../context/UIContext";
-import { DataProvider } from "../context/DataContext";
+import { AuthProvider, UIProvider, DataProvider } from "../context";
 
 //* styles *//
 import "../styles/globals.css";
@@ -15,10 +14,17 @@ const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools /> */}
+      <ReactQueryDevtools />
       <AuthProvider>
         <UIProvider>
           <DataProvider>
+            <Head>
+              <link
+                rel="shortcut icon"
+                href="/evlun-logo.svg"
+                type="image/x-icon"
+              />
+            </Head>
             <Component {...pageProps} />
           </DataProvider>
         </UIProvider>
