@@ -15,7 +15,7 @@ export const uploadAvatarToCloudinary = async (
     const { secure_url, public_id } = await cloudinary.uploader.upload(
       avatar.tempFilePath,
       {
-        folder: "Avatars",
+        folder: "evlun/avatars",
       }
     );
 

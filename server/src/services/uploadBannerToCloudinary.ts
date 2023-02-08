@@ -16,7 +16,7 @@ export const uploadBannerToCloudinary = async (
     const { secure_url, public_id } = await cloudinary.uploader.upload(
       banner.tempFilePath,
       {
-        folder: "Banners",
+        folder: "evlun/banners",
       }
     );
 
