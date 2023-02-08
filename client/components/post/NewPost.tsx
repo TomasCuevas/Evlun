@@ -15,7 +15,7 @@ import { newPostService } from "../../services";
 import { postValidation } from "../../helpers";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 //* interface *//
 interface Props {

@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import dayjs from "dayjs";
 
 //* components *//
 import { FullLoader } from "../../components/ui";
@@ -11,13 +10,11 @@ import { SettingsOption } from "../../components/setting";
 import { SettingLayout } from "../../components/layouts";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsYourDataPage: NextPage = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
   const router = useRouter();
-
-  const transformDate = dayjs(user?.date).format("D/MM/YYYY H:mm:ss");
 
   if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
   if (isAuthenticated === "authenticated") {
@@ -44,7 +41,11 @@ const SettingsYourDataPage: NextPage = () => {
         />
         <SettingsOption
           optionTitle="Creación de la cuenta"
-          optionText={transformDate}
+          optionText={new Date(user!.date || 0).toLocaleDateString(undefined, {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
           arrow={false}
           navigateLink="/settings/your-evlun-data"
         />

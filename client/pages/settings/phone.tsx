@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -22,10 +21,10 @@ import { useForm } from "../../hooks";
 import { phoneValidation } from "../../helpers";
 
 //* services *//
-import { settingsService } from "../../services";
+import { settingServices } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsPhonePage: NextPage = () => {
   const { user, isAuthenticated, onChecking } = useContext(AuthContext);
@@ -42,7 +41,7 @@ const SettingsPhonePage: NextPage = () => {
     formData.append("phone", newPhone);
 
     setIsSending(true);
-    const result = await settingsService("/phone", formData);
+    const result = await settingServices("/phone", formData);
     setIsSending(false);
 
     if (result.ok) {

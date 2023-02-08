@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -28,7 +27,7 @@ import { deactivateService } from "../../services";
 import { useForm } from "../../hooks";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsDeactivatePage: NextPage = () => {
   const { isAuthenticated, onChecking } = useContext(AuthContext);

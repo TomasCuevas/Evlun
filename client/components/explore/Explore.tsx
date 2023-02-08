@@ -10,8 +10,7 @@ import { Form } from "../form";
 import { useForm } from "../../hooks";
 
 //* context *//
-import { DataContext } from "../../context/DataContext";
-import { UIContext } from "../../context/UIContext";
+import { DataContext, UIContext } from "../../context";
 
 export const Explore: React.FC = () => {
   const { onSearchUsers, usersSearch } = useContext(DataContext);

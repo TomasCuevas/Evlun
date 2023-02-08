@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 export const ProfileDeactivate: React.FC = () => {
   const { user } = useContext(AuthContext);

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -22,10 +21,10 @@ import { useForm } from "../../hooks";
 import { emailValidation } from "../../helpers";
 
 //* services *//
-import { settingsService } from "../../services";
+import { settingServices } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsEmailPage: NextPage = () => {
   const { user, isAuthenticated, onChecking } = useContext(AuthContext);
@@ -49,7 +48,7 @@ const SettingsEmailPage: NextPage = () => {
     formData.append("email", newEmail);
 
     setIsSending(true);
-    const result = await settingsService("/email", formData);
+    const result = await settingServices("/email", formData);
     setIsSending(false);
 
     if (result.ok) {

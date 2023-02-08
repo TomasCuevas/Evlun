@@ -9,8 +9,7 @@ import { FullLoader } from "../components/ui";
 import { FeedPosts, MoreOptionsModal, NewPost } from "../components/post";
 
 //* context *//
-import { AuthContext } from "../context/AuthContext";
-import { UIContext } from "../context/UIContext";
+import { AuthContext, UIContext } from "../context";
 
 const HomePage = () => {
   const { isAuthenticated } = useContext(AuthContext);

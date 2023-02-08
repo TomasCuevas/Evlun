@@ -2,8 +2,7 @@ import { useContext } from "react";
 import NextLink from "next/link";
 
 //* contexts *//
-import { AuthContext } from "../../context/AuthContext";
-import { UIContext } from "../../context/UIContext";
+import { AuthContext, UIContext } from "../../context";
 
 export const NavTopHome: React.FC = () => {
   const { user } = useContext(AuthContext);
@@ -17,7 +16,7 @@ export const NavTopHome: React.FC = () => {
             onClick={onSwitchSidebar}
             src={user!.avatar}
             alt="profile-img"
-            className="min-h-[30px] min-w-[30px] cursor-pointer rounded-full object-cover object-center"
+            className="h-[30px] w-[30px] cursor-pointer rounded-full object-cover object-center"
           />
         </div>
         <div>

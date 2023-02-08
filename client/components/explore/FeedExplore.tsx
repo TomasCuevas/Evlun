@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { SearchedUser } from "./";
 
 //* context *//
-import { DataContext } from "../../context/DataContext";
+import { DataContext } from "../../context";
 
 export const FeedExplore = () => {
   const { usersSearch } = useContext(DataContext);

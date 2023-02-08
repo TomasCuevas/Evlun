@@ -17,8 +17,7 @@ import {
 import { MainLayout } from "../../components/layouts";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
-import { UIContext } from "../../context/UIContext";
+import { AuthContext, UIContext } from "../../context";
 
 //* interfaces *//
 import { IPost } from "../../interfaces/post";

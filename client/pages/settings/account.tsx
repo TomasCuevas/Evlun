@@ -13,7 +13,7 @@ import { SettingsOptionFull } from "../../components/setting";
 import { SettingLayout } from "../../components/layouts";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsAccountPage: NextPage = () => {
   const { isAuthenticated } = useContext(AuthContext);

@@ -17,8 +17,7 @@ import { getRelativeTime } from "../../helpers";
 import { likePostService } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
-import { UIContext } from "../../context/UIContext";
+import { AuthContext, UIContext } from "../../context";
 
 //* interfaces *//
 import { IPost } from "../../interfaces/post";
@@ -91,7 +90,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
           onClick={onNavigateProfile}
           src={post.added_by.avatar}
           alt={post.added_by.name}
-          className="absolute z-[1] min-h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
+          className="absolute z-[1] h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
         />
 
         {fromAnswer ? (
@@ -141,7 +140,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
 
         <div className="w-full">
           <p className="block text-sm font-medium leading-5 text-white/90">
-            {post.content}
+            `{post.content}`
           </p>
         </div>
 

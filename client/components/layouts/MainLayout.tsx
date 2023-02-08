@@ -15,7 +15,7 @@ import {
 import { ExploreSidebar } from "../explore";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 //* interfaces *//
 import { ILocation } from "../../interfaces/locations";

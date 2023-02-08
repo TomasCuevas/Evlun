@@ -10,11 +10,9 @@ import { MainLayout } from "../../components/layouts";
 //* components *//
 import { ProfileHero } from "../../components/profile";
 import { FeedPosts, MoreOptionsModal } from "../../components/post";
-import { FeedExploreModal } from "../../components/explore";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
-import { UIContext } from "../../context/UIContext";
+import { AuthContext, UIContext } from "../../context";
 
 //* interfaces *//
 import { IUser } from "../../interfaces/user";

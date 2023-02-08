@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-Genero-deps */
 import { useContext, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -11,7 +9,6 @@ import {
   FormButtonPrimary,
   FormCheckbox,
   FormErrorMessage,
-  FormInputPrimary,
 } from "../../components/form";
 
 //* layout *//
@@ -21,10 +18,10 @@ import { SettingLayout } from "../../components/layouts";
 import { useForm } from "../../hooks";
 
 //* services *//
-import { settingsService } from "../../services";
+import { settingServices } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsGenderPage: NextPage = () => {
   const { user, isAuthenticated, onChecking } = useContext(AuthContext);
@@ -41,7 +38,7 @@ const SettingsGenderPage: NextPage = () => {
     formData.append("gender", newGender);
 
     setIsSending(true);
-    const result = await settingsService("/gender", formData);
+    const result = await settingServices("/gender", formData);
     setIsSending(false);
 
     if (result.ok) {

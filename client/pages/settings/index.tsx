@@ -10,7 +10,7 @@ import { SettingsOption } from "../../components/setting";
 import { FullLoader } from "../../components/ui";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsPage: NextPage = () => {
   const { isAuthenticated } = useContext(AuthContext);

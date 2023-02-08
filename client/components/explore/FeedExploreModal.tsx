@@ -4,8 +4,7 @@ import { useContext } from "react";
 import { SearchedUserFromModal } from "./";
 
 //* context *//
-import { DataContext } from "../../context/DataContext";
-import { UIContext } from "../../context/UIContext";
+import { DataContext, UIContext } from "../../context";
 
 export const FeedExploreModal = () => {
   const { isExploreModalOpen } = useContext(UIContext);

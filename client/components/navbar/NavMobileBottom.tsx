@@ -12,7 +12,7 @@ import {
 } from "react-icons/bs";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 //* tailwind-classes *//
 const activeClass =

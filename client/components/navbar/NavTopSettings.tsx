@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { BackArrow, NavTextButton, NavText } from "./";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 //* interface *//
 interface Props {

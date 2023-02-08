@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -15,13 +14,17 @@ import {
 //* layout *//
 import { SettingLayout } from "../../components/layouts";
 
+//* helpers *//
+import { usernameValidation } from "../../helpers";
+
 //* hooks *//
 import { useForm } from "../../hooks";
 
+//* services *//
+import { settingServices } from "../../services";
+
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
-import { usernameValidation } from "../../helpers";
-import { settingsService } from "../../services";
+import { AuthContext } from "../../context";
 
 const SettingsUsernamePage: NextPage = () => {
   const { user, isAuthenticated, onChecking } = useContext(AuthContext);
@@ -44,7 +47,7 @@ const SettingsUsernamePage: NextPage = () => {
     formData.append("username", newUsername);
 
     setIsSending(true);
-    const result = await settingsService("/username", formData);
+    const result = await settingServices("/username", formData);
     setIsSending(false);
 
     if (result.ok) {

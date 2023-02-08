@@ -12,6 +12,7 @@ import {
   FormQuestion,
 } from "../../components/form";
 import { FullLoader } from "../../components/ui";
+import { HeroText } from "../../components/auth";
 
 //* layout *//
 import { AuthLayout } from "../../components/layouts";
@@ -23,8 +24,7 @@ import { useForm } from "../../hooks";
 import { emailValidation, passwordValidation } from "../../helpers";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
-import { HeroText } from "../../components/auth";
+import { AuthContext } from "../../context";
 
 const LoginPage: NextPage = () => {
   const { isAuthenticated, onLogin } = useContext(AuthContext);

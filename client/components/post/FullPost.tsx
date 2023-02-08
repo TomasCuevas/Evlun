@@ -15,8 +15,7 @@ import {
 import { likePostService } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
-import { UIContext } from "../../context/UIContext";
+import { AuthContext, UIContext } from "../../context";
 
 //* interfaces *//
 import { IPost } from "../../interfaces/post";
@@ -61,10 +60,6 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     }
   };
 
-  const onNavigate = () => {
-    router.push(`/profile/${post.added_by.username}`);
-  };
-
   useEffect(() => {
     setLikesValue(post.likes.length);
     setIsLiked(post.likes.includes(user?._id.valueOf() || false));
@@ -85,7 +80,10 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
         className={postRef ? "flex flex-col" : "mt-[20px] flex flex-col"}
       >
         <header className="flex h-[50px] w-full justify-between px-4">
-          <div onClick={onNavigate} className="flex h-full gap-[10px]">
+          <div
+            onClick={() => router.push(`/profile/${post.added_by.username}`)}
+            className="flex h-full gap-[10px]"
+          >
             <div>
               <img
                 src={post.added_by?.avatar}

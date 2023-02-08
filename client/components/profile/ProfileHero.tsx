@@ -13,7 +13,7 @@ import { Follow, Following } from "./";
 import { followOrUnfollowService } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 //* tailwind-classes *//
 const itemClass = "items-center flex gap-[10px] text-white";
@@ -33,8 +33,10 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
   const { user: userContext, isAuthenticated } = useContext(AuthContext);
   const router = useRouter();
 
-  const month = dayjs(user.date).locale("es").format("MMMM");
-  const year = dayjs(user.date).locale("es").format("YYYY");
+  const date = new Date(user.date!).toLocaleDateString(undefined, {
+    month: "long",
+    year: "numeric",
+  });
 
   const followOrUnfollowUser = async (status: "follow" | "unfollow") => {
     if (isAuthenticated !== "authenticated") return;
@@ -113,9 +115,7 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
         )}
         <span className={itemClass}>
           <BsCalendar3 className={iconClass} />
-          <span
-            className={descriptionClass}
-          >{`Se unio en ${month} de ${year}`}</span>
+          <span className={descriptionClass}>{`Se unio en ${date}`}</span>
         </span>
       </section>
 

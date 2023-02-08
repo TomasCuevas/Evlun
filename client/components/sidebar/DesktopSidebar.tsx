@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
-import Image from "next/future/image";
 
 //* icons *//
 import {
@@ -20,12 +19,12 @@ import {
 import { DesktopSidebarLogout } from "./";
 
 //* contexts *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 //* talwind-classes *//
 const divClass = "flex justify-center xl:justify-start";
 const spansContainer =
-  "flex items-center gap-4 hover:bg-orange/20 p-3 xl:pr-7 rounded-full";
+  "flex items-center gap-4 hover:bg-orange/20 p-3 justify-center xl:pr-7 rounded-full";
 const spanClassActive = "hidden text-xl font-semibold text-white xl:block";
 const spanClass = "hidden text-xl font-semibold text-white/80 xl:block";
 
@@ -149,9 +148,9 @@ export const DesktopSidebar: React.FC = () => {
             <img
               src={user!.avatar}
               alt="profile-img"
-              className="h-[45px] w-[45px] rounded-full object-cover object-center"
+              className="h-[35px] w-[35px] rounded-full object-cover object-center xl:h-[40px] xl:w-[40px]"
             />
-            <div className="flex  max-w-[250px] flex-col overflow-hidden text-ellipsis whitespace-nowrap text-white">
+            <div className="hidden max-w-[250px] flex-col overflow-hidden text-ellipsis whitespace-nowrap text-white xl:flex">
               <span className="w-full text-ellipsis text-base font-bold">
                 {user.name}
               </span>

@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -22,10 +21,10 @@ import { useForm } from "../../hooks";
 import { passwordValidation } from "../../helpers";
 
 //* services *//
-import { settingsService } from "../../services";
+import { settingServices } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const SettingsPasswordPage: NextPage = () => {
   const { isAuthenticated, onChecking } = useContext(AuthContext);
@@ -78,7 +77,7 @@ const SettingsPasswordPage: NextPage = () => {
     }
 
     setIsSending(true);
-    const result = await settingsService("/password", formData);
+    const result = await settingServices("/password", formData);
     setIsSending(false);
 
     if (result.ok) {

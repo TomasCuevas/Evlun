@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -20,10 +19,10 @@ import { SettingLayout } from "../../components/layouts";
 import { useForm } from "../../hooks";
 
 //* services *//
-import { settingsService } from "../../services";
+import { settingServices } from "../../services";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context";
 
 const fullCountries: any = countries;
 const AllCountries: Country[] = [];
@@ -52,7 +51,7 @@ const SettingsCountryPage: NextPage = () => {
     formData.append("country", newCountry);
 
     setIsSending(true);
-    const result = await settingsService("/country", formData);
+    const result = await settingServices("/country", formData);
     setIsSending(false);
 
     if (result.ok) {

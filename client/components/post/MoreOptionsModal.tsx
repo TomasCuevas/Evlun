@@ -8,9 +8,7 @@ import { BsBookmarkPlus, BsBookmarkDash } from "react-icons/bs";
 import { MoreOption } from "./";
 
 //* context *//
-import { UIContext } from "../../context/UIContext";
-import { AuthContext } from "../../context/AuthContext";
-import { DataContext } from "../../context/DataContext";
+import { AuthContext, DataContext, UIContext } from "../../context";
 
 export const MoreOptionsModal: React.FC = () => {
   const { user } = useContext(AuthContext);

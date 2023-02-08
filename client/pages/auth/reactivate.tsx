@@ -1,6 +1,5 @@
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext } from "react";
 import { NextPage } from "next";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 
 //* components *//
@@ -12,6 +11,7 @@ import {
   FormQuestion,
 } from "../../components/form";
 import { FullLoader } from "../../components/ui";
+import { HeroText } from "../../components/auth";
 
 //* layout *//
 import { AuthLayout } from "../../components/layouts";
@@ -26,8 +26,7 @@ import { reactivateService } from "../../services";
 import { emailValidation, passwordValidation } from "../../helpers";
 
 //* context *//
-import { AuthContext } from "../../context/AuthContext";
-import { HeroText } from "../../components/auth";
+import { AuthContext } from "../../context";
 
 const ReactivatePage: NextPage = () => {
   const { isAuthenticated } = useContext(AuthContext);

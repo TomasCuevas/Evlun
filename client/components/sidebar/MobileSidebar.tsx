@@ -12,8 +12,7 @@ import {
 } from "react-icons/bs";
 
 //* contexts *//
-import { AuthContext } from "../../context/AuthContext";
-import { UIContext } from "../../context/UIContext";
+import { AuthContext, UIContext } from "../../context";
 
 export const MobileSidebar: React.FC = () => {
   const { user, onLogout } = useContext(AuthContext);
