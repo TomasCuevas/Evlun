@@ -29,7 +29,7 @@ import {
 
 //* routes *//
 
-/** @create_post */
+//! create post
 router.post(
   "/create",
   [
@@ -46,14 +46,14 @@ router.post(
   createPost
 );
 
-/** @get_unique_post */
+//! get unique post
 router.get(
   "/id/:id",
   [param("id", "El ID del post es necesario.").isMongoId(), fieldsValidation],
   getPost
 );
 
-/** @get_user_posts */
+//! get user posts
 router.get(
   "/user/:id",
   [
@@ -63,7 +63,7 @@ router.get(
   getUserPosts
 );
 
-/** @get_answers_of_post */
+//! get answers of post
 router.get(
   "/answers/:postId",
   [
@@ -73,19 +73,19 @@ router.get(
   getPostAnswers
 );
 
-/** @get_all_posts */
+//! get all posts
 router.get("/all", [JWTValidation], getAllPosts);
 
-/** @get_followings_posts */
+//! get followings posts
 router.get("/followings", [JWTValidation], getPostsByFollowings);
 
-/** @get_saved_posts */
+//! get saved posts
 router.get("/saved", [JWTValidation], getSavedPosts);
 
-/** @get_saved_posts_list */
+//! get saved posts list
 router.get("/savedlist", JWTValidation, getSavedPostsList);
 
-/** @like_or_unlike_to_a_post */
+//! like or unlike post
 router.post(
   "/like",
   [
@@ -96,7 +96,7 @@ router.post(
   addOrRemoveLike
 );
 
-/** @save_a_post */
+//! save a post
 router.post(
   "/save",
   [
@@ -107,7 +107,7 @@ router.post(
   addOrRemoveSaved
 );
 
-/** @report_a_post */
+//! report post
 router.post(
   "/report",
   [
@@ -118,7 +118,7 @@ router.post(
   reportPost
 );
 
-/** @delete_a_post */
+//! delete post
 router.put(
   "/delete",
   [

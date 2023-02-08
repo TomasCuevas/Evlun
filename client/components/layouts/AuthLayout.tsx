@@ -1,5 +1,6 @@
 import Head from "next/head";
 
+//* interface *//
 interface Props {
   title: string;
   description?: string;

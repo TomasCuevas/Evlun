@@ -1,4 +1,6 @@
 import { createContext, useState } from "react";
+
+//* interfaces *//
 import { IPost } from "../interfaces/post";
 
 //* CONTEXT *//
@@ -30,18 +32,18 @@ export const UIProvider: React.FC<UIProviderProps> = ({ children }) => {
   const [isExploreModalOpen, setIsExploreModalOpen] = useState<boolean>(false);
   const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 
-  //* open or close mobile sidebar
+  //! open or close mobile sidebar
   const onSwitchSidebar = () => setIsSidebarOpen((prev) => !prev);
 
-  //* open or close explore modal
+  //! open or close explore modal
   const onSwitchExploreModal = (status?: boolean) => {
     setIsExploreModalOpen(status!);
   };
 
-  //* open or close logout sidebar modal
+  //! open or close logout sidebar modal
   const onSwitchSidebarModal = () => setIsSidebarModalOpen((prev) => !prev);
 
-  //* set a post at more options
+  //! set a post at more options
   const onSetPost = (post: IPost | undefined) => {
     if (post) {
       document.body.classList.add("body__fix");

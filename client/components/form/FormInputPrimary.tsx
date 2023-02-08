@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+//* interface *//
 interface Props {
   inputChange: any;
   inputName: string;

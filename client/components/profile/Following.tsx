@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+//* interface *//
 interface Props {
   onClick: () => void;
 }

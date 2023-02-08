@@ -1,3 +1,4 @@
+//* interface *//
 interface Props {
   inputName: string;
   inputValue: string;

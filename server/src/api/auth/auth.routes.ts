@@ -30,7 +30,7 @@ import {
 
 //* routes *//
 
-/** @register_user */
+//! register user
 router.post(
   "/create",
   [
@@ -51,7 +51,7 @@ router.post(
   registerUser
 );
 
-/** @login */
+//! login user
 router.post(
   "/login",
   [
@@ -68,7 +68,7 @@ router.post(
   login
 );
 
-/** @check_jwt */
+//! check jwt
 router.get(
   "/check",
   [
@@ -82,7 +82,7 @@ router.get(
   checkJWT
 );
 
-/** @deactivate_user */
+//! deactivate user
 router.put(
   "/deactivate",
   [
@@ -95,7 +95,7 @@ router.put(
   deactivateUser
 );
 
-/** @reactivate_user */
+//! reactivate user
 router.put(
   "/reactivate",
   [

@@ -1,3 +1,4 @@
+//* interface *//
 interface Props {
   textBig: string;
   textSmall: string;

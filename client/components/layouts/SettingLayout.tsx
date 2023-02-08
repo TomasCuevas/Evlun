@@ -5,6 +5,7 @@ import { NavTopSettings } from "../navbar";
 import { ExploreSidebar } from "../explore";
 import { DesktopSidebar } from "../sidebar";
 
+//* interface *//
 interface Props {
   button?: boolean;
   buttonOnClick?: any;

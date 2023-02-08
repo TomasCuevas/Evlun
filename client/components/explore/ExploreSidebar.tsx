@@ -1,5 +1,6 @@
 import { Explore, FeedExploreModal } from "./";
 
+//* interface *//
 interface Props {
   explore?: boolean;
 }

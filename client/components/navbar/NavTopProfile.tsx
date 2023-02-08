@@ -1,6 +1,7 @@
 //* components *//
 import { BackArrow } from "./BackArrow";
 
+//* interface *//
 interface Props {
   name: string;
 }

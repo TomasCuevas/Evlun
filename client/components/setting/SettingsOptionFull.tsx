@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { IconType } from "react-icons/lib";
 import { BsChevronRight } from "react-icons/bs";
 
+//* interface *//
 interface Props {
   icon: IconType;
   navigateLink: string;

@@ -42,7 +42,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     onChecking();
   }, []);
 
-  // check
+  //! check auth
   const onChecking = async () => {
     setIsAuthenticated("checking");
     setUser(undefined);
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(result.user);
   };
 
-  // register
+  //! register user
   const onRegister = async (registerData: IRegister) => {
     setIsAuthenticated("checking");
 
@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   };
 
-  // login
+  //! login user
   const onLogin = async (loginData: ILogin) => {
     setIsAuthenticated("checking");
 
@@ -104,7 +104,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   };
 
-  // logout
+  //! logout user
   const onLogout = () => {
     setIsAuthenticated("no-authenticated");
     setUser(undefined);

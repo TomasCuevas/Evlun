@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -9,6 +8,7 @@ import { Post } from "./";
 //* hooks *//
 import { usePosts } from "../../hooks";
 
+//* interface *//
 interface Props {
   url: string;
 }

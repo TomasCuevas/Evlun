@@ -9,6 +9,7 @@ const iconsContainerClass =
 const iconContainerClass =
   "grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 transition-all duration-300 hover:bg-orange/40 hover:text-white";
 
+//* interface *//
 interface Props {
   avatar: string;
   loadNewAvatar: (file: File | false) => void;

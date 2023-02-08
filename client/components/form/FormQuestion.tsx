@@ -1,5 +1,6 @@
 import NextLink from "next/link";
 
+//* interface *//
 interface Props {
   question: string;
   linkPlaceholder: string;

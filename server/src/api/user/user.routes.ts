@@ -25,7 +25,7 @@ import {
 
 //* routes *//
 
-/** @get_user */
+//! get user
 router.get(
   "/username/:username",
   [
@@ -35,7 +35,7 @@ router.get(
   getUser
 );
 
-/** @search_users */
+//! search users
 router.get(
   "/search",
   [
@@ -47,7 +47,7 @@ router.get(
   searchUsers
 );
 
-/** @follow_user */
+//! follow user
 router.post(
   "/follow",
   [
@@ -62,7 +62,7 @@ router.post(
   followUser
 );
 
-/** @unfollow_user */
+//! unfollow user
 router.post(
   "/unfollow",
   [

@@ -10,7 +10,7 @@ import { Types } from "mongoose";
 
 //* controllers *//
 
-/** @register_user */
+//! register user
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, username, email, password } = req.body;
@@ -67,7 +67,7 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-/** @login_user */
+//! login user
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -117,7 +117,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-/** @check_jwt */
+//! check jwt
 export const checkJWT = async (
   req: Request & { _id?: Types.ObjectId; username?: string },
   res: Response
@@ -160,7 +160,7 @@ export const checkJWT = async (
   }
 };
 
-/** @deactivate_user */
+//! deactivate user
 export const deactivateUser = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -203,7 +203,7 @@ export const deactivateUser = async (
   }
 };
 
-/** @reactivate_user */
+//! reactivate user
 export const reactivateUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;

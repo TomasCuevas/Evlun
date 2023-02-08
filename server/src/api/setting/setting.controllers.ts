@@ -26,7 +26,7 @@ import {
 
 //* controllers *//
 
-/** @update_profile_data */
+//! update profile data
 export const updateProfile = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -148,7 +148,7 @@ export const updateProfile = async (
   }
 };
 
-/** @update_username */
+//! update username
 export const updateUsername = async (
   req: Request & { _id?: string },
   res: Response
@@ -192,7 +192,7 @@ export const updateUsername = async (
   }
 };
 
-/** @update_phone_number */
+//! update phone number
 export const updatePhone = async (
   req: Request & { _id?: string },
   res: Response
@@ -228,7 +228,7 @@ export const updatePhone = async (
   }
 };
 
-/** @update_email */
+//! update email
 export const updateEmail = async (
   req: Request & { _id?: string },
   res: Response
@@ -272,7 +272,7 @@ export const updateEmail = async (
   }
 };
 
-/** @update_country */
+//! update country
 export const updateCountry = async (
   req: Request & { _id?: string },
   res: Response
@@ -299,7 +299,7 @@ export const updateCountry = async (
   }
 };
 
-/** @update_gender */
+//! update gender
 export const updateGender = async (
   req: Request & { _id?: string },
   res: Response
@@ -335,7 +335,7 @@ export const updateGender = async (
   }
 };
 
-/** @update_password */
+//! update password
 export const updatePassword = async (
   req: Request & { _id?: string },
   res: Response

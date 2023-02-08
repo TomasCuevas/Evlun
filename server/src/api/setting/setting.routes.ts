@@ -32,10 +32,10 @@ import {
 
 //* routes *//
 
-/** @update_profile_data */
+//! update profile data
 router.put("/profile", [JWTValidation], updateProfile);
 
-/** @update_username */
+//! update username
 router.put(
   "/username",
   [
@@ -49,7 +49,7 @@ router.put(
   updateUsername
 );
 
-/** @update_phone_number */
+//! update phone number
 router.put(
   "/phone",
   [
@@ -62,7 +62,7 @@ router.put(
   updatePhone
 );
 
-/** @update_email */
+//! update email
 router.put(
   "/email",
   [
@@ -73,7 +73,7 @@ router.put(
   updateEmail
 );
 
-/** @update_country */
+//! update country
 router.put(
   "/country",
   [
@@ -84,7 +84,7 @@ router.put(
   updateCountry
 );
 
-/** @update_gender */
+//! update gender
 router.put(
   "/gender",
   [
@@ -95,7 +95,7 @@ router.put(
   updateGender
 );
 
-/** @update_password */
+//! update password
 router.put(
   "/password",
   [

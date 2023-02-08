@@ -6,7 +6,7 @@ import { PostModel, ReportPostModel, UserModel } from "../../database/models";
 
 //* controllers *//
 
-/** @create_post */
+//! create post
 export const createPost = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -48,7 +48,7 @@ export const createPost = async (
   }
 };
 
-/** @get_unique_post */
+//! get unique post
 export const getPost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -92,7 +92,7 @@ export const getPost = async (req: Request, res: Response) => {
   }
 };
 
-/** @get_user_posts */
+//! get user posts
 export const getUserPosts = async (req: Request, res: Response) => {
   try {
     const { page = 0 } = req.query;
@@ -127,7 +127,7 @@ export const getUserPosts = async (req: Request, res: Response) => {
   }
 };
 
-/** @get_answers_of_post */
+//! get answers of post
 export const getPostAnswers = async (req: Request, res: Response) => {
   try {
     const { page } = req.query;
@@ -159,7 +159,7 @@ export const getPostAnswers = async (req: Request, res: Response) => {
   }
 };
 
-/** @get_all_posts */
+//! get all posts
 export const getAllPosts = async (req: Request, res: Response) => {
   try {
     const { page = 0 } = req.query;
@@ -190,7 +190,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
   }
 };
 
-/** @get_followings_posts */
+//! get followings posts
 export const getPostsByFollowings = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -240,7 +240,7 @@ export const getPostsByFollowings = async (
   }
 };
 
-/** @get_saved_posts */
+//! get saved posts
 export const getSavedPosts = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -287,7 +287,7 @@ export const getSavedPosts = async (
   }
 };
 
-/** @get_saved_posts_list */
+//! get saved posts list
 export const getSavedPostsList = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -318,7 +318,7 @@ export const getSavedPostsList = async (
   }
 };
 
-/** @like_or_unlike_to_a_post */
+//! like or unlike post
 export const addOrRemoveLike = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -364,7 +364,7 @@ export const addOrRemoveLike = async (
   }
 };
 
-/** @save_a_post */
+//! save post
 export const addOrRemoveSaved = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -407,7 +407,7 @@ export const addOrRemoveSaved = async (
   }
 };
 
-/** @report_a_post */
+//! report post
 export const reportPost = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -436,7 +436,7 @@ export const reportPost = async (
   }
 };
 
-/** @delete_a_post */
+//! delete post
 export const deletePost = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response

@@ -6,7 +6,7 @@ import { UserModel } from "../../database/models";
 
 //* controllers *//
 
-/** @get_user */
+//! get user
 export const getUser = async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
@@ -42,7 +42,7 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-/** @search_users */
+//! search users
 export const searchUsers = async (req: Request, res: Response) => {
   try {
     const { search, skip = 0 } = req.query;
@@ -68,7 +68,7 @@ export const searchUsers = async (req: Request, res: Response) => {
   }
 };
 
-/** @follow_user */
+//! follow user
 export const followUser = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
@@ -121,7 +121,7 @@ export const followUser = async (
   }
 };
 
-/** @unfollow_user */
+//! unfollow user
 export const unfollowUser = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
