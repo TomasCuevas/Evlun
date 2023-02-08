@@ -1,15 +1,17 @@
-import authApi from "../axios/authApi";
+import settingsApi from "../../axios/settingsApi";
 
+//! setting services
 interface Return {
   ok: boolean;
   msg?: string;
 }
 
-export const reactivateService = async (
-  formData: FormData
+export const settingServices = async (
+  url: string,
+  formValues: FormData
 ): Promise<Return> => {
   try {
-    const { data } = await authApi.put("/reactivate", formData, {
+    const { data } = await settingsApi.put(`${url}`, formValues, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

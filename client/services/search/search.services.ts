@@ -1,9 +1,9 @@
-import postApi from "../axios/postApi";
+import userApi from "../../axios/userApi";
 
 //* interface *//
-import { IUser } from "../interfaces/user";
-import userApi from "../axios/userApi";
+import { IUser } from "../../interfaces/user";
 
+//! search service
 interface Return {
   msg?: string;
   ok: boolean;
