@@ -1,5 +1,8 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+
+//* context *//
+import { AuthContext } from "./AuthContext";
 
 //* services *//
 import {
@@ -33,13 +36,17 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
+  const { isAuthenticated } = useContext(AuthContext);
+
   const [savedPostsList, setSavedPostsList] = useState<string[]>([]);
   const [usersSearch, setUsersSearch] = useState<IUser[]>([]);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    onGetSavedPostsList();
+    if (isAuthenticated === "authenticated") {
+      onGetSavedPostsList();
+    }
   }, []);
 
   //* get saved posts list
