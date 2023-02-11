@@ -8,6 +8,8 @@ import { AuthProvider, UIProvider, DataProvider } from "../context";
 
 //* styles *//
 import "../styles/globals.css";
+import "../styles/editor.css";
+import "../styles/post.css";
 
 const queryClient = new QueryClient();
 

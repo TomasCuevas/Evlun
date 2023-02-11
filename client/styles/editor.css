@@ -1,0 +1,16 @@
+.ql-toolbar {
+  display: none !important;
+}
+
+.ql-container {
+  border: none !important;
+}
+
+.ql-editor {
+  font-size: 18px;
+}
+
+.ql-editor.ql-blank::before {
+  color: #fff6 !important;
+  font-weight: 300 !important;
+}
