@@ -1,9 +1,10 @@
-import { useContext, useState, FormEvent } from "react";
+import { useContext, useState, FormEvent, useRef } from "react";
 import NextLink from "next/link";
+import dynamic from "next/dynamic";
 import { useQueryClient } from "@tanstack/react-query";
 
-//* hooks *//
-import { useForm } from "../../hooks";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
 
 //* components *//
 import { Form, FormButtonPrimary } from "../form";
@@ -13,6 +14,9 @@ import { newPostService } from "../../services";
 
 //* helpers *//
 import { postValidation } from "../../helpers";
+
+//* hooks *//
+import { useQuill } from "../../hooks";
 
 //* context *//
 import { AuthContext } from "../../context";
@@ -26,23 +30,16 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
-  const [height, setHeight] = useState(48);
-  const { content, onInputChange, isSending, setIsSending } = useForm({
-    content: "",
-  });
+  const { html, text, onInputChange, reset } = useQuill();
+  const [isSending, setIsSending] = useState(false);
 
-  const onInput = (input: FormEvent<HTMLTextAreaElement>) => {
-    const heightInput = (input.target as any).scrollHeight;
-    if (heightInput === height) return;
-    setHeight(heightInput);
-  };
-
+  //! submit post
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!postValidation(content) || isSending) return;
+    if (!postValidation(html) || isSending || text.length < 1) return;
 
     const formData = new FormData();
-    formData.append("content", content);
+    formData.append("content", html);
     if (postRef) formData.append("postRef", postRef);
 
     setIsSending(true);
@@ -56,8 +53,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
     }
 
     if (result) {
-      onInputChange({ target: { value: "", name: "content" } });
-      setHeight(48);
+      reset();
     } else {
       alert("No se pudo crear el post.");
     }
@@ -76,26 +72,19 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
           </a>
         </NextLink>
       </section>
-      <section className="w-full">
+      <section className="w-[calc(100%_-_55px)]">
         <Form className="flex flex-col" onSubmit={onSubmit}>
-          <textarea
-            className="w-full resize-none overflow-hidden border-b border-transparent bg-transparent py-[10px] px-0 text-lg text-white outline-none placeholder:text-white/50 disabled:text-white/70"
-            disabled={isSending}
-            maxLength={250}
-            name="content"
-            onChange={(event) => {
-              onInputChange(event);
-              onInput(event);
-            }}
+          <ReactQuill
+            value={html}
+            onChange={onInputChange}
             placeholder={
               postRef ? "Publica tu respuesta" : "¿Qué está pasando?"
             }
-            style={{ height }}
-            value={content}
+            className="text-lg text-white placeholder:text-white/50"
           />
           <div className="my-[10px] mx-0 flex w-full items-center justify-end">
             <FormButtonPrimary
-              isDisabled={!postValidation(content) || isSending}
+              isDisabled={!postValidation(html) || isSending || text.length < 1}
               label="Postear"
               type="submit"
               className="cursor-pointer rounded-2xl bg-orange py-[10px] px-[20px] text-sm font-medium text-bluedark disabled:bg-orange/10"
