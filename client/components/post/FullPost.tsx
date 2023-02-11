@@ -44,7 +44,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     event.stopPropagation();
     if (isAuthenticated !== "authenticated") return;
 
-    if (post.likes.includes(user?._id)) {
+    if (post.likes.includes(user!._id)) {
       if (isLiked) setLikesValue((prev) => prev - 1);
       if (!isLiked) setLikesValue(post.likes.length);
     } else {
@@ -115,11 +115,13 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
         </header>
 
         <div className="mt-[20px] px-4">
-          <div className="w-full break-words">
-            <span className="text-[23px] leading-7 text-white/90">
-              {post.content}
-            </span>
-          </div>
+          <div
+            id="post"
+            className="w-full break-words"
+            dangerouslySetInnerHTML={{
+              __html: post.content,
+            }}
+          ></div>
         </div>
 
         <time className="flex w-full gap-[10px] border-b border-orange py-[15px] px-4">

@@ -42,7 +42,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
     event.stopPropagation();
     if (isAuthenticated !== "authenticated") return;
 
-    if (post.likes.includes(user?._id)) {
+    if (post.likes.includes(user!._id)) {
       if (isLiked) setLikesValue((prev) => prev - 1);
       if (!isLiked) setLikesValue(post.likes.length);
     } else {
@@ -138,11 +138,13 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
           </div>
         </header>
 
-        <div className="w-full">
-          <p className="block text-sm font-medium leading-5 text-white/90">
-            `{post.content}`
-          </p>
-        </div>
+        <div
+          id="post"
+          className="w-full"
+          dangerouslySetInnerHTML={{
+            __html: post.content,
+          }}
+        ></div>
 
         <footer className="mt-[10px] flex h-[22px] w-full items-center gap-[50px] text-orange">
           <div className="flex h-full items-center gap-[10px]">
