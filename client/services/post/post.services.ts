@@ -59,7 +59,7 @@ export const getUniquePostService = async (
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
@@ -78,7 +78,7 @@ export const removePostService = async (
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
@@ -91,7 +91,7 @@ export const likePostService = async (
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
@@ -113,7 +113,7 @@ export const savedPostsService = async (
       return data;
     } catch (error: any) {
       console.log(error);
-      return error.response.data;
+      return { ...error.response.data, ok: false };
     }
   }
 
@@ -124,7 +124,7 @@ export const savedPostsService = async (
       return data;
     } catch (error: any) {
       console.log(error);
-      return error.response.data;
+      return { ...error.response.data, ok: false };
     }
   }
 

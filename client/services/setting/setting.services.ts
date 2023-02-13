@@ -20,6 +20,6 @@ export const settingServices = async (
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };

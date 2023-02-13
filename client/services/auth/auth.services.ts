@@ -13,7 +13,7 @@ export const loginService = async (loginData: ILogin) => {
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
@@ -25,7 +25,7 @@ export const registerService = async (registerData: IRegister) => {
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
@@ -37,19 +37,19 @@ export const checkService = async (): Promise<ICheck> => {
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
 //! reactivate service
-interface Return {
+interface ReactivateServiceReturn {
   ok: boolean;
   msg?: string;
 }
 
 export const reactivateService = async (
   formData: FormData
-): Promise<Return> => {
+): Promise<ReactivateServiceReturn> => {
   try {
     const { data } = await authApi.put("/reactivate", formData, {
       headers: {
@@ -60,19 +60,19 @@ export const reactivateService = async (
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
 //! deactivate service
-interface Return {
+interface DeactivateServiceReturn {
   ok: boolean;
   msg?: string;
 }
 
 export const deactivateService = async (
   formData: FormData
-): Promise<Return> => {
+): Promise<DeactivateServiceReturn> => {
   try {
     const { data } = await authApi.put("/deactivate", formData, {
       headers: {
@@ -83,6 +83,6 @@ export const deactivateService = async (
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };

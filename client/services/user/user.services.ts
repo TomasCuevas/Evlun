@@ -17,7 +17,7 @@ export const getUserService = async (username: string): Promise<Return> => {
     return data;
   } catch (error: any) {
     console.log(error);
-    return error.response.data;
+    return { ...error.response.data, ok: false };
   }
 };
 
@@ -38,7 +38,7 @@ export const followOrUnfollowService = async (
       return data;
     } catch (error: any) {
       console.log(error);
-      return error.response.data;
+      return { ...error.response.data, ok: false };
     }
   }
 
@@ -49,7 +49,7 @@ export const followOrUnfollowService = async (
       return data;
     } catch (error: any) {
       console.log(error);
-      return error.response.data;
+      return { ...error.response.data, ok: false };
     }
   }
 
