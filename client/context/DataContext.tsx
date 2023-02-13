@@ -49,7 +49,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     }
   }, []);
 
-  //* get saved posts list
+  //! get saved posts list
   const onGetSavedPostsList = async () => {
     const result = await savedPostsService("get");
     if (result.ok) {
@@ -57,7 +57,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     }
   };
 
-  //* set a new saved post
+  //! set a new saved post
   const onSetSavedPost = async (postId: string) => {
     setSavedPostsList((prev) => [...prev, postId]);
 
@@ -67,7 +67,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     }
   };
 
-  //* remove a saved post
+  //! remove a saved post
   const onRemoveSavedPost = async (postId: string) => {
     setSavedPostsList((prev) => prev.filter((post) => post !== postId));
 
@@ -78,13 +78,13 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     }
   };
 
-  //* remove a post
+  //! remove a post
   const onRemovePost = async (postId: string) => {
     const result = await removePostService(postId);
     if (result.ok) queryClient.refetchQueries(["/all"]);
   };
 
-  //* search users
+  //! search users
   const onSearchUsers = async (search: string) => {
     if (search.length < 1) {
       setUsersSearch([]);

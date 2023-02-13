@@ -65,7 +65,7 @@ const ReactivatePage: NextPage = () => {
       reset();
       return router.replace("/auth/login");
     } else {
-      onSetError(result.msg || "Ocurrio un error.");
+      onSetError(result.msg || "Ocurrio un error. Intente de nuevo");
     }
   };
 

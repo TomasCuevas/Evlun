@@ -49,7 +49,7 @@ const LoginPage: NextPage = () => {
       return router.replace("/");
     } else {
       if (result.status === 410) setIsUserDisable(true);
-      onSetError(result.msg || "Ocurrio un error.");
+      onSetError(result.msg || "Ocurrio un error. Intente de nuevo");
     }
   };
 

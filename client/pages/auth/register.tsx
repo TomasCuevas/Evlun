@@ -34,7 +34,7 @@ const RegisterPage: NextPage = () => {
     formValues,
     error,
     onInputChange,
-    setError,
+    onSetError,
   } = useForm({
     email: "",
     name: "",
@@ -49,7 +49,7 @@ const RegisterPage: NextPage = () => {
     if (result.ok) {
       return router.replace("/");
     } else {
-      setError(result.msg || "Ocurrio un error");
+      onSetError(result.msg || "Ocurrio un error. Intente de nuevo");
     }
   };
 
