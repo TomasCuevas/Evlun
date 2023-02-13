@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev index.ts",
     "tsc": "tsc",
-    "start": "tsc && node build/index.js"
+    "start": "node build/index.js"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
