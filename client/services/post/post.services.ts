@@ -20,12 +20,15 @@ export const newPostService = async (formData: FormData): Promise<boolean> => {
 };
 
 //! get posts service
-interface Props {
+interface GetPostsServiceProps {
   pageParam?: number;
   url: string;
 }
 
-export const getPostsService = async ({ pageParam = 0, url }: Props) => {
+export const getPostsService = async ({
+  pageParam = 0,
+  url,
+}: GetPostsServiceProps) => {
   try {
     const params = new URLSearchParams();
     params.append("page", pageParam.toString());
@@ -40,14 +43,16 @@ export const getPostsService = async ({ pageParam = 0, url }: Props) => {
 };
 
 //! get unique post service
-interface Return {
+interface GetUniquePostServiceReturn {
   ok: boolean;
   msg?: string;
   post?: IPost;
   postRef?: IPost;
 }
 
-export const getUniquePostService = async (url: string): Promise<Return> => {
+export const getUniquePostService = async (
+  url: string
+): Promise<GetUniquePostServiceReturn> => {
   try {
     const { data } = await postApi.get(url);
 
@@ -59,12 +64,14 @@ export const getUniquePostService = async (url: string): Promise<Return> => {
 };
 
 //! remove post service
-interface Return {
+interface RemovePostServiceReturn {
   ok: boolean;
   msg?: string;
 }
 
-export const removePostService = async (postId: string): Promise<Return> => {
+export const removePostService = async (
+  postId: string
+): Promise<RemovePostServiceReturn> => {
   try {
     const { data } = await postApi.put("/delete", { postId });
 
@@ -89,10 +96,16 @@ export const likePostService = async (
 };
 
 //! saved post service
+interface SavedPostsServiceReturn {
+  msg?: string;
+  ok: boolean;
+  savedPostsList?: string[];
+}
+
 export const savedPostsService = async (
   method: "post" | "get",
   postId?: string
-): Promise<Return> => {
+): Promise<SavedPostsServiceReturn> => {
   if (method === "get") {
     try {
       const { data } = await postApi.get("/savedList");
