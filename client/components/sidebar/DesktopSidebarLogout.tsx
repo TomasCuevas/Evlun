@@ -19,7 +19,7 @@ export const DesktopSidebarLogout: React.FC<Props> = ({ closeModal }) => {
         className="fixed left-0 top-0 h-screen w-screen bg-white/5"
         onClick={closeModal}
       ></div>
-      <div className="absolute bottom-[80px] left-7 z-20 rounded-lg border border-orange bg-bluedark shadow-md shadow-orange/70">
+      <div className="absolute bottom-[80px] left-7 z-20 rounded-lg border border-orange bg-bluedark">
         <section className="flex cursor-default items-center gap-3 py-4 pl-3 pr-10">
           <div>
             <img
@@ -38,11 +38,11 @@ export const DesktopSidebarLogout: React.FC<Props> = ({ closeModal }) => {
           onClick={() => {
             onLogout();
           }}
-          className="w-full cursor-pointer py-1 pl-3 pr-10"
+          className="group w-full cursor-pointer py-1 pl-3 pr-10 duration-100 hover:bg-orange/20"
         >
           <div className="flex h-[50px] items-center gap-2">
             <BsBoxArrowInLeft className="text-2xl text-orange" />
-            <span className="whitespace-nowrap text-lg text-white">
+            <span className="whitespace-nowrap font-light text-white">
               Cerrar Sesión
             </span>
           </div>

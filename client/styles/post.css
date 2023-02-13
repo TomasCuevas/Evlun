@@ -1,3 +1,7 @@
 #post p {
-  color: #fff;
+  color: #fff !important;
+}
+
+#post p span {
+  color: #fff !important;
 }

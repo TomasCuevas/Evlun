@@ -91,9 +91,7 @@ export const MobileSidebar: React.FC = () => {
                       className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"
                     >
                       <BsPerson className="text-2xl text-orange" />
-                      <span className="text-lg font-light text-white">
-                        Perfil
-                      </span>
+                      <span className=" font-light text-white">Perfil</span>
                     </a>
                   </NextLink>
                 </li>
@@ -104,9 +102,7 @@ export const MobileSidebar: React.FC = () => {
                       className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"
                     >
                       <BsBookmarks className="text-2xl text-orange" />
-                      <span className="text-lg font-light text-white">
-                        Guardados
-                      </span>
+                      <span className=" font-light text-white">Guardados</span>
                     </a>
                   </NextLink>
                 </li>
@@ -117,7 +113,7 @@ export const MobileSidebar: React.FC = () => {
                       className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"
                     >
                       <BsGear className="text-2xl text-orange" />
-                      <span className="text-lg font-light text-white">
+                      <span className=" font-light text-white">
                         Configuración
                       </span>
                     </a>
@@ -135,7 +131,7 @@ export const MobileSidebar: React.FC = () => {
               }}
             >
               <BsBoxArrowInLeft className="relative left-[2px] text-2xl text-orange" />
-              <span className="cursor-pointer text-lg text-white">
+              <span className="cursor-pointer font-light text-white">
                 Cerrar Sesión
               </span>
             </div>

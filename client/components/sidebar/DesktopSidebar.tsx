@@ -24,7 +24,7 @@ import { AuthContext } from "../../context";
 //* talwind-classes *//
 const divClass = "flex justify-center xl:justify-start";
 const spansContainer =
-  "flex items-center gap-4 hover:bg-orange/20 p-3 justify-center xl:pr-7 rounded-full";
+  "flex items-center gap-4 hover:bg-orange/20 p-3 justify-center xl:pr-7 rounded-full duration-100";
 const spanClassActive = "hidden text-xl font-semibold text-white xl:block";
 const spanClass = "hidden text-xl font-semibold text-white/80 xl:block";
 
@@ -35,7 +35,6 @@ export const DesktopSidebar: React.FC = () => {
   const router = useRouter();
 
   if (!user) return <></>;
-
   return (
     <aside className="sticky top-0 z-10 hidden h-screen w-[70px] border-r border-orange bg-bluedark xs:flex xl:w-[270px]">
       <section className="flex w-full flex-col items-center gap-4 py-2 xl:items-start xl:px-4">
