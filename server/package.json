@@ -4,7 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "ts-node-dev index.ts",
-    "tsc": "tsc",
+    "build": "tsc",
     "start": "node build/index.js"
   },
   "dependencies": {
