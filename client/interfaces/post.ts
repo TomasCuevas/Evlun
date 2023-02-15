@@ -7,6 +7,7 @@ export interface IPost {
   likes: any[];
   postRef?: string;
   state: boolean;
+  text: string;
 }
 
 interface Addedby {
