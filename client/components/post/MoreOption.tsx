@@ -17,9 +17,9 @@ export const MoreOption: React.FC<Props> = ({
   return (
     <li
       onClick={onClick}
-      className="flex cursor-pointer list-none items-center gap-[15px] py-[15px] px-[5%] font-light text-white transition-all duration-300 hover:bg-white  hover:font-semibold hover:text-bluedark"
+      className="flex cursor-pointer list-none items-center gap-4 py-4 px-4 font-bold text-white transition-all duration-100 hover:bg-white/10 "
     >
-      <Icon className="text-sm" style={{ color: color && `${color}` }} />
+      <Icon className="text-base" style={{ color: color && `${color}` }} />
       <span className="text-base" style={{ color: color && `${color}` }}>
         {text}
       </span>

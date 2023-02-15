@@ -1,8 +1,12 @@
 import { useContext } from "react";
 
 //* icons *//
-import { FaRegFlag, FaRegTrashAlt } from "react-icons/fa";
-import { BsBookmarkPlus, BsBookmarkDash } from "react-icons/bs";
+import {
+  RiDeleteBin6Line,
+  RiBookmark3Line,
+  RiBookmark2Line,
+  RiFlag2Line,
+} from "react-icons/ri";
 
 //* components *//
 import { MoreOption } from "./";
@@ -23,11 +27,11 @@ export const MoreOptionsModal: React.FC = () => {
           onClick={() => onSetPost(undefined)}
           className="absolute h-full w-full cursor-pointer backdrop-blur-sm"
         ></div>
-        <div className="absolute bottom-0 left-0 z-30 flex w-full flex-col items-center overflow-hidden rounded-tl-[30px] rounded-tr-[30px] border-t border-orange bg-bluedark">
+        <div className="absolute bottom-0 left-0 z-30 flex w-full flex-col items-center overflow-hidden rounded-tl-[30px] rounded-tr-[30px] bg-black">
           <ul className="flex w-full flex-col">
             {postModal?.added_by._id === user?._id ? (
               <MoreOption
-                icon={FaRegTrashAlt}
+                icon={RiDeleteBin6Line}
                 text="Eliminar"
                 color="#FF2222"
                 onClick={() => {
@@ -37,20 +41,20 @@ export const MoreOptionsModal: React.FC = () => {
               />
             ) : (
               <MoreOption
-                icon={FaRegFlag}
+                icon={RiFlag2Line}
                 text="Denunciar post"
                 onClick={() => {}}
               />
             )}
             {savedPostsList.includes(postModal!._id) ? (
               <MoreOption
-                icon={BsBookmarkDash}
+                icon={RiBookmark2Line}
                 text="Quitar de guardados"
                 onClick={() => onRemoveSavedPost(postModal!._id)}
               />
             ) : (
               <MoreOption
-                icon={BsBookmarkPlus}
+                icon={RiBookmark3Line}
                 text="Guardar post"
                 onClick={() => onSetSavedPost(postModal!._id)}
               />
@@ -58,7 +62,7 @@ export const MoreOptionsModal: React.FC = () => {
           </ul>
           <button
             onClick={() => onSetPost(undefined)}
-            className="m-[10px] grid w-[90%] cursor-pointer place-items-center rounded-full border border-white p-[10px] text-white transition-all duration-300 hover:bg-white hover:text-bluedark"
+            className="m-[10px] grid w-[90%] cursor-pointer place-items-center rounded-full border border-white p-3 text-white duration-100 hover:bg-white hover:text-bluedark"
           >
             <span className="font-bold">Cancelar</span>
           </button>
