@@ -35,6 +35,6 @@ export const locationValidation = (value: string): boolean => {
 };
 
 export const postValidation = (value: string): boolean => {
-  const regex = /^.[\s\S]{1,250}$/;
+  const regex = /^.[\s\S]{1,249}$/;
   return regex.test(value);
 };
