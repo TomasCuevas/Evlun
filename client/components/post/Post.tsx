@@ -1,14 +1,14 @@
 import { useState, useContext, MouseEvent, useEffect } from "react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 
 //* icons *//
 import {
-  MdMoreHoriz,
-  MdOutlineChatBubbleOutline,
-  MdOutlineFavoriteBorder,
-  MdOutlineFavorite,
-} from "react-icons/md";
+  RiMoreFill,
+  RiChat4Line,
+  RiHeartLine,
+  RiHeartFill,
+} from "react-icons/ri";
 
 //* helpers *//
 import { getRelativeTime } from "../../helpers";
@@ -35,9 +35,9 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [date, setDate] = useState<string>("");
 
-  const router = useRouter();
   const queryClient = useQueryClient();
 
+  //! like post
   const onLike = async (event: MouseEvent) => {
     event.stopPropagation();
     if (isAuthenticated !== "authenticated") return;
@@ -62,112 +62,105 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
     }
   };
 
-  const onNavigate = () => {
-    return router.push(`/post/${post._id}`);
-  };
-
-  const onNavigateProfile = (event: MouseEvent) => {
-    event.stopPropagation();
-    return router.push(`/profile/${post.added_by.username}`);
-  };
-
   useEffect(() => {
     setIsLiked(post.likes.includes(user?._id.valueOf() || false));
     setDate(getRelativeTime(post.date));
   }, []);
 
   return (
-    <article
-      onClick={onNavigate}
-      className={
-        fromAnswer
-          ? "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px]  py-3 px-4 pb-0 hover:bg-orange/5 "
-          : "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px] border-b border-orange py-[10px] px-4 hover:bg-orange/5  "
-      }
-    >
-      <section className="relative flex w-full flex-col items-center">
-        <img
-          onClick={onNavigateProfile}
-          src={post.added_by.avatar}
-          alt={post.added_by.name}
-          className="absolute z-[1] h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
-        />
+    <Link href={`/post/${post._id}`}>
+      <article
+        className={
+          fromAnswer
+            ? "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px]  py-3 px-4 pb-0 hover:bg-orange/5 "
+            : "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px] border-b border-orange py-[10px] px-4 hover:bg-orange/5  "
+        }
+      >
+        <section className="relative flex w-full flex-col items-center">
+          <Link href={`/profile/${post.added_by.username}`}>
+            <img
+              src={post.added_by.avatar}
+              alt={post.added_by.name}
+              className="absolute z-[1] h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
+            />
+          </Link>
 
-        {fromAnswer ? (
-          <span className="absolute left-[22px] z-0 h-full w-[2px] bg-orange"></span>
-        ) : null}
-      </section>
+          {fromAnswer ? (
+            <span className="absolute left-[22px] z-0 h-full w-[2px] bg-orange"></span>
+          ) : null}
+        </section>
 
-      <section className="flex max-w-full flex-col">
-        <header className="mb-[2px] flex h-[24px] max-w-full justify-between overflow-hidden">
-          <div className="flex h-full w-[90%] items-start justify-start gap-[5px]">
+        <section className="flex max-w-full flex-col">
+          <header className="mb-[2px] flex h-[24px] max-w-full justify-between overflow-hidden">
+            <div className="flex h-full w-[90%] items-start justify-start gap-[5px]">
+              <div className="max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-white">
+                <Link href={`/profile/${post.added_by.username}`}>
+                  <span className="w-full cursor-pointer text-ellipsis text-sm font-bold">
+                    {post.added_by.name}
+                  </span>
+                </Link>
+              </div>
+              <div className="overflow-hidden text-ellipsis whitespace-nowrap text-orange/70">
+                <Link href={`/profile/${post.added_by.username}`}>
+                  <span className="cursor-pointer text-ellipsis text-sm">{`@${post.added_by.username}`}</span>
+                </Link>
+              </div>
+              <div className="flex h-full items-center text-white">
+                <span>·</span>
+              </div>
+              <div className="min-w-[15%] overflow-hidden whitespace-nowrap">
+                <span className="min-w-full text-ellipsis text-[13px] font-bold text-white">
+                  {date}
+                </span>
+              </div>
+            </div>
+
             <div
-              onClick={onNavigateProfile}
-              className="max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-white"
+              onClick={(event) => {
+                event.stopPropagation();
+                onSetPost(post);
+              }}
+              className="flex h-full items-start justify-center"
             >
-              <span className="w-full cursor-pointer text-ellipsis text-sm font-bold">
-                {post.added_by.name}
-              </span>
+              <div>
+                <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
+              </div>
             </div>
-            <div
-              onClick={onNavigateProfile}
-              className="overflow-hidden text-ellipsis whitespace-nowrap text-orange/70"
-            >
-              <span className="cursor-pointer text-ellipsis text-sm">{`@${post.added_by.username}`}</span>
-            </div>
-            <div className="flex h-full items-center text-white">
-              <span>·</span>
-            </div>
-            <div className="min-w-[15%] overflow-hidden whitespace-nowrap">
-              <span className="text-ellipsis text-[13px] font-bold text-white">
-                {date}
-              </span>
-            </div>
-          </div>
+          </header>
 
           <div
-            onClick={(event) => {
-              event.stopPropagation();
-              onSetPost(post);
+            id="post"
+            className="w-full"
+            dangerouslySetInnerHTML={{
+              __html: post.content,
             }}
-            className="flex h-full items-start justify-center"
-          >
-            <div>
-              <MdMoreHoriz className="cursor-pointer text-xl text-white hover:text-orange" />
+          ></div>
+
+          <footer className="mt-[10px] flex h-[22px] w-full items-center gap-[50px] text-orange">
+            <div className="flex h-full items-center gap-[10px]">
+              <RiChat4Line className="text-xl text-orange/50" />
+              <span className="text-base font-light">
+                {post.answers.length}
+              </span>
             </div>
-          </div>
-        </header>
 
-        <div
-          id="post"
-          className="w-full"
-          dangerouslySetInnerHTML={{
-            __html: post.content,
-          }}
-        ></div>
-
-        <footer className="mt-[10px] flex h-[22px] w-full items-center gap-[50px] text-orange">
-          <div className="flex h-full items-center gap-[10px]">
-            <MdOutlineChatBubbleOutline className="text-xl text-orange/50" />
-            <span className="text-base font-light">{post.answers.length}</span>
-          </div>
-
-          <div className="flex h-full items-center gap-[10px]">
-            {isLiked ? (
-              <MdOutlineFavorite
-                onClick={onLike}
-                className="relative z-0 cursor-pointer text-[21px] text-orange hover:text-orange/50"
-              />
-            ) : (
-              <MdOutlineFavoriteBorder
-                onClick={onLike}
-                className="relative bottom-[1px] z-0 cursor-pointer text-[21px] text-orange/50 hover:text-orange/100"
-              />
-            )}
-            <span className="text-base font-light">{likesValue}</span>
-          </div>
-        </footer>
-      </section>
-    </article>
+            <div className="flex h-full items-center gap-[10px]">
+              {isLiked ? (
+                <RiHeartFill
+                  onClick={onLike}
+                  className="relative z-0 cursor-pointer text-[21px] text-orange hover:text-orange/50"
+                />
+              ) : (
+                <RiHeartLine
+                  onClick={onLike}
+                  className="relative z-0 cursor-pointer text-[21px] text-orange/50 hover:text-orange/100"
+                />
+              )}
+              <span className="text-base font-light">{likesValue}</span>
+            </div>
+          </footer>
+        </section>
+      </article>
+    </Link>
   );
 };
