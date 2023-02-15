@@ -9,25 +9,25 @@ import {
 } from "react-icons/ri";
 
 //* components *//
-import { MoreOption } from "./";
+import { MoreOption } from ".";
 
 //* context *//
 import { AuthContext, DataContext, UIContext } from "../../context";
 
-export const MoreOptionsModal: React.FC = () => {
+export const MoreOptionsModalMobile: React.FC = () => {
   const { user } = useContext(AuthContext);
   const { postModal, onSetPost } = useContext(UIContext);
   const { savedPostsList, onSetSavedPost, onRemoveSavedPost, onRemovePost } =
     useContext(DataContext);
 
   return (
-    <section className="sticky bottom-0 z-20 min-h-screen w-full">
+    <section className="sticky bottom-0 z-30 min-h-screen w-full xs:hidden">
       <div className="h-full w-full overflow-hidden">
         <div
           onClick={() => onSetPost(undefined)}
-          className="absolute h-full w-full cursor-pointer backdrop-blur-sm"
+          className="fixed top-0 left-0 h-screen w-screen cursor-default bg-white/5 backdrop-blur-sm"
         ></div>
-        <div className="absolute bottom-0 left-0 z-30 flex w-full flex-col items-center overflow-hidden rounded-tl-[30px] rounded-tr-[30px] bg-black">
+        <div className="absolute bottom-0 left-0 flex w-full flex-col items-center overflow-hidden rounded-tl-[30px] rounded-tr-[30px] bg-black">
           <ul className="flex w-full flex-col">
             {postModal?.added_by._id === user?._id ? (
               <MoreOption
