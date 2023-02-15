@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useContext } from "react";
 
 //* icons *//
@@ -20,6 +21,8 @@ export const MoreOptionsModalDesktop: React.FC = () => {
   const { savedPostsList, onSetSavedPost, onRemoveSavedPost, onRemovePost } =
     useContext(DataContext);
 
+  const router = useRouter();
+
   return (
     <section className="absolute top-0 right-0 hidden xs:flex">
       <div
@@ -40,6 +43,9 @@ export const MoreOptionsModalDesktop: React.FC = () => {
                 event.stopPropagation();
                 onRemovePost(postModal!._id);
                 onSetPost(undefined);
+                if (router.asPath === `/post/${postModal?._id}`) {
+                  router.back();
+                }
               }}
             />
           ) : (

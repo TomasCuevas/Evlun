@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useRouter } from "next/router";
 
 //* icons *//
 import {
@@ -20,6 +21,8 @@ export const MoreOptionsModalMobile: React.FC = () => {
   const { savedPostsList, onSetSavedPost, onRemoveSavedPost, onRemovePost } =
     useContext(DataContext);
 
+  const router = useRouter();
+
   return (
     <section className="sticky bottom-0 z-30 min-h-screen w-full xs:hidden">
       <div className="h-full w-full overflow-hidden">
@@ -37,6 +40,9 @@ export const MoreOptionsModalMobile: React.FC = () => {
                 onClick={() => {
                   onRemovePost(postModal!._id);
                   onSetPost(undefined);
+                  if (router.asPath === `/post/${postModal?._id}`) {
+                    router.back();
+                  }
                 }}
               />
             ) : (
