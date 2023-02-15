@@ -20,6 +20,11 @@
   background-color: transparent !important;
 }
 
+.ql-editor p span img {
+  width: 16px !important;
+  height: 16px !important;
+}
+
 .ql-editor.ql-blank::before {
   color: #fff6 !important;
   font-weight: 300 !important;
