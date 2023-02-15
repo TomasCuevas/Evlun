@@ -1,10 +1,8 @@
 import { useContext } from "react";
 import { useRouter } from "next/router";
-import dayjs from "dayjs";
-import "dayjs/locale/es";
 
 //* icons *//
-import { BsCalendar3, BsPinMap } from "react-icons/bs";
+import { RiCalendar2Line, RiMapPinLine } from "react-icons/ri";
 
 //* components *//
 import { Follow, Following } from "./";
@@ -16,7 +14,7 @@ import { followOrUnfollowService } from "../../services";
 import { AuthContext } from "../../context";
 
 //* tailwind-classes *//
-const itemClass = "items-center flex gap-[10px] text-white";
+const itemClass = "items-center flex gap-[5px] text-white";
 const iconClass = "text-orange text-lg";
 const descriptionClass = "text-sm text-white/80";
 const numberClass = "text-base font-bold text-white";
@@ -109,12 +107,12 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
       <section className="mt-4 flex w-full flex-wrap gap-[15px] px-4">
         {user.location && (
           <span className={itemClass}>
-            <BsPinMap className={iconClass} />
+            <RiMapPinLine className={iconClass} />
             <span className={descriptionClass}>{user.location}</span>
           </span>
         )}
         <span className={itemClass}>
-          <BsCalendar3 className={iconClass} />
+          <RiCalendar2Line className={iconClass} />
           <span className={descriptionClass}>{`Se unio en ${date}`}</span>
         </span>
       </section>
