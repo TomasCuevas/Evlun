@@ -13,12 +13,13 @@ export const createPost = async (
 ) => {
   try {
     const { _id } = req;
-    const { content, postRef } = req.body;
+    const { content, postRef, text } = req.body;
 
     // crear post
     const newPost = await new PostModel({
       added_by: _id,
       content,
+      text,
       date: new Date().getTime(),
       postRef,
     });

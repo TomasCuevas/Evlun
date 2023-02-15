@@ -33,10 +33,7 @@ import {
 router.post(
   "/create",
   [
-    check(
-      "content",
-      "El contenido del post debe tener entre 1 y 250 caracteres."
-    ).isLength({
+    check("text", "El texto debe tener entre 1 y 250 caracteres.").isLength({
       min: 1,
       max: 250,
     }),

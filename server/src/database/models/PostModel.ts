@@ -5,6 +5,10 @@ const PostSchema = new Schema({
     type: String,
     required: true,
   },
+  text: {
+    type: String,
+    required: true,
+  },
   added_by: {
     type: Schema.Types.ObjectId,
     ref: "users",
