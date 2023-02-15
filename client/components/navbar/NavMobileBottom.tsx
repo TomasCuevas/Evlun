@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import NextLink from "next/link";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 //* icons *//
 import {
-  BsHouseDoor,
-  BsHouseDoorFill,
-  BsSearch,
-  BsPerson,
-  BsPersonFill,
-} from "react-icons/bs";
+  RiHome7Line,
+  RiHome7Fill,
+  RiSearchLine,
+  RiUserLine,
+  RiUserFill,
+} from "react-icons/ri";
 
 //* context *//
 import { AuthContext } from "../../context";
@@ -27,25 +27,25 @@ export const NavMobileBottom: React.FC = () => {
 
   return (
     <nav className="sticky bottom-0 z-10 mt-auto flex min-h-[55px] w-full items-center justify-around border-t-2 border-orange bg-bluedark backdrop-blur-sm xs:hidden">
-      <NextLink href="/" passHref>
+      <Link href="/" passHref>
         <a className={router.pathname === "/" ? activeClass : noActiveClass}>
           {router.pathname === "/" ? (
-            <BsHouseDoorFill className={iconClass} />
+            <RiHome7Fill className={iconClass} />
           ) : (
-            <BsHouseDoor className={iconClass} />
+            <RiHome7Line className={iconClass} />
           )}
         </a>
-      </NextLink>
-      <NextLink href="/explore" passHref>
+      </Link>
+      <Link href="/explore" passHref>
         <a
           className={
             router.pathname === "/explore" ? activeClass : noActiveClass
           }
         >
-          <BsSearch className={iconClass} />
+          <RiSearchLine className={iconClass} />
         </a>
-      </NextLink>
-      <NextLink href={`/profile/${user!.username}`} passHref>
+      </Link>
+      <Link href={`/profile/${user!.username}`} passHref>
         <a
           className={
             router.asPath === `/profile/${user!.username}`
@@ -54,12 +54,12 @@ export const NavMobileBottom: React.FC = () => {
           }
         >
           {router.asPath === `/profile/${user!.username}` ? (
-            <BsPersonFill className={iconClass} />
+            <RiUserFill className={iconClass} />
           ) : (
-            <BsPerson className={iconClass} />
+            <RiUserLine className={iconClass} />
           )}
         </a>
-      </NextLink>
+      </Link>
     </nav>
   );
 };
