@@ -1,7 +1,9 @@
 #post p {
   color: #fff !important;
+  background-color: transparent !important;
 }
 
 #post p span {
   color: #fff !important;
+  background-color: transparent !important;
 }

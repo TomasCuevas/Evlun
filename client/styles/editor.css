@@ -10,6 +10,16 @@
   font-size: 18px;
 }
 
+.ql-editor p {
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+.ql-editor p span {
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
 .ql-editor.ql-blank::before {
   color: #fff6 !important;
   font-weight: 300 !important;
