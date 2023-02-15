@@ -1,15 +1,14 @@
 import { useContext, useState, useEffect, MouseEvent } from "react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
 
 //* icons *//
 import {
-  MdMoreHoriz,
-  MdOutlineChatBubbleOutline,
-  MdOutlineFavorite,
-  MdOutlineFavoriteBorder,
-} from "react-icons/md";
+  RiMoreFill,
+  RiChat4Line,
+  RiHeartLine,
+  RiHeartFill,
+} from "react-icons/ri";
 
 //* services *//
 import { likePostService } from "../../services";
@@ -36,10 +35,9 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     date: "",
   });
 
-  const router = useRouter();
   const queryClient = useQueryClient();
-  dayjs.locale("es");
 
+  //! like post
   const onLike = async (event: MouseEvent) => {
     event.stopPropagation();
     if (isAuthenticated !== "authenticated") return;
@@ -64,8 +62,16 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     setLikesValue(post.likes.length);
     setIsLiked(post.likes.includes(user?._id.valueOf() || false));
     setDate({
-      time: dayjs(post.date).format("H:mm a"),
-      date: dayjs(post.date).format("D MMM. YYYY"),
+      time: new Date(post.date).toLocaleTimeString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h24",
+      }),
+      date: new Date(post.date).toLocaleDateString(undefined, {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
     });
   }, []);
 
@@ -80,26 +86,25 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
         className={postRef ? "flex flex-col" : "mt-[20px] flex flex-col"}
       >
         <header className="flex h-[50px] w-full justify-between px-4">
-          <div
-            onClick={() => router.push(`/profile/${post.added_by.username}`)}
-            className="flex h-full gap-[10px]"
-          >
-            <div>
-              <img
-                src={post.added_by?.avatar}
-                alt={post.added_by?.username}
-                className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
-              />
+          <Link href={`/profile/${post.added_by.username}`}>
+            <div className="flex h-full gap-[10px]">
+              <div>
+                <img
+                  src={post.added_by?.avatar}
+                  alt={post.added_by?.username}
+                  className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col overflow-hidden text-ellipsis whitespace-nowrap">
+                <span className="cursor-pointer text-ellipsis text-base font-semibold  text-white">
+                  {post.added_by?.name}
+                </span>
+                <span className="cursor-pointer text-ellipsis text-base font-light text-orange">
+                  @{post.added_by?.username}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col overflow-hidden text-ellipsis whitespace-nowrap">
-              <span className="cursor-pointer text-ellipsis text-base font-semibold  text-white">
-                {post.added_by?.name}
-              </span>
-              <span className="cursor-pointer text-ellipsis text-base font-light text-orange">
-                @{post.added_by?.username}
-              </span>
-            </div>
-          </div>
+          </Link>
 
           <div
             onClick={(event) => {
@@ -109,7 +114,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
             className="flex h-full items-start justify-center"
           >
             <div>
-              <MdMoreHoriz className="cursor-pointer text-xl text-white hover:text-orange" />
+              <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
             </div>
           </div>
         </header>
@@ -149,16 +154,16 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
 
         <footer className="flex w-full items-center justify-around gap-[100px] border-b border-orange py-[10px] px-4 text-orange/50">
           <div>
-            <MdOutlineChatBubbleOutline className="text-2xl" />
+            <RiChat4Line className="text-2xl" />
           </div>
           <div>
             {isLiked ? (
-              <MdOutlineFavorite
+              <RiHeartFill
                 onClick={onLike}
                 className="relative bottom-[2px] cursor-pointer text-2xl text-orange hover:text-orange/50"
               />
             ) : (
-              <MdOutlineFavoriteBorder
+              <RiHeartLine
                 onClick={onLike}
                 className="relative bottom-[2px] cursor-pointer text-2xl hover:text-orange"
               />
