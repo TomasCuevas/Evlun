@@ -5,7 +5,7 @@ import { FeedExploreModal, Explore } from "../explore";
 
 export const NavTopNoAuth: React.FC = () => {
   return (
-    <div className="sticky top-0 z-10 w-full border-b border-orange bg-bluedark/5 backdrop-blur-xl">
+    <div className="sticky top-0 z-10 w-full border-b border-orange bg-background/5 backdrop-blur-xl">
       <nav className="flex h-[55px] w-full items-center gap-[20px]  px-4">
         <img
           src="/evlun-logo.svg"

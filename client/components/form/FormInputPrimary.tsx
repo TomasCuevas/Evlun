@@ -56,7 +56,7 @@ export const FormInputPrimary: React.FC<Props> = ({
         id={inputName}
         value={inputValue}
         onChange={inputChange}
-        className="w-full border-none bg-[#0000] pt-[10px] text-lg font-medium text-bluedark outline-none autofill:!bg-[#0000]"
+        className="w-full border-none bg-[#0000] pt-[10px] text-lg font-medium text-background outline-none autofill:!bg-[#0000]"
       />
     </div>
   );

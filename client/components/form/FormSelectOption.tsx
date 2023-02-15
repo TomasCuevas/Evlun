@@ -31,13 +31,13 @@ export const FormSelectOption: React.FC<Props> = ({
         value={inputValue}
         name={inputName}
         onChange={changeOptions}
-        className="h-[60px] w-full border-none  bg-[#0000] text-bluedark outline-none"
+        className="h-[60px] w-full border-none  bg-[#0000] text-background outline-none"
       >
         {optionValues.map((option) => (
           <option
             key={option}
             value={option}
-            className="bg-bluedark text-white/80"
+            className="bg-background text-white/80"
           >
             {option}
           </option>

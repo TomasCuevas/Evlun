@@ -53,10 +53,10 @@ export const MainLayout: React.FC<Props> = ({
         />
       </Head>
 
-      <div className="flex min-h-screen w-full flex-col items-start bg-bluedark xs:flex-row xs:justify-center">
+      <div className="flex min-h-screen w-full flex-col items-start bg-background xs:flex-row xs:justify-center">
         {isAuthenticated === "authenticated" ? <MobileSidebar /> : null}
         <DesktopSidebar />
-        <main className="min-h-screen w-full max-w-[600px] xs:border-r xs:border-orange">
+        <main className="min-h-screen w-full xs:w-[calc(100%_-_70px)] xs:border-r xs:border-orange sm:max-w-[600px]">
           {isAuthenticated === "no-authenticated" ? <NavTopNoAuth /> : null}
           {isAuthenticated === "authenticated" && location === "main" ? (
             <NavTopHome />

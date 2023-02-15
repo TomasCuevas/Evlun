@@ -8,7 +8,7 @@ import { MdOutlineClose } from "react-icons/md";
 const bannerClass =
   "h-[130px] w-full bg-orange/30 object-cover object-center xs:h-[150px] sm:h-[200px]";
 const iconsContainerClass =
-  "flex justify-center items-center gap-[20px] absolute top-0 left-0 h-full w-full bg-bluedark/70";
+  "flex justify-center items-center gap-[20px] absolute top-0 left-0 h-full w-full bg-background/70";
 const iconContainerClass =
   "grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 transition-all duration-300 hover:bg-orange hover:text-white";
 

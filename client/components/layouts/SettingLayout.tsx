@@ -37,7 +37,7 @@ export const SettingLayout: React.FC<Props> = ({
         />
       </Head>
 
-      <div className="flex min-h-screen flex-col justify-center bg-bluedark xs:flex-row">
+      <div className="flex min-h-screen flex-col justify-center bg-background xs:flex-row">
         <DesktopSidebar />
         <main className="min-h-screen w-full max-w-[600px] border-orange sm:border-r">
           <NavTopSettings

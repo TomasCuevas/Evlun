@@ -62,7 +62,7 @@ export const MoreOptionsModalMobile: React.FC = () => {
           </ul>
           <button
             onClick={() => onSetPost(undefined)}
-            className="m-[10px] grid w-[90%] cursor-pointer place-items-center rounded-full border border-white p-3 text-white duration-100 hover:bg-white hover:text-bluedark"
+            className="m-[10px] grid w-[90%] cursor-pointer place-items-center rounded-full border border-white p-3 text-white duration-100 hover:bg-white hover:text-background"
           >
             <span className="font-bold">Cancelar</span>
           </button>

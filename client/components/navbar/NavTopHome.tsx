@@ -9,7 +9,7 @@ export const NavTopHome: React.FC = () => {
   const { onSwitchSidebar } = useContext(UIContext);
 
   return (
-    <div className="sticky top-0 z-10 h-[55px] w-full border-b-2 border-orange bg-bluedark/5 px-4 backdrop-blur-3xl xs:h-[60px]">
+    <div className="sticky top-0 z-10 h-[55px] w-full border-b-2 border-orange bg-background/5 px-4 backdrop-blur-3xl xs:h-[60px]">
       <nav className="flex h-full w-full items-center gap-[30px]">
         <div className="max-h-[30px] min-h-[30px] min-w-[30px] max-w-[30px] xs:hidden">
           <img

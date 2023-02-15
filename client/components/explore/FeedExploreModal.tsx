@@ -14,7 +14,7 @@ export const FeedExploreModal = () => {
     <section
       className={
         isExploreModalOpen
-          ? "absolute z-50 mx-4 w-[90%] rounded-b-xl border-r-8 border-b-4 border-l border-orange bg-bluedark shadow-lg shadow-orange/30"
+          ? "bg-background absolute z-50 mx-4 w-[90%] rounded-b-xl border-r-8 border-b-4 border-l border-orange shadow-lg shadow-orange/30"
           : "hidden"
       }
     >

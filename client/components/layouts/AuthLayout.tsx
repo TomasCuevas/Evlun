@@ -21,7 +21,7 @@ export const AuthLayout: React.FC<Props> = ({
           content={description ? description : "descripcion del sitio"}
         />
       </Head>
-      <main className="flex min-h-screen flex-col items-center bg-bluedark px-[5%]">
+      <main className="flex min-h-screen flex-col items-center bg-background px-[5%]">
         <div className="max-w-[450px]">{children}</div>
       </main>
     </>
