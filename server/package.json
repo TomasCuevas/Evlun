@@ -1,11 +1,11 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev index.ts",
-    "build": "tsc",
-    "start": "node build/index.js"
+    "build": "ts-node-dev index.ts",
+    "start": "node ."
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
