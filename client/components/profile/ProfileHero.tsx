@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 //* icons *//
 import { RiCalendar2Line, RiMapPinLine } from "react-icons/ri";
@@ -41,7 +42,7 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
 
     const result = await followOrUnfollowService(status, user._id);
     if (result.ok) {
-      router.replace(router.asPath);
+      router.reload();
     }
   };
 
@@ -74,11 +75,8 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
         <div className="flex w-full items-center justify-end gap-[10px]">
           {userContext?.username === user.username ? (
             <div className="flex h-full cursor-pointer items-center justify-center rounded-full border border-orange py-[7px] px-[10px] transition-all duration-300 hover:bg-orange/10">
-              <span
-                onClick={() => router.push("/settings/profile")}
-                className="text-[15px] font-bold text-white"
-              >
-                Editar Perfil
+              <span className="text-[15px] font-bold text-white">
+                <Link href="/settings/profile">Editar Perfil</Link>
               </span>
             </div>
           ) : (

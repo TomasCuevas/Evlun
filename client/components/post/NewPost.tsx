@@ -1,4 +1,4 @@
-import { useContext, useState, FormEvent, useRef } from "react";
+import { useContext, useState, FormEvent } from "react";
 import NextLink from "next/link";
 import dynamic from "next/dynamic";
 import { useQueryClient } from "@tanstack/react-query";
@@ -36,10 +36,11 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
   //! submit post
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!postValidation(html) || isSending || text.length < 1) return;
+    if (!postValidation(text.trim()) || isSending || text.length < 1) return;
 
     const formData = new FormData();
     formData.append("content", html);
+    formData.append("text", text.trim());
     if (postRef) formData.append("postRef", postRef);
 
     setIsSending(true);
@@ -84,10 +85,12 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
           />
           <div className="my-[10px] mx-0 flex w-full items-center justify-end">
             <FormButtonPrimary
-              isDisabled={!postValidation(html) || isSending || text.length < 1}
+              isDisabled={
+                !postValidation(text.trim()) || isSending || text.length < 1
+              }
               label="Postear"
               type="submit"
-              className="cursor-pointer rounded-2xl bg-orange py-[10px] px-[20px] text-sm font-medium text-bluedark disabled:bg-orange/10"
+              className="cursor-pointer rounded-2xl bg-orange py-[10px] px-[20px] text-sm font-medium text-background disabled:bg-orange/10"
             />
           </div>
         </Form>

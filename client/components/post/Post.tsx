@@ -139,7 +139,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
 
           <div
             id="post"
-            className="w-full"
+            className="w-full break-words"
             dangerouslySetInnerHTML={{
               __html: post.content,
             }}
