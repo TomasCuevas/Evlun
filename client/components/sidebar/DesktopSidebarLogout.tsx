@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
-import { BsBoxArrowInLeft } from "react-icons/bs";
+//* icons *//
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 //* context *//
 import { AuthContext } from "../../context";
@@ -19,31 +20,17 @@ export const DesktopSidebarLogout: React.FC<Props> = ({ closeModal }) => {
         className="fixed left-0 top-0 h-screen w-screen bg-white/5"
         onClick={closeModal}
       ></div>
-      <div className="absolute bottom-[80px] left-7 z-20 rounded-lg border border-orange bg-bluedark">
-        <section className="flex cursor-default items-center gap-3 py-4 pl-3 pr-10">
-          <div>
-            <img
-              src={user!.avatar}
-              alt="profile-img"
-              className="h-[55px] min-h-[55px] w-[55px] min-w-[55px] whitespace-nowrap rounded-full object-cover object-center"
-            />
-          </div>
-          <div>
-            <h3 className="text-white">{user!.name}</h3>
-            <h3 className="text-orange">@{user!.username}</h3>
-          </div>
-        </section>
-        <hr className="border-orange" />
+      <div className="absolute bottom-[80px] left-7 z-20 overflow-hidden rounded-lg border border-orange bg-background">
         <section
           onClick={() => {
             onLogout();
           }}
-          className="group w-full cursor-pointer py-1 pl-3 pr-10 duration-100 hover:bg-orange/20"
+          className="group w-full cursor-pointer px-4 duration-100 hover:bg-orange/20"
         >
           <div className="flex h-[50px] items-center gap-2">
-            <BsBoxArrowInLeft className="text-2xl text-orange" />
-            <span className="whitespace-nowrap font-light text-white">
-              Cerrar Sesión
+            <RiLogoutBoxLine className="text-2xl text-orange" />
+            <span className="whitespace-nowrap text-sm font-light text-white">
+              Cerrar Sesión @{user?.username}
             </span>
           </div>
         </section>

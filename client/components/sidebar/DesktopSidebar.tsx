@@ -1,19 +1,19 @@
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import NextLink from "next/link";
+import Link from "next/link";
 
 //* icons *//
 import {
-  BsBookmarks,
-  BsHouseDoor,
-  BsSearch,
-  BsPerson,
-  BsGear,
-  BsHouseDoorFill,
-  BsPersonFill,
-  BsGearFill,
-  BsBookmarksFill,
-} from "react-icons/bs";
+  RiHome7Line,
+  RiHome7Fill,
+  RiUserLine,
+  RiUserFill,
+  RiBookmarkLine,
+  RiBookmarkFill,
+  RiSettings4Line,
+  RiSettings4Fill,
+  RiSearchLine,
+} from "react-icons/ri";
 
 //* components *//
 import { DesktopSidebarLogout } from "./";
@@ -36,10 +36,10 @@ export const DesktopSidebar: React.FC = () => {
 
   if (!user) return <></>;
   return (
-    <aside className="sticky top-0 z-10 hidden h-screen w-[70px] border-r border-orange bg-bluedark xs:flex xl:w-[270px]">
+    <aside className="sticky top-0 z-10 hidden h-screen w-[70px] border-r border-orange bg-background xs:flex xl:w-[270px]">
       <section className="flex w-full flex-col items-center gap-4 py-2 xl:items-start xl:px-4">
         <div className={divClass}>
-          <NextLink href="/" passHref>
+          <Link href="/" passHref>
             <a className="flex items-center gap-5 rounded-full p-3 hover:bg-orange/20">
               <img
                 src="/evlun-logo.svg"
@@ -47,92 +47,92 @@ export const DesktopSidebar: React.FC = () => {
                 className="h-9 w-9 xl:h-10 xl:w-10"
               />
             </a>
-          </NextLink>
+          </Link>
         </div>
         <div className={divClass}>
-          <NextLink href="/" passHref>
+          <Link href="/" passHref>
             <a className={spansContainer}>
               {router.pathname === "/" ? (
                 <>
-                  <BsHouseDoorFill className="text-[26px] text-orange" />
+                  <RiHome7Fill className="text-[26px] text-orange" />
                   <span className={spanClassActive}>Inicio</span>
                 </>
               ) : (
                 <>
-                  <BsHouseDoor className="text-[26px] text-orange/70" />
+                  <RiHome7Line className="text-[26px] text-orange/70" />
                   <span className={spanClass}>Inicio</span>
                 </>
               )}
             </a>
-          </NextLink>
+          </Link>
         </div>
         <div className={divClass}>
-          <NextLink href="/explore" passHref>
+          <Link href="/explore" passHref>
             <a className={spansContainer}>
               {router.pathname === "/explore" ? (
                 <>
-                  <BsSearch className="text-[26px] text-orange" />
+                  <RiSearchLine className="text-[26px] text-orange" />
                   <span className={spanClassActive}>Explorar</span>
                 </>
               ) : (
                 <>
-                  <BsSearch className="text-[26px] text-orange/70" />
+                  <RiSearchLine className="text-[26px] text-orange/70" />
                   <span className={spanClass}>Explorar</span>
                 </>
               )}
             </a>
-          </NextLink>
+          </Link>
         </div>
         <div className={divClass}>
-          <NextLink href="/bookmarks" passHref>
+          <Link href="/bookmarks" passHref>
             <a className={spansContainer}>
               {router.pathname === "/bookmarks" ? (
                 <>
-                  <BsBookmarksFill className="text-[26px] text-orange" />
+                  <RiBookmarkFill className="text-[26px] text-orange" />
                   <span className={spanClassActive}>Guardados</span>
                 </>
               ) : (
                 <>
-                  <BsBookmarks className="text-[26px] text-orange/70" />
+                  <RiBookmarkLine className="text-[26px] text-orange/70" />
                   <span className={spanClass}>Guardados</span>
                 </>
               )}
             </a>
-          </NextLink>
+          </Link>
         </div>
         <div className={divClass}>
-          <NextLink href="/settings" passHref>
+          <Link href="/settings" passHref>
             <a className={spansContainer}>
               {router.pathname === "/settings" ? (
                 <>
-                  <BsGearFill className="text-[26px] text-orange" />
+                  <RiSettings4Fill className="text-[26px] text-orange" />
                   <span className={spanClassActive}>Configuracion</span>
                 </>
               ) : (
                 <>
-                  <BsGear className="text-[26px] text-orange/70" />
+                  <RiSettings4Line className="text-[26px] text-orange/70" />
                   <span className={spanClass}>Configuracion</span>
                 </>
               )}
             </a>
-          </NextLink>
+          </Link>
         </div>
         <div className={divClass}>
-          <NextLink href={`/profile/${user!.username}`} passHref>
+          <Link href={`/profile/${user!.username}`} passHref>
             <a className={spansContainer}>
               {router.asPath === `/profile/${user!.username}` ? (
                 <>
-                  <BsPersonFill className="text-[26px] text-orange" />
+                  <RiUserFill className="text-[26px] text-orange" />
                   <span className={spanClassActive}>Perfil</span>
                 </>
               ) : (
                 <>
-                  <BsPerson className="text-[26px] text-orange/70" />
+                  <RiUserLine className="text-[26px] text-orange/70" />
                   <span className={spanClass}>Perfil</span>
                 </>
               )}
             </a>
-          </NextLink>
+          </Link>
         </div>
         {isModalOpen ? (
           <DesktopSidebarLogout

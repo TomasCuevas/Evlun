@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 
 //* icons *//
-import { BsPerson, BsKey, BsEmojiFrown } from "react-icons/bs";
+import { RiUserLine, RiKey2Line, RiEmotionUnhappyLine } from "react-icons/ri";
 
 //* components *//
 import { FullLoader } from "../../components/ui";
@@ -28,19 +28,19 @@ const SettingsAccountPage: NextPage = () => {
         description="Opciones de configuracion globales de la cuenta en Evlun"
       >
         <SettingsOptionFull
-          icon={BsPerson}
+          icon={RiUserLine}
           optionTitle="Información de la cuenta"
           optionText="Ve la información de tu cuenta, como el número de teléfono y la dirección de correo electrónico."
           navigateLink="/settings/your-evlun-data"
         />
         <SettingsOptionFull
-          icon={BsKey}
+          icon={RiKey2Line}
           optionTitle="Cambia tu contraseña"
           optionText="Cambia tu contraseña en cualquier momento."
           navigateLink="/settings/password"
         />
         <SettingsOptionFull
-          icon={BsEmojiFrown}
+          icon={RiEmotionUnhappyLine}
           optionTitle="Desactiva tu cuenta"
           optionText="Averigua cómo puedes desactivar tu cuenta."
           navigateLink="/settings/deactivate"
