@@ -10,6 +10,9 @@ import {
   RiHeartFill,
 } from "react-icons/ri";
 
+//* components *//
+import { MoreOptionsModalDesktop } from "./";
+
 //* services *//
 import { likePostService } from "../../services";
 
@@ -26,7 +29,7 @@ interface Props {
 
 export const FullPost: React.FC<Props> = ({ post, postRef }) => {
   const { isAuthenticated, user } = useContext(AuthContext);
-  const { onSetPost } = useContext(UIContext);
+  const { onSetPost, postModal } = useContext(UIContext);
 
   const [likesValue, setLikesValue] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -115,6 +118,12 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
           >
             <div>
               <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
+              {postModal?._id === post._id &&
+              isAuthenticated === "authenticated" ? (
+                <div className="relative -top-4 z-30">
+                  <MoreOptionsModalDesktop />
+                </div>
+              ) : null}
             </div>
           </div>
         </header>

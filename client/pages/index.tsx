@@ -6,7 +6,7 @@ import { MainLayout } from "../components/layouts";
 
 //* components *//
 import { FullLoader } from "../components/ui";
-import { FeedPosts, MoreOptionsModal, NewPost } from "../components/post";
+import { FeedPosts, MoreOptionsModalMobile, NewPost } from "../components/post";
 
 //* context *//
 import { AuthContext, UIContext } from "../context";
@@ -27,7 +27,7 @@ const HomePage = () => {
         <NewPost />
         <FeedPosts url="/all" />
         {postModal && isAuthenticated === "authenticated" ? (
-          <MoreOptionsModal />
+          <MoreOptionsModalMobile />
         ) : null}
       </MainLayout>
     );

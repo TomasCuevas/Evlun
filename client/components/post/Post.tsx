@@ -10,6 +10,9 @@ import {
   RiHeartFill,
 } from "react-icons/ri";
 
+//* components *//
+import { MoreOptionsModalDesktop } from "./MoreOptionsModalDesktop";
+
 //* helpers *//
 import { getRelativeTime } from "../../helpers";
 
@@ -29,7 +32,7 @@ interface Props {
 
 export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
   const { isAuthenticated, user } = useContext(AuthContext);
-  const { onSetPost } = useContext(UIContext);
+  const { onSetPost, postModal } = useContext(UIContext);
 
   const [likesValue, setLikesValue] = useState<number>(post.likes.length);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -72,8 +75,8 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
       <article
         className={
           fromAnswer
-            ? "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px]  py-3 px-4 pb-0 hover:bg-orange/5 "
-            : "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px] border-b border-orange py-[10px] px-4 hover:bg-orange/5  "
+            ? "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px]  py-3 px-4 pb-0 hover:bg-light"
+            : "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px] border-b border-orange py-[10px] px-4 hover:bg-light"
         }
       >
         <section className="relative flex w-full flex-col items-center">
@@ -91,7 +94,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
         </section>
 
         <section className="flex max-w-full flex-col">
-          <header className="mb-[2px] flex h-[24px] max-w-full justify-between overflow-hidden">
+          <header className="mb-[2px] flex h-[24px] max-w-full justify-between">
             <div className="flex h-full w-[90%] items-start justify-start gap-[5px]">
               <div className="max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-white">
                 <Link href={`/profile/${post.added_by.username}`}>
@@ -115,15 +118,21 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
               </div>
             </div>
 
-            <div
-              onClick={(event) => {
-                event.stopPropagation();
-                onSetPost(post);
-              }}
-              className="flex h-full items-start justify-center"
-            >
+            <div className="flex h-full items-start justify-center">
               <div>
-                <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
+                <RiMoreFill
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onSetPost(post);
+                  }}
+                  className="cursor-pointer text-xl text-white hover:text-orange"
+                />
+                {postModal?._id === post._id &&
+                isAuthenticated === "authenticated" ? (
+                  <div className="relative -top-4 z-30">
+                    <MoreOptionsModalDesktop />
+                  </div>
+                ) : null}
               </div>
             </div>
           </header>

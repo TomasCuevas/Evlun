@@ -9,7 +9,7 @@ import { MainLayout } from "../../components/layouts";
 
 //* components *//
 import { ProfileHero } from "../../components/profile";
-import { FeedPosts, MoreOptionsModal } from "../../components/post";
+import { FeedPosts, MoreOptionsModalMobile } from "../../components/post";
 
 //* context *//
 import { AuthContext, UIContext } from "../../context";
@@ -35,7 +35,7 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
       <ProfileHero user={user} />
       <FeedPosts url={`/user/${user._id}`} />
       {postModal && isAuthenticated === "authenticated" ? (
-        <MoreOptionsModal />
+        <MoreOptionsModalMobile />
       ) : null}
     </MainLayout>
   );

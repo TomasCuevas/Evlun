@@ -8,7 +8,7 @@ import { getUniquePostService } from "../../services";
 import {
   FeedPosts,
   FullPost,
-  MoreOptionsModal,
+  MoreOptionsModalMobile,
   NewPost,
   Post,
 } from "../../components/post";
@@ -33,7 +33,7 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
 
   return (
     <MainLayout
-      title={`${post.added_by.name} en Evlun: "${post.content}"`}
+      title={`${post.added_by.name} en Evlun: "${post.text}"`}
       description={post.content}
       location="post"
     >
@@ -44,7 +44,7 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
       ) : null}
       <FeedPosts url={`/answers/${post._id}`} />
       {postModal && isAuthenticated === "authenticated" ? (
-        <MoreOptionsModal />
+        <MoreOptionsModalMobile />
       ) : null}
     </MainLayout>
   );
@@ -53,7 +53,7 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params as { id: string };
   const result = await getUniquePostService(
-    `${process.env.NEXT_PUBLIC_API_POST_URL}/id/${id}`
+    `${process.env.NEXT_PUBLIC_API_URI}/post/id/${id}`
   );
 
   if (!result.ok) {
