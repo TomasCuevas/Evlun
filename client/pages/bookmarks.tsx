@@ -6,7 +6,7 @@ import { MainLayout } from "../components/layouts";
 
 //* components *//
 import { FullLoader } from "../components/ui";
-import { FeedPosts, MoreOptionsModal } from "../components/post";
+import { FeedPosts, MoreOptionsModalMobile } from "../components/post";
 
 //* context *//
 import { AuthContext, UIContext } from "../context";
@@ -27,7 +27,7 @@ const BookmarksPage = () => {
         location="bookmarks"
       >
         <FeedPosts url="/saved" />
-        {postModal ? <MoreOptionsModal /> : null}
+        {postModal ? <MoreOptionsModalMobile /> : null}
       </MainLayout>
     );
   }
