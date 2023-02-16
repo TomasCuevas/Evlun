@@ -32,9 +32,7 @@ export const registerService = async (registerData: IRegister) => {
 //! check service
 export const checkService = async (): Promise<ICheck> => {
   try {
-    const { data } = await authApi.get<ICheck>("/check", {
-      withCredentials: true,
-    });
+    const { data } = await authApi.get<ICheck>("/check");
 
     return data;
   } catch (error: any) {
