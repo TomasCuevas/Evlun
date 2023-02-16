@@ -48,8 +48,8 @@ router.get(
 );
 
 //! follow user
-router.post(
-  "/follow",
+router.put(
+  "/follow/:userId",
   [
     check(
       "userId",
@@ -63,8 +63,8 @@ router.post(
 );
 
 //! unfollow user
-router.post(
-  "/unfollow",
+router.put(
+  `/unfollow/:userId`,
   [
     check(
       "userId",

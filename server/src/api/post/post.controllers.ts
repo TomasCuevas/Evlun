@@ -325,11 +325,11 @@ export const addOrRemoveLike = async (
   res: Response
 ) => {
   try {
-    const { id } = req.query;
+    const { postId } = req.params;
     const { _id } = req;
 
     // obtener post
-    const post = await PostModel.findById(id).populate("added_by", {
+    const post = await PostModel.findById(postId).populate("added_by", {
       _id: true,
       avatar: true,
       name: true,
@@ -372,7 +372,7 @@ export const addOrRemoveSaved = async (
 ) => {
   try {
     const { _id } = req;
-    const { postId } = req.body;
+    const { postId } = req.params;
 
     // obtener usuario
     const user = await UserModel.findById(_id);
@@ -384,13 +384,13 @@ export const addOrRemoveSaved = async (
     }
 
     // guardar o quitar post de lista de guardados
-    if (user.savedPosts.includes(postId)) {
+    if (user.savedPosts.includes(postId as any)) {
       const newSaved = user.savedPosts.filter(
         (postIdDatabase) => postIdDatabase.valueOf() !== postId
       );
       user.savedPosts = newSaved;
     } else {
-      user.savedPosts.push(postId);
+      user.savedPosts.push(postId as any);
     }
 
     await user.save();
@@ -415,7 +415,7 @@ export const reportPost = async (
 ) => {
   try {
     const { _id } = req;
-    const { id } = req.query;
+    const { id } = req.params;
 
     // reportar post
     const newReport = await new ReportPostModel({
@@ -444,7 +444,9 @@ export const deletePost = async (
 ) => {
   try {
     const { _id } = req;
-    const { postId } = req.body;
+    const { postId } = req.params;
+
+    console.log(postId);
 
     // buscar post a eliminar
     const post = await PostModel.findById(postId).populate("added_by", {

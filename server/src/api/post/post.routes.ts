@@ -80,13 +80,13 @@ router.get("/followings", [JWTValidation], getPostsByFollowings);
 router.get("/saved", [JWTValidation], getSavedPosts);
 
 //! get saved posts list
-router.get("/savedlist", JWTValidation, getSavedPostsList);
+router.get("/savedList", JWTValidation, getSavedPostsList);
 
 //! like or unlike post
-router.post(
-  "/like",
+router.put(
+  "/like/:postId",
   [
-    query("id", "El ID del post es necesario").isMongoId(),
+    check("postId", "El ID del post es necesario").isMongoId(),
     JWTValidation,
     fieldsValidation,
   ],
@@ -94,8 +94,8 @@ router.post(
 );
 
 //! save a post
-router.post(
-  "/save",
+router.put(
+  "/save/:postId",
   [
     check("postId", "El ID del post es necesario.").isMongoId(),
     JWTValidation,
@@ -105,10 +105,10 @@ router.post(
 );
 
 //! report post
-router.post(
-  "/report",
+router.put(
+  "/report/:postId",
   [
-    query("id", "El ID del post es necesario.").isMongoId(),
+    query("postId", "El ID del post es necesario.").isMongoId(),
     JWTValidation,
     fieldsValidation,
   ],
@@ -117,7 +117,7 @@ router.post(
 
 //! delete post
 router.put(
-  "/delete",
+  "/delete/:postId",
   [
     check("postId", "El ID del post es necesario.").isMongoId(),
     JWTValidation,

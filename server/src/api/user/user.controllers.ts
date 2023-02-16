@@ -74,11 +74,11 @@ export const followUser = async (
   res: Response
 ) => {
   try {
-    const userToFollowId = req.body.userId as Types.ObjectId;
-    const userId = req._id;
+    const { userId } = req.params as { userId?: Types.ObjectId };
+    const { _id } = req;
 
     // buscar usuario por el id en la base de datos
-    const userToFollow = await UserModel.findById(userToFollowId);
+    const userToFollow = await UserModel.findById(userId);
     if (!userToFollow) {
       return res.status(400).json({
         ok: false,
@@ -88,7 +88,7 @@ export const followUser = async (
 
     // validar que no se siga al usuario previamente
     const alreadyFollow = userToFollow.followers.find((id) => {
-      if (id.valueOf() === userId) return true;
+      if (id.valueOf() === userId!.valueOf()) return true;
     });
     if (alreadyFollow) {
       return res.status(400).json({
@@ -98,13 +98,13 @@ export const followUser = async (
     }
 
     // agregar ID del usuario que comienza a seguir en followers del usuario seguido
-    userToFollow.followers.push(userId!);
+    userToFollow.followers.push(_id!);
     userToFollow.save();
 
     // agregar ID del usuario a seguir en followings del usuario que sigue
-    const followingUser = await UserModel.findById(userId);
+    const followingUser = await UserModel.findById(_id);
     if (followingUser) {
-      followingUser.followings.push(userToFollowId);
+      followingUser.followings.push(userId!);
       followingUser.save();
     }
 
@@ -127,11 +127,11 @@ export const unfollowUser = async (
   res: Response
 ) => {
   try {
-    const unfollowUserId = req.body.userId as Types.ObjectId;
-    const userId = req._id;
+    const { userId } = req.params as { userId?: Types.ObjectId };
+    const { _id } = req;
 
     // buscar usuario por ID en la base de datos
-    const unfollowUser = await UserModel.findById(unfollowUserId);
+    const unfollowUser = await UserModel.findById(userId);
     if (!unfollowUser) {
       return res.status(400).json({
         ok: false,
@@ -141,7 +141,7 @@ export const unfollowUser = async (
 
     // validar que siga al usuario previamente
     const alreadyFollow = unfollowUser.followers.find((id) => {
-      if (id === userId) return true;
+      if (id.valueOf() === _id!.valueOf()) return true;
     });
     if (!alreadyFollow) {
       return res.status(400).json({
@@ -151,15 +151,17 @@ export const unfollowUser = async (
     }
 
     // quitar ID a la coleccion followers del usuario al que se deja de seguir
-    const newFollowers = unfollowUser.followers.filter((id) => id !== userId);
+    const newFollowers = unfollowUser.followers.filter(
+      (id) => id.valueOf() !== _id!.valueOf()
+    );
     unfollowUser.followers = newFollowers;
     unfollowUser.save();
 
     // quitar ID a la coleccion followings del usuario que deja de seguir
-    const followingUser = await UserModel.findById(userId);
+    const followingUser = await UserModel.findById(_id);
     if (followingUser) {
       const newFollowings = followingUser.followings.filter(
-        (id) => id !== unfollowUserId
+        (id) => id.valueOf() !== userId!.valueOf()
       );
 
       followingUser.followings = newFollowings;
