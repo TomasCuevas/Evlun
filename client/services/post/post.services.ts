@@ -7,6 +7,7 @@ import { IPost } from "../../interfaces/post";
 export const newPostService = async (formData: FormData): Promise<boolean> => {
   try {
     await postApi.post("/create", formData, {
+      withCredentials: true,
       headers: {
         "Content-Type": "multipart/form-data",
       },
