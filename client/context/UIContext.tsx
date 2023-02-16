@@ -33,7 +33,17 @@ export const UIProvider: React.FC<UIProviderProps> = ({ children }) => {
   const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
 
   //! open or close mobile sidebar
-  const onSwitchSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const onSwitchSidebar = () => {
+    setIsSidebarOpen((prev) => {
+      if (prev === true) {
+        document.body.classList.remove("body__fix");
+      } else {
+        document.body.classList.add("body__fix");
+      }
+
+      return !prev;
+    });
+  };
 
   //! open or close explore modal
   const onSwitchExploreModal = (status?: boolean) => {

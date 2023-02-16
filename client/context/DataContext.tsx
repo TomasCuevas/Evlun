@@ -47,7 +47,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     if (isAuthenticated === "authenticated") {
       onGetSavedPostsList();
     }
-  }, []);
+  }, [isAuthenticated]);
 
   //! get saved posts list
   const onGetSavedPostsList = async () => {
@@ -61,7 +61,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const onSetSavedPost = async (postId: string) => {
     setSavedPostsList((prev) => [...prev, postId]);
 
-    const result = await savedPostsService("post", postId);
+    const result = await savedPostsService("put", postId);
     if (result.ok) {
       onGetSavedPostsList();
     }
@@ -71,7 +71,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const onRemoveSavedPost = async (postId: string) => {
     setSavedPostsList((prev) => prev.filter((post) => post !== postId));
 
-    const result = await savedPostsService("post", postId);
+    const result = await savedPostsService("put", postId);
     if (result.ok) {
       queryClient.refetchQueries(["/saved"]);
       onGetSavedPostsList();
@@ -93,7 +93,6 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
     const result = await searchService(search);
     if (result.ok) {
-      console.log(result);
       setUsersSearch(result.users!);
     }
   };
