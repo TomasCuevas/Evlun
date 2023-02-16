@@ -42,7 +42,7 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
 
     const result = await followOrUnfollowService(status, user._id);
     if (result.ok) {
-      router.reload();
+      router.replace(router.asPath);
     }
   };
 
