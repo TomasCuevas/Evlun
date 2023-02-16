@@ -52,9 +52,7 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params as { id: string };
-  const result = await getUniquePostService(
-    `${process.env.NEXT_PUBLIC_API_URI}/post/id/${id}`
-  );
+  const result = await getUniquePostService(id);
 
   if (!result.ok) {
     return {

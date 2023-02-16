@@ -1,4 +1,4 @@
-import authApi from "../../axios/authApi";
+import axios from "axios";
 
 //* interface *//
 import { ICheck } from "../../interfaces/check";
@@ -8,7 +8,11 @@ import { IRegister } from "../../interfaces/register";
 //! login service
 export const loginService = async (loginData: ILogin) => {
   try {
-    const { data } = await authApi.post("/login", loginData);
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URI}/auth/login`,
+      loginData,
+      { withCredentials: true }
+    );
 
     return data;
   } catch (error: any) {
@@ -20,7 +24,11 @@ export const loginService = async (loginData: ILogin) => {
 //! register service
 export const registerService = async (registerData: IRegister) => {
   try {
-    const { data } = await authApi.post("/create", registerData);
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URI}/auth/create`,
+      registerData,
+      { withCredentials: true }
+    );
 
     return data;
   } catch (error: any) {
@@ -32,7 +40,12 @@ export const registerService = async (registerData: IRegister) => {
 //! check service
 export const checkService = async (): Promise<ICheck> => {
   try {
-    const { data } = await authApi.get<ICheck>("/check");
+    const { data } = await axios.get<ICheck>(
+      `${process.env.NEXT_PUBLIC_API_URI}/auth/check`,
+      {
+        withCredentials: true,
+      }
+    );
 
     return data;
   } catch (error: any) {
@@ -51,11 +64,16 @@ export const reactivateService = async (
   formData: FormData
 ): Promise<ReactivateServiceReturn> => {
   try {
-    const { data } = await authApi.put("/reactivate", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const { data } = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URI}/auth/reactivate`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
     return data;
   } catch (error: any) {
@@ -74,11 +92,16 @@ export const deactivateService = async (
   formData: FormData
 ): Promise<DeactivateServiceReturn> => {
   try {
-    const { data } = await authApi.put("/deactivate", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const { data } = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URI}/auth/deactivate`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
     return data;
   } catch (error: any) {

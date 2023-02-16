@@ -1,4 +1,4 @@
-import settingsApi from "../../axios/settingsApi";
+import axios from "axios";
 
 //! setting services
 interface Return {
@@ -11,11 +11,16 @@ export const settingServices = async (
   formValues: FormData
 ): Promise<Return> => {
   try {
-    const { data } = await settingsApi.put(`${url}`, formValues, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const { data } = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URI}/settings/${url}`,
+      formValues,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
     return data;
   } catch (error: any) {
