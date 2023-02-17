@@ -8,7 +8,7 @@ export const JWTValidation = (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies.evluntoken;
+    const { evluntoken: token } = req.headers as { evluntoken: string };
     if (!token) {
       return res.status(400).json({
         ok: false,

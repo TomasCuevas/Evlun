@@ -40,17 +40,6 @@ class Server {
     this.app.use(express.json());
     this.app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
     this.app.use(cors({ origin: origins![0], credentials: true }));
-    this.app.options("*", cors({ origin: origins![0], credentials: true }));
-    this.app.use((req, res, next) => {
-      res.header("Access-Control-Allow-Origin", origins![0]);
-      res.header("Access-Control-Allow-Credentials", "true");
-      res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-      res.header(
-        "Access-Control-Allow-Headers",
-        "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json"
-      );
-      next();
-    });
     this.app.use(CookieParser());
   }
 

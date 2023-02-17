@@ -1,9 +1,12 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 //* interface *//
 import { ICheck } from "../../interfaces/check";
 import { ILogin } from "../../interfaces/login";
 import { IRegister } from "../../interfaces/register";
+
+axios.defaults.headers.common["evluntoken"] = Cookies.get("evluntoken") || "";
 
 //! login service
 export const loginService = async (loginData: ILogin) => {
