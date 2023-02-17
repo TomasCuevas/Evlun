@@ -1,3 +1,4 @@
+import userApi from "../../axios/userApi";
 import axios from "axios";
 
 //* interfaces *//
@@ -12,10 +13,7 @@ interface Return {
 
 export const getUserService = async (username: string): Promise<Return> => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URI}/user/username/${username}`,
-      { withCredentials: true }
-    );
+    const { data } = await userApi.get(`/username/${username}`);
 
     return data;
   } catch (error: any) {
@@ -36,11 +34,7 @@ export const followOrUnfollowService = async (
 ): Promise<Return> => {
   if (status === "follow") {
     try {
-      const { data } = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URI}/user/follow/${userId}`,
-        {},
-        { withCredentials: true }
-      );
+      const { data } = await userApi.put(`/follow/${userId}`);
 
       return data;
     } catch (error: any) {
@@ -51,11 +45,7 @@ export const followOrUnfollowService = async (
 
   if (status === "unfollow") {
     try {
-      const { data } = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URI}/user/unfollow/${userId}`,
-        {},
-        { withCredentials: true }
-      );
+      const { data } = await userApi.put(`/unfollow/${userId}`);
 
       return data;
     } catch (error: any) {

@@ -39,7 +39,7 @@ class Server {
   private middleware() {
     this.app.use(express.json());
     this.app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
-    this.app.use(cors({ origin: origins![0], credentials: true }));
+    this.app.use(cors({ origin: origins, credentials: true }));
     this.app.use(CookieParser());
   }
 

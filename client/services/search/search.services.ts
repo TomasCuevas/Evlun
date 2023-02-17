@@ -1,4 +1,4 @@
-import axios from "axios";
+import userApi from "../../axios/userApi";
 
 //* interface *//
 import { IUser } from "../../interfaces/user";
@@ -15,13 +15,9 @@ export const searchService = async (search: string): Promise<Return> => {
     const params = new URLSearchParams();
     params.append("search", search);
 
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URI}/user/search`,
-      {
-        params,
-        withCredentials: true,
-      }
-    );
+    const { data } = await userApi.get(`/search`, {
+      params,
+    });
 
     return data;
   } catch (error: any) {

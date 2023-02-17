@@ -1,4 +1,4 @@
-import axios from "axios";
+import postApi from "../../axios/postApi";
 
 //* interfaces *//
 import { IPost } from "../../interfaces/post";
@@ -6,16 +6,11 @@ import { IPost } from "../../interfaces/post";
 //! new post service
 export const newPostService = async (formData: FormData): Promise<boolean> => {
   try {
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URI}/post/create`,
-      formData,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    await postApi.post(`/create`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     return true;
   } catch (error) {
@@ -38,10 +33,7 @@ export const getPostsService = async ({
     const params = new URLSearchParams();
     params.append("page", pageParam.toString());
 
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URI}/post/${url}`,
-      { params, withCredentials: true }
-    );
+    const { data } = await postApi.get(`${url}`, { params });
 
     return data.posts;
   } catch (error) {
@@ -62,10 +54,7 @@ export const getUniquePostService = async (
   postId: string
 ): Promise<GetUniquePostServiceReturn> => {
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URI}/post/id/${postId}`,
-      { withCredentials: true }
-    );
+    const { data } = await postApi.get(`/id/${postId}`);
 
     return data;
   } catch (error: any) {
@@ -84,11 +73,7 @@ export const removePostService = async (
   postId: string
 ): Promise<RemovePostServiceReturn> => {
   try {
-    const { data } = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URI}/post/delete/${postId}`,
-      {},
-      { withCredentials: true }
-    );
+    const { data } = await postApi.put(`/delete/${postId}`);
 
     return data;
   } catch (error: any) {
@@ -102,11 +87,7 @@ export const likePostService = async (
   postId: string
 ): Promise<{ ok: boolean }> => {
   try {
-    const { data } = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URI}/post/like/${postId}`,
-      {},
-      { withCredentials: true }
-    );
+    const { data } = await postApi.put(`/like/${postId}`);
     return data;
   } catch (error: any) {
     console.log(error);
@@ -127,10 +108,7 @@ export const savedPostsService = async (
 ): Promise<SavedPostsServiceReturn> => {
   if (method === "get") {
     try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URI}/post/savedList`,
-        { withCredentials: true }
-      );
+      const { data } = await postApi.get(`/savedList`);
 
       return data;
     } catch (error: any) {
@@ -141,11 +119,7 @@ export const savedPostsService = async (
 
   if (method === "put") {
     try {
-      const { data } = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URI}/post/save/${postId}`,
-        {},
-        { withCredentials: true }
-      );
+      const { data } = await postApi.put(`/save/${postId}`);
 
       return data;
     } catch (error: any) {
