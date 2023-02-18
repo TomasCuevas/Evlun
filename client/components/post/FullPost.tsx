@@ -8,6 +8,8 @@ import {
   RiChat4Line,
   RiHeartLine,
   RiHeartFill,
+  RiBookmarkLine,
+  RiBookmarkFill,
 } from "react-icons/ri";
 
 //* components *//
@@ -17,7 +19,7 @@ import { MoreOptionsModalDesktop } from "./";
 import { likePostService } from "../../services";
 
 //* context *//
-import { AuthContext, UIContext } from "../../context";
+import { AuthContext, DataContext, UIContext } from "../../context";
 
 //* interfaces *//
 import { IPost } from "../../interfaces/post";
@@ -30,6 +32,8 @@ interface Props {
 export const FullPost: React.FC<Props> = ({ post, postRef }) => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const { onSetPost, postModal } = useContext(UIContext);
+  const { savedPostsList, onSetSavedPost, onRemoveSavedPost } =
+    useContext(DataContext);
 
   const [likesValue, setLikesValue] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -165,19 +169,32 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
           <div>
             <RiChat4Line className="text-2xl" />
           </div>
-          <div>
+          <button>
+            {savedPostsList.includes(post._id) ? (
+              <RiBookmarkFill
+                onClick={() => onRemoveSavedPost(post._id)}
+                className="text-2xl text-orange hover:text-orange/50"
+              />
+            ) : (
+              <RiBookmarkLine
+                onClick={() => onSetSavedPost(post._id)}
+                className="text-2xl"
+              />
+            )}
+          </button>
+          <button>
             {isLiked ? (
               <RiHeartFill
                 onClick={onLike}
-                className="relative bottom-[2px] cursor-pointer text-2xl text-orange hover:text-orange/50"
+                className="text-2xl text-orange hover:text-orange/50"
               />
             ) : (
               <RiHeartLine
                 onClick={onLike}
-                className="relative bottom-[2px] cursor-pointer text-2xl hover:text-orange"
+                className="text-2xl hover:text-orange"
               />
             )}
-          </div>
+          </button>
         </footer>
       </article>
     </>
