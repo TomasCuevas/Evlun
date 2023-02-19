@@ -1,5 +1,5 @@
 import { useContext, useState, FormEvent } from "react";
-import NextLink from "next/link";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -63,7 +63,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
   return (
     <article className="flex w-full gap-[10px] border-b border-orange  bg-orange/10 px-4 pt-[30px]">
       <section className="flex min-w-[45px] max-w-[10%] flex-col">
-        <NextLink href={`/profile${user!.username}`} passHref>
+        <Link href={`/profile/${user!.username}`} passHref>
           <a>
             <img
               src={user!.avatar}
@@ -71,7 +71,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
               className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
             />
           </a>
-        </NextLink>
+        </Link>
       </section>
       <section className="w-[calc(100%_-_55px)]">
         <Form className="flex flex-col" onSubmit={onSubmit}>
