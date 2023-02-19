@@ -2,7 +2,7 @@ import { useContext } from "react";
 import Head from "next/head";
 
 //* components *//
-import { DesktopSidebar, MobileSidebar } from "../sidebar";
+import { DesktopSidebar, MobileSidebar, RightSidebar } from "../sidebar";
 import {
   NavTopPost,
   NavTopNoAuth,
@@ -12,7 +12,6 @@ import {
   NavTopExplore,
   NavTopSettings,
 } from "../navbar";
-import { ExploreSidebar } from "../explore";
 
 //* context *//
 import { AuthContext } from "../../context";
@@ -23,7 +22,6 @@ import { ILocation } from "../../interfaces/locations";
 interface Props {
   children?: React.ReactNode;
   description?: string;
-  explore?: boolean;
   location?: ILocation;
   name?: string;
   navBottom?: boolean;
@@ -34,7 +32,6 @@ interface Props {
 export const MainLayout: React.FC<Props> = ({
   children,
   description,
-  explore = true,
   location = "main",
   name,
   navBottom = true,
@@ -57,7 +54,9 @@ export const MainLayout: React.FC<Props> = ({
         {isAuthenticated === "authenticated" ? <MobileSidebar /> : null}
         <DesktopSidebar />
         <main className="min-h-[calc(100vh_+_10px)] w-full xs:w-[calc(100%_-_70px)] xs:border-r xs:border-orange sm:max-w-[600px]">
-          {isAuthenticated === "no-authenticated" ? <NavTopNoAuth /> : null}
+          {isAuthenticated === "no-authenticated" && location !== "explore" ? (
+            <NavTopNoAuth />
+          ) : null}
           {isAuthenticated === "authenticated" && location === "main" ? (
             <NavTopHome />
           ) : null}
@@ -73,7 +72,7 @@ export const MainLayout: React.FC<Props> = ({
           {location === "explore" ? <NavTopExplore /> : null}
           {children}
         </main>
-        <ExploreSidebar explore={explore} />
+        <RightSidebar />
 
         {isAuthenticated === "authenticated" && navBottom ? (
           <NavMobileBottom />

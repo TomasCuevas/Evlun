@@ -2,8 +2,7 @@ import Head from "next/head";
 
 //* components *//
 import { NavTopSettings } from "../navbar";
-import { ExploreSidebar } from "../explore";
-import { DesktopSidebar } from "../sidebar";
+import { DesktopSidebar, RightSidebar } from "../sidebar";
 
 //* interface *//
 interface Props {
@@ -48,7 +47,7 @@ export const SettingLayout: React.FC<Props> = ({
           />
           {children}
         </main>
-        <ExploreSidebar explore={explore} />
+        <RightSidebar />
       </div>
     </>
   );
