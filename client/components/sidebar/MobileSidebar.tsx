@@ -10,6 +10,9 @@ import {
   RiLogoutBoxLine,
 } from "react-icons/ri";
 
+//* components
+import { SidebarMobileLink } from "./";
+
 //* contexts *//
 import { AuthContext, UIContext } from "../../context";
 
@@ -22,7 +25,7 @@ export const MobileSidebar: React.FC = () => {
     <aside className="fixed top-0 z-50 grid min-h-screen w-full grid-cols-[70%_30%] xs:hidden">
       <section className="border-r border-orange bg-background">
         <div className="flex flex-col">
-          <section className="flex h-[50px] w-full items-center p-[10px] px-4">
+          <div className="flex h-[50px] w-full items-center p-[10px] px-4">
             <p className="w-[90%] text-ellipsis text-base font-bold text-white">
               Información de la cuenta
             </p>
@@ -30,8 +33,8 @@ export const MobileSidebar: React.FC = () => {
               onClick={onSwitchSidebar}
               className="text-3xl text-orange/70 duration-300 hover:text-orange"
             />
-          </section>
-          <section className="flex w-full cursor-pointer flex-col gap-[5px] p-[10px] px-4 transition-all duration-300 hover:bg-orange/5">
+          </div>
+          <div className="flex w-full cursor-pointer flex-col gap-[5px] p-[10px] px-4 transition-all duration-300 hover:bg-orange/5">
             <Link href={`/profile/${user!.username}`} passHref>
               <a onClick={onSwitchSidebar}>
                 <div>
@@ -74,62 +77,35 @@ export const MobileSidebar: React.FC = () => {
                 </div>
               </a>
             </Link>
-          </section>
-          <section className="w-full">
+          </div>
+          <div className="w-full">
             <nav className="w-full">
               <ul className="flex flex-col">
-                <li>
-                  <Link href={`/profile/${user!.username}`} passHref>
-                    <a
-                      onClick={onSwitchSidebar}
-                      className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"
-                    >
-                      <RiUserLine className="text-2xl text-orange" />
-                      <span className=" font-light text-white">Perfil</span>
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/bookmarks" passHref>
-                    <a
-                      onClick={onSwitchSidebar}
-                      className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"
-                    >
-                      <RiBookmarkLine className="text-2xl text-orange" />
-                      <span className=" font-light text-white">Guardados</span>
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/settings" passHref>
-                    <a
-                      onClick={onSwitchSidebar}
-                      className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"
-                    >
-                      <RiSettings4Line className="text-2xl text-orange" />
-                      <span className=" font-light text-white">
-                        Configuración
-                      </span>
-                    </a>
-                  </Link>
-                </li>
+                <SidebarMobileLink
+                  icon={RiUserLine}
+                  link={`/profile/${user!.username}`}
+                  text="Perfil"
+                />
+                <SidebarMobileLink
+                  icon={RiBookmarkLine}
+                  link="/bookmarks"
+                  text="Guardados"
+                />
+                <SidebarMobileLink
+                  icon={RiSettings4Line}
+                  link="/settings"
+                  text="Configuración"
+                />
+                <div className="h-[1px] w-full bg-orange"></div>
+                <SidebarMobileLink
+                  icon={RiLogoutBoxLine}
+                  link="/auth/login"
+                  text="Cerrar Sesión"
+                  onClick={onLogout}
+                />
               </ul>
             </nav>
-          </section>
-          <section className="flex h-[50px] w-full items-center border-t border-orange px-4">
-            <div
-              className="flex  items-center gap-[10px]"
-              onClick={() => {
-                onSwitchSidebar();
-                onLogout();
-              }}
-            >
-              <RiLogoutBoxLine className="relative left-[2px] text-2xl text-orange" />
-              <span className="cursor-pointer font-light text-white">
-                Cerrar Sesión
-              </span>
-            </div>
-          </section>
+          </div>
         </div>
       </section>
 
