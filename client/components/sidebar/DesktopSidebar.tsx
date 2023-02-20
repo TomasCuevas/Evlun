@@ -15,7 +15,7 @@ import {
 } from "react-icons/ri";
 
 //* components *//
-import { DesktopSidebarLogout, SidebarLink } from "./";
+import { LogoutModal, SidebarLink } from "./";
 
 //* contexts *//
 import { AuthContext } from "../../context";
@@ -70,9 +70,7 @@ export const DesktopSidebar: React.FC = () => {
           text="Perfil"
         />
         {isModalOpen ? (
-          <DesktopSidebarLogout
-            closeModal={() => setIsModalOpen((prev) => !prev)}
-          />
+          <LogoutModal closeModal={() => setIsModalOpen((prev) => !prev)} />
         ) : null}
         {isAuthenticated === "authenticated" ? (
           <div

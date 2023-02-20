@@ -11,7 +11,7 @@ interface Props {
   closeModal: () => void;
 }
 
-export const DesktopSidebarLogout: React.FC<Props> = ({ closeModal }) => {
+export const LogoutModal: React.FC<Props> = ({ closeModal }) => {
   const { user, onLogout } = useContext(AuthContext);
 
   return (
