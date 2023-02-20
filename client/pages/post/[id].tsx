@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { NextPage, GetServerSideProps } from "next";
 
 //* service *//
@@ -17,7 +17,7 @@ import {
 import { MainLayout } from "../../components/layouts";
 
 //* context *//
-import { AuthContext, UIContext } from "../../context";
+import { AuthContext, RightSidebarContext, UIContext } from "../../context";
 
 //* interfaces *//
 import { IPost } from "../../interfaces/post";
@@ -30,6 +30,19 @@ interface Props {
 const PostPage: NextPage<Props> = ({ post, postRef }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const { postModal } = useContext(UIContext);
+  const { onChangeSidebarItems, setRelevantPersons } =
+    useContext(RightSidebarContext);
+
+  useEffect(() => {
+    onChangeSidebarItems({
+      explorer: true,
+      profile: false,
+      relevant: true,
+    });
+    setRelevantPersons(
+      postRef ? [postRef.added_by, post.added_by] : [post.added_by]
+    );
+  }, [post]);
 
   return (
     <MainLayout

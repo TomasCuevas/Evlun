@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { GetServerSideProps, NextPage } from "next";
 
 //* service *//
@@ -12,7 +12,7 @@ import { ProfileHero } from "../../components/profile";
 import { FeedPosts, MoreOptionsModalMobile } from "../../components/post";
 
 //* context *//
-import { AuthContext, UIContext } from "../../context";
+import { AuthContext, RightSidebarContext, UIContext } from "../../context";
 
 //* interfaces *//
 import { IUser } from "../../interfaces/user";
@@ -24,6 +24,15 @@ interface Props {
 const ProfilePage: NextPage<Props> = ({ user }) => {
   const { isAuthenticated } = useContext(AuthContext);
   const { postModal } = useContext(UIContext);
+  const { onChangeSidebarItems } = useContext(RightSidebarContext);
+
+  useEffect(() => {
+    onChangeSidebarItems({
+      explorer: true,
+      profile: false,
+      relevant: false,
+    });
+  }, []);
 
   return (
     <MainLayout

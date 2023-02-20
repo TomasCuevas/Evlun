@@ -4,7 +4,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 //* providers *//
-import { AuthProvider, UIProvider, DataProvider } from "../context";
+import {
+  AuthProvider,
+  UIProvider,
+  DataProvider,
+  RightSidebarProvider,
+} from "../context";
 
 //* styles *//
 import "../styles/globals.css";
@@ -19,16 +24,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ReactQueryDevtools />
       <AuthProvider>
         <UIProvider>
-          <DataProvider>
-            <Head>
-              <link
-                rel="shortcut icon"
-                href="/evlun-logo.svg"
-                type="image/x-icon"
-              />
-            </Head>
-            <Component {...pageProps} />
-          </DataProvider>
+          <RightSidebarProvider>
+            <DataProvider>
+              <Head>
+                <link
+                  rel="shortcut icon"
+                  href="/evlun-logo.svg"
+                  type="image/x-icon"
+                />
+              </Head>
+              <Component {...pageProps} />
+            </DataProvider>
+          </RightSidebarProvider>
         </UIProvider>
       </AuthProvider>
     </QueryClientProvider>
