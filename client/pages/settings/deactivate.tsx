@@ -81,13 +81,13 @@ const SettingsDeactivatePage: NextPage = () => {
         description="Pagina para desactivar cuenta en Evlun"
       >
         <ProfileDeactivate />
-        <section className="mt-[30px] flex flex-col px-[5%]">
+        <section className="mt-[30px] flex flex-col px-4">
           <span className="border-b border-orange py-3 text-xl font-extrabold text-white">
             Esta acción desactivará tu cuenta
           </span>
           <span className="border-b border-orange py-3 text-base font-light text-white/80">
             Estás por iniciar el proceso de desactivación de tu cuenta de Evlun.
-            Tu nombre visible, tu @u suario y tu perfil público ya no se podrán
+            Tu nombre visible, tu @usuario y tu perfil público ya no se podrán
             ver en Evlun.
           </span>
           <Form onSubmit={onSave}>

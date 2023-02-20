@@ -33,7 +33,7 @@ export const Explore: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex h-[30px] w-full items-center rounded-full border border-orange bg-orange/10 px-[20px] xs:h-[40px]">
+    <div className="flex h-[30px] w-full items-center rounded-full bg-orange/20 px-[20px] xs:h-[40px]">
       <Form
         onSubmit={(event: FormEvent) => event.preventDefault()}
         className="flex w-full items-center gap-[15px]"

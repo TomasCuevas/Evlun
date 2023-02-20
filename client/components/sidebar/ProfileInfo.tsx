@@ -34,7 +34,7 @@ export const ProfileInfo: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="flex justify-around bg-light/80 px-4 py-2">
+      <section className="flex justify-around bg-light px-4 py-2">
         <div className="flex flex-col items-center">
           <p className="text-sm font-light text-orange">Siguiendo</p>
           <span className="font-bold text-white">

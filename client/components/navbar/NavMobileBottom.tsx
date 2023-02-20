@@ -26,7 +26,7 @@ export const NavMobileBottom: React.FC = () => {
   const router = useRouter();
 
   return (
-    <nav className="sticky bottom-0 z-10 mt-auto flex min-h-[55px] w-full items-center justify-around border-t-2 border-orange bg-background backdrop-blur-sm xs:hidden">
+    <nav className="sticky bottom-0 z-10 mt-auto flex min-h-[55px] w-full items-center justify-around border-t-2 border-orange/50 bg-background backdrop-blur-sm xs:hidden">
       <Link href="/" passHref>
         <a className={router.pathname === "/" ? activeClass : noActiveClass}>
           {router.pathname === "/" ? (

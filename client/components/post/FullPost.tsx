@@ -86,50 +86,52 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     <>
       {postRef ? (
         <div className="flex w-full px-4">
-          <span className="ml-[22px] h-3 w-[2px] bg-orange"></span>
+          <span className="ml-[22px] h-3 w-[2px] bg-orange/50"></span>
         </div>
       ) : null}
       <article
-        className={postRef ? "flex flex-col" : "mt-[20px] flex flex-col"}
+        className={
+          postRef
+            ? "flex flex-col overflow-hidden"
+            : "mt-[20px] flex flex-col overflow-hidden"
+        }
       >
-        <header className="flex h-[50px] w-full justify-between px-4">
+        <header className="flex h-[50px] w-full max-w-full justify-between px-4">
           <Link href={`/profile/${post.added_by.username}`}>
-            <div className="flex h-full gap-[10px]">
+            <div className="flex h-full w-full gap-[10px]">
               <div>
                 <img
                   src={post.added_by?.avatar}
                   alt={post.added_by?.username}
-                  className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover"
+                  className="h-[45px] min-h-[45px] w-[45px] min-w-[45px] cursor-pointer rounded-full object-cover"
                 />
               </div>
               <div className="flex flex-col overflow-hidden text-ellipsis whitespace-nowrap">
-                <span className="cursor-pointer text-ellipsis text-base font-semibold  text-white">
+                <span className="cursor-pointer overflow-hidden text-ellipsis text-base font-semibold  text-white">
                   {post.added_by?.name}
                 </span>
-                <span className="cursor-pointer text-ellipsis text-base font-light text-orange">
+                <span className="cursor-pointer overflow-hidden text-ellipsis text-base font-light text-orange">
                   @{post.added_by?.username}
                 </span>
               </div>
+              <div className="ml-auto">
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onSetPost(post);
+                  }}
+                >
+                  <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
+                </button>
+                {postModal?._id === post._id &&
+                isAuthenticated === "authenticated" ? (
+                  <div className="relative -top-6 z-30">
+                    <MoreOptionsModalDesktop />
+                  </div>
+                ) : null}
+              </div>
             </div>
           </Link>
-
-          <div
-            onClick={(event) => {
-              event.stopPropagation();
-              onSetPost(post);
-            }}
-            className="flex h-full items-start justify-center"
-          >
-            <div>
-              <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
-              {postModal?._id === post._id &&
-              isAuthenticated === "authenticated" ? (
-                <div className="relative -top-4 z-30">
-                  <MoreOptionsModalDesktop />
-                </div>
-              ) : null}
-            </div>
-          </div>
         </header>
 
         <div className="mt-[20px] px-4">
@@ -142,7 +144,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
           ></div>
         </div>
 
-        <time className="flex w-full gap-[10px] border-b border-orange py-[15px] px-4">
+        <time className="flex w-full gap-[10px] border-b border-orange/50 py-[15px] px-4">
           <div>
             <span className="text-[15px] text-white/80">{date.time}</span>
           </div>
@@ -155,7 +157,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
         </time>
 
         {likesValue > 0 ? (
-          <section className="w-full border-b border-orange py-[15px] px-4">
+          <section className="w-full border-b border-orange/50 py-[15px] px-4">
             <div className="flex items-center gap-2">
               <span className="text-base font-bold text-white">
                 {likesValue}
@@ -165,7 +167,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
           </section>
         ) : null}
 
-        <footer className="flex w-full items-center justify-around gap-[100px] border-b border-orange py-[10px] px-4 text-orange/50">
+        <footer className="flex w-full items-center justify-around gap-[100px] border-b border-orange/50 py-[10px] px-4 text-orange/50">
           <div>
             <RiChat4Line className="text-2xl" />
           </div>
@@ -178,7 +180,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
             ) : (
               <RiBookmarkLine
                 onClick={() => onSetSavedPost(post._id)}
-                className="text-2xl"
+                className="text-2xl text-orange/50 hover:text-orange"
               />
             )}
           </button>

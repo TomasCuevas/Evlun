@@ -23,7 +23,7 @@ export const MobileSidebar: React.FC = () => {
   if (!isSidebarOpen) return <></>;
   return (
     <aside className="fixed top-0 z-50 grid min-h-screen w-full grid-cols-[70%_30%] xs:hidden">
-      <section className="border-r border-orange bg-background">
+      <section className="border-r border-orange/50 bg-background">
         <div className="flex flex-col">
           <div className="flex h-[50px] w-full items-center p-[10px] px-4">
             <p className="w-[90%] text-ellipsis text-base font-bold text-white">
@@ -31,10 +31,10 @@ export const MobileSidebar: React.FC = () => {
             </p>
             <RiCloseLine
               onClick={onSwitchSidebar}
-              className="text-3xl text-orange/70 duration-300 hover:text-orange"
+              className="text-3xl text-orange"
             />
           </div>
-          <div className="flex w-full cursor-pointer flex-col gap-[5px] p-[10px] px-4 transition-all duration-300 hover:bg-orange/5">
+          <div className="flex w-full cursor-pointer flex-col gap-[5px] p-[10px] px-4">
             <Link href={`/profile/${user!.username}`} passHref>
               <a onClick={onSwitchSidebar}>
                 <div>
@@ -96,7 +96,7 @@ export const MobileSidebar: React.FC = () => {
                   link="/settings"
                   text="Configuración"
                 />
-                <div className="h-[1px] w-full bg-orange"></div>
+                <div className="h-[1px] w-full bg-orange/50"></div>
                 <SidebarMobileLink
                   icon={RiLogoutBoxLine}
                   link="/auth/login"

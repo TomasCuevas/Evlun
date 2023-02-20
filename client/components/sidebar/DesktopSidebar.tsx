@@ -25,16 +25,12 @@ export const DesktopSidebar: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <aside className="sticky top-0 z-20 hidden h-screen w-[70px] border-r border-orange bg-background xs:flex xl:w-[270px]">
+    <aside className="sticky top-0 z-20 hidden h-screen w-[70px] border-r border-orange/50 bg-background xs:flex xl:w-[270px]">
       <section className="flex w-full flex-col items-center gap-4 py-2 xl:items-start xl:px-4">
         <div className="flex justify-center xl:justify-start">
           <Link href="/" passHref>
             <a className="flex items-center gap-5 rounded-full p-3 hover:bg-orange/20">
-              <img
-                src="/evlun-logo.svg"
-                alt="Evlun logo"
-                className="h-9 w-9 xl:h-10 xl:w-10"
-              />
+              <img src="/evlun-logo.svg" alt="Evlun logo" className="h-9 w-9" />
             </a>
           </Link>
         </div>

@@ -20,7 +20,7 @@ export const LogoutModal: React.FC<Props> = ({ closeModal }) => {
         className="fixed left-0 top-0 h-screen w-screen bg-white/5"
         onClick={closeModal}
       ></div>
-      <div className="absolute bottom-[80px] left-7 z-20 overflow-hidden rounded-lg border border-orange bg-background">
+      <div className="absolute bottom-[80px] left-7 z-20 overflow-hidden rounded-lg border border-orange/50 bg-background">
         <section
           onClick={() => {
             onLogout();

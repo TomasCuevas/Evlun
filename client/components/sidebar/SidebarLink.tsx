@@ -32,7 +32,7 @@ export const SidebarLink: React.FC<Props> = ({
     <div className="flex justify-center xl:justify-start">
       <Link href={link} passHref>
         <a className="flex items-center justify-center gap-4 rounded-full p-3 duration-100 hover:bg-orange/20 xl:pr-7">
-          {router.pathname === link ? (
+          {router.asPath === link ? (
             <>
               <IconFill className="text-[26px] text-orange" />
               <span className="hidden text-xl font-semibold text-white xl:block">

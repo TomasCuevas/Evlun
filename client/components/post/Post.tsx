@@ -76,7 +76,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
         className={
           fromAnswer
             ? "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px]  py-3 px-4 pb-0 hover:bg-light"
-            : "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px] border-b border-orange py-[10px] px-4 hover:bg-light"
+            : "max-w-screen grid w-full cursor-pointer grid-cols-[45px_calc(100%_-_55px)] gap-[10px] border-b border-orange/50 py-[10px] px-4 hover:bg-light"
         }
       >
         <section className="relative flex w-full flex-col items-center">
@@ -89,7 +89,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
           </Link>
 
           {fromAnswer ? (
-            <span className="absolute left-[22px] z-0 h-full w-[2px] bg-orange"></span>
+            <span className="absolute left-[22px] z-0 h-full w-[2px] bg-orange/50"></span>
           ) : null}
         </section>
 

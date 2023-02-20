@@ -61,7 +61,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
   };
 
   return (
-    <article className="flex w-full gap-[10px] border-b border-orange  bg-orange/10 px-4 pt-[30px]">
+    <article className="flex w-full gap-[10px] border-b border-orange/50  bg-orange/10 px-4 pt-[30px]">
       <section className="flex min-w-[45px] max-w-[10%] flex-col">
         <Link href={`/profile/${user!.username}`} passHref>
           <a>
@@ -90,7 +90,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
               }
               label="Postear"
               type="submit"
-              className="cursor-pointer rounded-2xl bg-orange py-[10px] px-[20px] text-sm font-medium text-background disabled:bg-orange/10"
+              className="cursor-pointer rounded-2xl bg-orange py-[10px] px-[20px] text-sm font-medium text-white disabled:bg-orange/10 disabled:text-white/10"
             />
           </div>
         </Form>

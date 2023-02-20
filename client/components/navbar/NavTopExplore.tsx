@@ -11,7 +11,7 @@ export const NavTopExplore: React.FC = () => {
   const { onSwitchSidebar } = useContext(UIContext);
 
   return (
-    <div className="sticky top-0 z-10 h-[55px] w-full border-b-2 border-orange bg-background/5 px-[5%] backdrop-blur-3xl xs:h-[60px]">
+    <div className="sticky top-0 z-10 h-[55px] w-full border-b-2 border-orange/50 bg-background/5 px-[5%] backdrop-blur-3xl xs:h-[60px]">
       <nav className="flex h-full w-full items-center gap-[30px]">
         {user ? (
           <div className="min-h-[30px] min-w-[30px]">

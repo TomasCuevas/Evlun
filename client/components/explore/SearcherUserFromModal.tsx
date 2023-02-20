@@ -19,7 +19,7 @@ export const SearchedUserFromModal: React.FC<Props> = ({
       onClick={() => {
         router.push(`/profile/${username}`);
       }}
-      className="flex h-[55px] w-full cursor-pointer items-center gap-3 px-4 transition-all duration-300 hover:bg-orange/5"
+      className="flex h-[55px] w-full cursor-pointer items-center gap-3 px-4 transition-all duration-300 hover:bg-orange/10"
     >
       <div className="w-[40px]">
         <img
