@@ -10,7 +10,7 @@ export interface IPost {
   text: string;
 }
 
-interface Addedby {
+export interface Addedby {
   _id: string;
   name: string;
   username: string;
