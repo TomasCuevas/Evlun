@@ -77,7 +77,7 @@ const SettingsPasswordPage: NextPage = () => {
     }
 
     setIsSending(true);
-    const result = await settingServices("/password", formData);
+    const result = await settingServices("password", formData);
     setIsSending(false);
 
     if (result.ok) {

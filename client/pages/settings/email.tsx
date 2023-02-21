@@ -48,7 +48,7 @@ const SettingsEmailPage: NextPage = () => {
     formData.append("email", newEmail);
 
     setIsSending(true);
-    const result = await settingServices("/email", formData);
+    const result = await settingServices("email", formData);
     setIsSending(false);
 
     if (result.ok) {

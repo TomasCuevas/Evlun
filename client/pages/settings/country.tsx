@@ -51,7 +51,7 @@ const SettingsCountryPage: NextPage = () => {
     formData.append("country", newCountry);
 
     setIsSending(true);
-    const result = await settingServices("/country", formData);
+    const result = await settingServices("country", formData);
     setIsSending(false);
 
     if (result.ok) {

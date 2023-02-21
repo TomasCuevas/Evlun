@@ -41,7 +41,7 @@ const SettingsPhonePage: NextPage = () => {
     formData.append("phone", newPhone);
 
     setIsSending(true);
-    const result = await settingServices("/phone", formData);
+    const result = await settingServices("phone", formData);
     setIsSending(false);
 
     if (result.ok) {

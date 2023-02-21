@@ -47,7 +47,7 @@ const SettingsUsernamePage: NextPage = () => {
     formData.append("username", newUsername);
 
     setIsSending(true);
-    const result = await settingServices("/username", formData);
+    const result = await settingServices("username", formData);
     setIsSending(false);
 
     if (result.ok) {

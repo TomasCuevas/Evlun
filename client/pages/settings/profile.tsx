@@ -105,7 +105,7 @@ const SettingProfilePage: NextPage = () => {
     }
 
     setIsSending(true);
-    const result = await settingServices("/profile", formData);
+    const result = await settingServices("profile", formData);
     setIsSending(false);
 
     if (result.ok) {

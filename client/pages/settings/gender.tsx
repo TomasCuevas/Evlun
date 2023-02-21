@@ -38,7 +38,7 @@ const SettingsGenderPage: NextPage = () => {
     formData.append("gender", newGender);
 
     setIsSending(true);
-    const result = await settingServices("/gender", formData);
+    const result = await settingServices("gender", formData);
     setIsSending(false);
 
     if (result.ok) {
