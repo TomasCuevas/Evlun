@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 //* icons *//
@@ -7,9 +6,6 @@ import { RiCalendar2Line, RiMapPinLine } from "react-icons/ri";
 
 //* components *//
 import { Follow, Following } from "./";
-
-//* services *//
-import { followOrUnfollowService } from "../../services";
 
 //* context *//
 import { AuthContext } from "../../context";
@@ -29,22 +25,12 @@ interface Props {
 }
 
 export const ProfileHero: React.FC<Props> = ({ user }) => {
-  const { user: userContext, isAuthenticated } = useContext(AuthContext);
-  const router = useRouter();
+  const { user: userContext } = useContext(AuthContext);
 
   const date = new Date(user.date!).toLocaleDateString(undefined, {
     month: "long",
     year: "numeric",
   });
-
-  const followOrUnfollowUser = async (status: "follow" | "unfollow") => {
-    if (isAuthenticated !== "authenticated") return;
-
-    const result = await followOrUnfollowService(status, user._id);
-    if (result.ok) {
-      router.replace(router.asPath);
-    }
-  };
 
   return (
     <article className="w-full">
@@ -74,17 +60,19 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
         </div>
         <div className="flex w-full items-center justify-end gap-[10px]">
           {userContext?.username === user.username ? (
-            <div className="flex h-full cursor-pointer items-center justify-center rounded-full border border-orange py-[7px] px-[10px] transition-all duration-300 hover:bg-orange/10">
-              <span className="text-[15px] font-bold text-white">
-                <Link href="/settings/profile">Editar Perfil</Link>
-              </span>
-            </div>
+            <Link href="/settings/profile">
+              <button className="flex h-full cursor-pointer items-center justify-center rounded-full border border-orange py-[7px] px-[10px] transition-all duration-300 hover:bg-orange/10">
+                <span className="text-[15px] font-bold text-white">
+                  Editar Perfil
+                </span>
+              </button>
+            </Link>
           ) : (
             <>
               {user.followers.includes(userContext?._id || "") ? (
-                <Following onClick={() => followOrUnfollowUser("unfollow")} />
+                <Following userToUnfollowId={user._id} />
               ) : (
-                <Follow onClick={() => followOrUnfollowUser("follow")} />
+                <Follow userToFollowId={user._id} />
               )}
             </>
           )}
