@@ -17,6 +17,7 @@ interface AuthContextProps {
   user: IUser | undefined;
 
   onChecking(): void;
+  onCheckingWithoutLoader(): void;
   onLogin(
     loginData: ILogin
   ): Promise<{ ok: boolean; msg?: string; status?: number }>;
@@ -47,6 +48,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsAuthenticated("checking");
     setUser(undefined);
 
+    const result = await checkService();
+    if (!result.ok) {
+      setIsAuthenticated("no-authenticated");
+      setUser(undefined);
+      return;
+    }
+
+    Cookies.set("evluntoken", result.token);
+    setIsAuthenticated("authenticated");
+    setUser(result.user);
+  };
+
+  //! check auth without loader
+  const onCheckingWithoutLoader = async () => {
     const result = await checkService();
     if (!result.ok) {
       setIsAuthenticated("no-authenticated");
@@ -120,6 +135,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         //* methods
         onChecking,
+        onCheckingWithoutLoader,
         onLogin,
         onLogout,
         onRegister,
