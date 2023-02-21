@@ -2,10 +2,11 @@ import { useContext } from "react";
 
 //* components *//
 import { Explore, FeedExploreModal } from "../explore";
-import { ProfileInfoSidebar } from "../profile";
+import { ProfileInfo } from "./";
 
 //* context *//
 import { AuthContext, RightSidebarContext } from "../../context";
+import { RelevantPersons } from "./RelevantPersons";
 
 export const RightSidebar: React.FC = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -20,8 +21,9 @@ export const RightSidebar: React.FC = () => {
         </>
       )}
       {sidebarItems.profile && isAuthenticated === "authenticated" && (
-        <ProfileInfoSidebar />
+        <ProfileInfo />
       )}
+      {sidebarItems.relevant && <RelevantPersons />}
     </aside>
   );
 };
