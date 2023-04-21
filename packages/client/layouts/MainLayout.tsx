@@ -1,8 +1,11 @@
-import { useContext } from "react";
 import Head from "next/head";
 
 //* components *//
-import { DesktopSidebar, MobileSidebar, RightSidebar } from "../sidebar";
+import {
+  DesktopSidebar,
+  MobileSidebar,
+  RightSidebar,
+} from "../components/sidebar";
 import {
   NavTopPost,
   NavTopNoAuth,
@@ -11,13 +14,13 @@ import {
   NavTopHome,
   NavTopExplore,
   NavTopSettings,
-} from "../navbar";
+} from "../components/navbar";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "../store";
 
 //* interfaces *//
-import { ILocation } from "../../interfaces/locations";
+import { ILocation } from "../interfaces";
 
 interface Props {
   children?: React.ReactNode;
@@ -38,7 +41,7 @@ export const MainLayout: React.FC<Props> = ({
   navText,
   title,
 }) => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <>

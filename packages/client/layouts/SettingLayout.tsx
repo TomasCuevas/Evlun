@@ -1,8 +1,8 @@
 import Head from "next/head";
 
 //* components *//
-import { NavTopSettings } from "../navbar";
-import { DesktopSidebar, RightSidebar } from "../sidebar";
+import { NavTopSettings } from "../components/navbar";
+import { DesktopSidebar, RightSidebar } from "../components/sidebar";
 
 //* interface *//
 interface Props {
