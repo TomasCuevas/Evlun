@@ -5,14 +5,13 @@
   "main": "index.js",
   "private": true,
   "workspaces": [
-    "server",
-    "client"
+    "packages/*"
   ],
   "scripts": {
-    "dev:front": "npm run dev --workspace=client",
-    "dev:back": "npm run dev --workspace=server",
-    "format": "prettier --write .",
-    "lint": "eslint --fix . --ext .js,.jsx"
+    "install:server": "yarn --cwd server install",
+    "install:client": "yarn --cwd client install",
+    "dev:server": "yarn --cwd packages/server dev",
+    "dev:client": "yarn --cwd packages/client dev"
   },
   "keywords": [],
   "author": "Tomas Cuevas",
