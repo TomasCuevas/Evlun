@@ -1,88 +1,124 @@
-import authApi from "../../axios/authApi";
+//* axios instance *//
+import authApi from "@/axios/authApi";
 
 //* interface *//
-import { ICheck } from "../../interfaces/check";
-import { ILogin } from "../../interfaces/login";
-import { IRegister } from "../../interfaces/register";
-
-//! login service
-export const loginService = async (loginData: ILogin) => {
-  try {
-    const { data } = await authApi.post(`/login`, loginData);
-
-    return data;
-  } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
-  }
-};
+import { IUser, ILogin, IRegister } from "@/interfaces";
 
 //! register service
-export const registerService = async (registerData: IRegister) => {
+export const registerService = async (
+  registerData: IRegister
+): Promise<{ ok: boolean; user?: IUser; token?: string; msg?: string }> => {
   try {
     const { data } = await authApi.post("/create", registerData);
 
-    return data;
+    return {
+      ok: true,
+      user: data.user,
+      token: data.token,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
+  }
+};
+
+//! login service
+export const loginService = async (
+  loginData: ILogin
+): Promise<{
+  ok: boolean;
+  user?: IUser;
+  token?: string;
+  msg?: string;
+  status?: number;
+}> => {
+  try {
+    const { data } = await authApi.post(`/login`, loginData);
+
+    return {
+      ok: true,
+      user: data.user,
+      token: data.token,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+      status: error.response.data.status,
+    };
   }
 };
 
 //! check service
-export const checkService = async (): Promise<ICheck> => {
+export const checkService = async (): Promise<{
+  ok: boolean;
+  user?: IUser;
+  token?: string;
+  msg?: string;
+}> => {
   try {
-    const { data } = await authApi.get<ICheck>(`/check`);
+    const { data } = await authApi.get(`/check`);
 
-    return data;
+    return {
+      ok: true,
+      user: data.user,
+      token: data.token,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data,
+    };
   }
 };
 
-//! reactivate service
-interface ReactivateServiceReturn {
-  ok: boolean;
-  msg?: string;
-}
-
+//! reactive service
 export const reactivateService = async (
   formData: FormData
-): Promise<ReactivateServiceReturn> => {
+): Promise<{ ok: boolean; msg?: string }> => {
   try {
-    const { data } = await authApi.put(`/reactivate`, formData, {
+    await authApi.put(`/reactivate`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
 
-    return data;
+    return {
+      ok: true,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data,
+    };
   }
 };
 
 //! deactivate service
-interface DeactivateServiceReturn {
-  ok: boolean;
-  msg?: string;
-}
-
 export const deactivateService = async (
   formData: FormData
-): Promise<DeactivateServiceReturn> => {
+): Promise<{ ok: boolean; msg?: string }> => {
   try {
-    const { data } = await authApi.put(`/deactivate`, formData, {
+    await authApi.put(`/deactivate`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
 
-    return data;
+    return {
+      ok: true,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data,
+    };
   }
 };
