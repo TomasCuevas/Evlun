@@ -19,7 +19,6 @@ export const registerUser = async (req: Request, res: Response) => {
     const emailExist = await UserModel.findOne({ email });
     if (emailExist) {
       return res.status(400).json({
-        ok: false,
         msg: "El email ingresado ya ha sido registrado.",
       });
     }
@@ -28,7 +27,6 @@ export const registerUser = async (req: Request, res: Response) => {
     const usernameExist = await UserModel.findOne({ username });
     if (usernameExist) {
       return res.status(400).json({
-        ok: false,
         msg: "El usuario ingresado ya se encuentra utilizado.",
       });
     }
@@ -54,14 +52,12 @@ export const registerUser = async (req: Request, res: Response) => {
 
     // respuesta al frontend
     return res.status(201).json({
-      ok: true,
       token,
       user,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
@@ -76,7 +72,6 @@ export const login = async (req: Request, res: Response) => {
     const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({
-        ok: false,
         msg: "Correo y/o contraseña ingresada incorrecto/a.",
       });
     }
@@ -84,7 +79,6 @@ export const login = async (req: Request, res: Response) => {
     // verificar estado del usuario
     if (user.state === false) {
       return res.status(410).json({
-        ok: false,
         msg: "El usuario ha sido previamente desabilidado.",
         status: 410,
       });
@@ -94,8 +88,7 @@ export const login = async (req: Request, res: Response) => {
     const passwordVerify = await bcryptjs.compareSync(password, user.password);
     if (!passwordVerify) {
       return res.status(400).json({
-        ok: false,
-        msg: "Datos incorrectos, no se pudo realizar el login.",
+        msg: "Correo y/o contraseña ingresada incorrecto/a.",
       });
     }
 
@@ -104,14 +97,12 @@ export const login = async (req: Request, res: Response) => {
 
     // respuesta al frontend
     return res.status(200).json({
-      ok: true,
       token,
       user,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
@@ -129,7 +120,6 @@ export const checkJWT = async (
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(500).json({
-        ok: false,
         message: "No existe usuario con el ID ingresado en el jwt.",
       });
     }
@@ -137,7 +127,6 @@ export const checkJWT = async (
     // verificar estado del usuario
     if (user.state === false) {
       return res.status(405).json({
-        ok: false,
         msg: "El usuario ha sido previamente desabilidado.",
       });
     }
@@ -147,15 +136,48 @@ export const checkJWT = async (
 
     // respuesta al frontend
     return res.status(200).json({
-      ok: true,
       token,
       user,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
+    });
+  }
+};
+
+//! reactivate user
+export const reactivateUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    // obtenemos el usuario a partir del email ingresado
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        msg: "No existe usuario con el email ingresado.",
+      });
+    }
+
+    // verificamos que el password ingresado sea el correcto
+    const passwordVerify = await bcryptjs.compareSync(password, user.password);
+    if (!passwordVerify) {
+      return res.status(400).json({
+        msg: "El password ingresado no es valido.",
+      });
+    }
+
+    // reactivar usuario
+    user.state = true;
+    user.save();
+
+    // respuesta al frontend
+    return res.status(200);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
 };
@@ -173,7 +195,6 @@ export const deactivateUser = async (
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(500).json({
-        ok: false,
         message: "No existe usuario con el ID ingresado en el jwt.",
       });
     }
@@ -182,7 +203,6 @@ export const deactivateUser = async (
     const passwordVerify = await bcryptjs.compareSync(password, user.password);
     if (!passwordVerify) {
       return res.status(400).json({
-        ok: false,
         msg: "La contraseña ingresada no es correcta.",
       });
     }
@@ -191,53 +211,10 @@ export const deactivateUser = async (
     await UserModel.findByIdAndUpdate(_id, { state: false });
 
     // respuesta al frontend
-    return res.status(200).json({
-      ok: true,
-    });
+    return res.status(200);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
-      msg: "Error en el servidor. Contacte con un administrador.",
-    });
-  }
-};
-
-//! reactivate user
-export const reactivateUser = async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-
-    // obtenemos el usuario a partir del email ingresado
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      return res.status(400).json({
-        ok: false,
-        msg: "No existe usuario con el email ingresado.",
-      });
-    }
-
-    // verificamos que el password ingresado sea el correcto
-    const passwordVerify = await bcryptjs.compareSync(password, user.password);
-    if (!passwordVerify) {
-      return res.status(400).json({
-        ok: false,
-        msg: "El password ingresado no es valido.",
-      });
-    }
-
-    // reactivar usuario
-    user.state = true;
-    user.save();
-
-    // respuesta al frontend
-    return res.status(200).json({
-      ok: true,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
