@@ -1,7 +1,8 @@
-import postApi from "../../axios/postApi";
+//* axios instance *//
+import { postApi } from "@/axios";
 
 //* interfaces *//
-import { IPost } from "../../interfaces/post";
+import { IPost } from "@/interfaces/post.interfaces";
 
 //! new post service
 export const newPostService = async (formData: FormData): Promise<boolean> => {
@@ -14,7 +15,7 @@ export const newPostService = async (formData: FormData): Promise<boolean> => {
 
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 };
@@ -28,103 +29,131 @@ interface GetPostsServiceProps {
 export const getPostsService = async ({
   pageParam = 0,
   url,
-}: GetPostsServiceProps) => {
+}: GetPostsServiceProps): Promise<{
+  ok: boolean;
+  posts?: IPost[];
+  msg?: string;
+}> => {
   try {
     const params = new URLSearchParams();
     params.append("page", pageParam.toString());
 
     const { data } = await postApi.get(`${url}`, { params });
 
-    return data.posts;
-  } catch (error) {
-    console.log(error);
-    throw new Error("Error al obtener los posts");
+    return {
+      ok: true,
+      posts: data.posts,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
 };
 
 //! get unique post service
-interface GetUniquePostServiceReturn {
+export const getUniquePostService = async (
+  postId: string
+): Promise<{
   ok: boolean;
   msg?: string;
   post?: IPost;
   postRef?: IPost;
-}
-
-export const getUniquePostService = async (
-  postId: string
-): Promise<GetUniquePostServiceReturn> => {
+}> => {
   try {
     const { data } = await postApi.get(`/id/${postId}`);
 
-    return data;
+    return {
+      ok: true,
+      post: data.post,
+      postRef: data.postRef,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
 };
 
 //! remove post service
-interface RemovePostServiceReturn {
-  ok: boolean;
-  msg?: string;
-}
-
 export const removePostService = async (
   postId: string
-): Promise<RemovePostServiceReturn> => {
+): Promise<{ ok: boolean; msg?: string }> => {
   try {
-    const { data } = await postApi.put(`/delete/${postId}`);
-
-    return data;
+    await postApi.put(`/delete/${postId}`);
+    return {
+      ok: true,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
 };
 
 //! like post service
 export const likePostService = async (
   postId: string
-): Promise<{ ok: boolean }> => {
+): Promise<{ ok: boolean; msg?: string }> => {
   try {
-    const { data } = await postApi.put(`/like/${postId}`);
-    return data;
+    await postApi.put(`/like/${postId}`);
+    return {
+      ok: true,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
 };
 
 //! saved post service
-interface SavedPostsServiceReturn {
-  msg?: string;
-  ok: boolean;
-  savedPostsList?: string[];
-}
-
 export const savedPostsService = async (
   method: "put" | "get",
   postId?: string
-): Promise<SavedPostsServiceReturn> => {
+): Promise<{
+  ok: boolean;
+  msg?: string;
+  savedPostsList?: string[];
+}> => {
   if (method === "get") {
     try {
       const { data } = await postApi.get(`/savedList`);
 
-      return data;
+      return {
+        ok: true,
+        savedPostsList: data.savedPostsList,
+      };
     } catch (error: any) {
-      console.log(error);
-      return { ...error.response.data, ok: false };
+      console.error(error);
+      return {
+        ok: false,
+        msg: error.response.data.msg,
+      };
     }
   }
 
   if (method === "put") {
     try {
-      const { data } = await postApi.put(`/save/${postId}`);
+      await postApi.put(`/save/${postId}`);
 
-      return data;
+      return {
+        ok: true,
+      };
     } catch (error: any) {
-      console.log(error);
-      return { ...error.response.data, ok: false };
+      console.error(error);
+      return {
+        ok: false,
+        msg: error.response.data.msg,
+      };
     }
   }
 
