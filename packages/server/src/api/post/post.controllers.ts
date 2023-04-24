@@ -38,12 +38,11 @@ export const createPost = async (
 
     // respuesta al frontend
     return res.status(201).json({
-      ok: true,
+      post: newPost,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -63,7 +62,6 @@ export const getPost = async (req: Request, res: Response) => {
     });
     if (!post) {
       return res.status(400).json({
-        ok: false,
         msg: "No se encontro post con el ID ingresado.",
       });
     }
@@ -80,14 +78,12 @@ export const getPost = async (req: Request, res: Response) => {
     }
 
     return res.status(200).json({
-      ok: true,
       post,
       postRef,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -116,13 +112,11 @@ export const getUserPosts = async (req: Request, res: Response) => {
 
     // respuesta al frontend
     return res.status(200).json({
-      ok: true,
       posts,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -148,13 +142,11 @@ export const getPostAnswers = async (req: Request, res: Response) => {
 
     // respuesta al frontend
     return res.status(200).json({
-      ok: true,
       posts,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -179,13 +171,11 @@ export const getAllPosts = async (req: Request, res: Response) => {
 
     // respuesta al frontend
     return res.status(200).json({
-      ok: true,
       posts,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -204,7 +194,6 @@ export const getPostsByFollowings = async (
     const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe usuario con el ID ingresado.",
       });
     }
@@ -229,13 +218,11 @@ export const getPostsByFollowings = async (
 
     // respuesta al frontend
     return res.status(200).json({
-      ok: true,
       posts,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
@@ -254,7 +241,6 @@ export const getSavedPosts = async (
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe usuario con el ID ingresado.",
       });
     }
@@ -276,13 +262,11 @@ export const getSavedPosts = async (
 
     // respuesta el frontend
     return res.status(200).json({
-      ok: true,
       posts,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
@@ -300,20 +284,17 @@ export const getSavedPostsList = async (
     const user = await UserModel.findById(_id).select("savedPosts -_id");
     if (!user) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe usuario con el ID ingresado.",
       });
     }
 
     // respuesta al frontend
     return res.status(200).json({
-      ok: true,
       savedPostsList: user.savedPosts,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
@@ -337,7 +318,6 @@ export const addOrRemoveLike = async (
     });
     if (!post) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe post con el ID ingresado.",
       });
     }
@@ -353,20 +333,17 @@ export const addOrRemoveLike = async (
     await post.save();
 
     // respuesta al frontend
-    return res.status(201).json({
-      ok: true,
-    });
+    return res.status(200).json({});
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
 };
 
-//! save post
-export const addOrRemoveSaved = async (
+//! save or remove saved post
+export const saveOrRemoveSavedPost = async (
   req: Request & { _id?: Types.ObjectId },
   res: Response
 ) => {
@@ -378,7 +355,6 @@ export const addOrRemoveSaved = async (
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe usuario con el ID ingresado.",
       });
     }
@@ -396,13 +372,10 @@ export const addOrRemoveSaved = async (
     await user.save();
 
     // respuesta el frontend
-    return res.status(201).json({
-      ok: true,
-    });
+    return res.status(200).json({});
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
@@ -425,13 +398,10 @@ export const reportPost = async (
     await newReport.save();
 
     // respuesta al frontend
-    return res.status(201).json({
-      ok: true,
-    });
+    return res.status(200).json({});
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }
@@ -446,15 +416,12 @@ export const deletePost = async (
     const { _id } = req;
     const { postId } = req.params;
 
-    console.log(postId);
-
     // buscar post a eliminar
     const post = await PostModel.findById(postId).populate("added_by", {
       _id: true,
     });
     if (!post) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe post con el ID ingresado.",
       });
     }
@@ -472,13 +439,10 @@ export const deletePost = async (
     await post.save();
 
     // respuesta al frontend
-    return res.status(201).json({
-      ok: true,
-    });
+    return res.status(200).json({});
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Contacte con un administrador.",
     });
   }

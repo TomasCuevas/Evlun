@@ -14,7 +14,6 @@ import { fieldsValidation, JWTValidation } from "../../middlewares";
 //* controllers *//
 import {
   addOrRemoveLike,
-  addOrRemoveSaved,
   createPost,
   deletePost,
   getAllPosts,
@@ -25,6 +24,7 @@ import {
   getSavedPostsList,
   getUserPosts,
   reportPost,
+  saveOrRemoveSavedPost,
 } from "./post.controllers";
 
 //* routes *//
@@ -101,7 +101,7 @@ router.put(
     JWTValidation,
     fieldsValidation,
   ],
-  addOrRemoveSaved
+  saveOrRemoveSavedPost
 );
 
 //! report post
