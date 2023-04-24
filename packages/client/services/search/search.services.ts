@@ -1,16 +1,17 @@
-import userApi from "../../axios/userApi";
+//* axios instance *//
+import { userApi } from "@/axios";
 
 //* interface *//
-import { IUser } from "../../interfaces/user";
+import { IUser } from "@/interfaces";
 
 //! search service
-interface Return {
-  msg?: string;
+export const searchService = async (
+  search: string
+): Promise<{
   ok: boolean;
   users?: IUser[];
-}
-
-export const searchService = async (search: string): Promise<Return> => {
+  msg?: string;
+}> => {
   try {
     const params = new URLSearchParams();
     params.append("search", search);
@@ -19,9 +20,15 @@ export const searchService = async (search: string): Promise<Return> => {
       params,
     });
 
-    return data;
+    return {
+      ok: true,
+      users: data.users,
+    };
   } catch (error: any) {
     console.log(error);
-    return { ...error.response.data, ok: false };
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
 };
