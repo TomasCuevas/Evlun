@@ -15,7 +15,6 @@ export const getUser = async (req: Request, res: Response) => {
     const user = await UserModel.findOne({ username });
     if (!user) {
       return res.status(404).json({
-        ok: false,
         msg: "No se encontro usuario con el username ingresado.",
       });
     }
@@ -23,20 +22,17 @@ export const getUser = async (req: Request, res: Response) => {
     // verificar que el usuario no haya sido desactivado
     if (user.state === false) {
       return res.status(410).json({
-        ok: false,
         msg: "El usuario ha sido eliminado.",
       });
     }
 
     // respues al frontend
     return res.status(200).json({
-      ok: true,
       user,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -56,13 +52,11 @@ export const searchUsers = async (req: Request, res: Response) => {
       .limit(20);
 
     return res.status(200).json({
-      ok: true,
       users,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -81,7 +75,6 @@ export const followUser = async (
     const userToFollow = await UserModel.findById(userId);
     if (!userToFollow) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe usuario con el ID ingresado.",
       });
     }
@@ -92,7 +85,6 @@ export const followUser = async (
     });
     if (alreadyFollow) {
       return res.status(400).json({
-        ok: false,
         msg: "Ya sigues al usuario indicado.",
       });
     }
@@ -109,13 +101,10 @@ export const followUser = async (
     }
 
     // respuesta al frontend
-    return res.status(201).json({
-      ok: true,
-    });
+    return res.status(200).json({});
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
@@ -134,7 +123,6 @@ export const unfollowUser = async (
     const unfollowUser = await UserModel.findById(userId);
     if (!unfollowUser) {
       return res.status(400).json({
-        ok: false,
         msg: "No existe usuario con el ID ingresado.",
       });
     }
@@ -145,7 +133,6 @@ export const unfollowUser = async (
     });
     if (!alreadyFollow) {
       return res.status(400).json({
-        ok: false,
         msg: "No sigues al usuario indicado.",
       });
     }
@@ -169,13 +156,10 @@ export const unfollowUser = async (
     }
 
     // respuesta al frontend
-    return res.status(201).json({
-      ok: true,
-    });
+    return res.status(200).json({});
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      ok: false,
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }
