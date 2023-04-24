@@ -1,18 +1,18 @@
 export interface IPost {
   _id: string;
-  added_by: Addedby;
+  added_by: AddedBy;
   answers: string[];
   content: string;
   date: number;
-  likes: any[];
+  likes: string[];
   postRef?: string;
   state: boolean;
   text: string;
 }
 
-export interface Addedby {
+export interface AddedBy {
   _id: string;
+  avatar: string;
   name: string;
   username: string;
-  avatar: string;
 }
