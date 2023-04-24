@@ -1,22 +1,17 @@
-import { useContext, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 //* layout *//
-import { MainLayout } from "../components/layouts";
+import { MainLayout } from "@/layouts";
 
 //* components *//
-import { FullLoader } from "../components/ui";
-import { FeedPosts, MoreOptionsModalMobile } from "../components/post";
+import { FeedPosts, MoreOptionsModalMobile } from "@/components/post";
 
-//* context *//
-import { AuthContext, RightSidebarContext, UIContext } from "../context";
+//* stores *//
+import { usePostsStore, useRightSidebarStore } from "@/store";
 
 const BookmarksPage = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const { postModal } = useContext(UIContext);
-  const { onChangeSidebarItems } = useContext(RightSidebarContext);
-
-  const router = useRouter();
+  const { onChangeSidebarItems } = useRightSidebarStore();
+  const { postModal } = usePostsStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -26,22 +21,17 @@ const BookmarksPage = () => {
     });
   }, []);
 
-  if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
-  if (isAuthenticated === "authenticated") {
-    return (
-      <MainLayout
-        navText="Guardados"
-        title="Guardados | Evlun"
-        description="Pagina para ver los posts guardados del usuario en Evlun"
-        location="bookmarks"
-      >
-        <FeedPosts url="/saved" />
-        {postModal ? <MoreOptionsModalMobile /> : null}
-      </MainLayout>
-    );
-  }
-
-  return <FullLoader />;
+  return (
+    <MainLayout
+      navText="Guardados"
+      title="Guardados | Evlun"
+      description="Pagina para ver los posts guardados del usuario en Evlun"
+      location="bookmarks"
+    >
+      <FeedPosts url="/saved" />
+      {postModal ? <MoreOptionsModalMobile /> : null}
+    </MainLayout>
+  );
 };
 
 export default BookmarksPage;
