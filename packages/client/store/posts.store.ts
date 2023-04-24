@@ -15,8 +15,12 @@ import {
 import { useAuthStore } from "./auth.store";
 
 //* interfaces *//
+import { IPost } from "@/interfaces";
+
 interface usePostsState {
   savedPostsList: string[];
+  postModal?: IPost;
+  onSetPostModal(post?: IPost): void;
   onGetSavedPostsList(): Promise<void>;
   onLikePost(postId: string): Promise<void>;
   onRemovePost(postId: string): Promise<void>;
@@ -25,6 +29,16 @@ interface usePostsState {
 
 export const usePostsStore = create<usePostsState>((set, get) => ({
   savedPostsList: [],
+  postModal: undefined,
+  async onSetPostModal(post?: IPost) {
+    if (post) {
+      document.body.classList.add("body__fix");
+    } else {
+      document.body.classList.remove("body__fix");
+    }
+
+    set(() => ({ postModal: post }));
+  },
   async onGetSavedPostsList() {
     const { isAuthenticated } = useAuthStore.getState();
 
