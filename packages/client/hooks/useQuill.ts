@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { DeltaStatic, Sources } from "quill";
 
 //* interfaces *//
-import { DeltaStatic, Sources } from "quill";
-import { UnprivilegedEditor } from "../interfaces/quill";
+import { UnprivilegedEditor } from "@/interfaces";
 
 interface Return {
   html: string;
