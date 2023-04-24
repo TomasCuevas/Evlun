@@ -1,22 +1,17 @@
-import { useContext, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 //* layout *//
-import { MainLayout } from "../components/layouts";
+import { MainLayout } from "@/layouts";
 
 //* components *//
-import { FullLoader } from "../components/ui";
-import { FeedPosts, MoreOptionsModalMobile, NewPost } from "../components/post";
+import { FeedPosts, MoreOptionsModalMobile, NewPost } from "@/components/post";
 
-//* context *//
-import { AuthContext, RightSidebarContext, UIContext } from "../context";
+//* stores *//
+import { usePostsStore, useRightSidebarStore } from "@/store";
 
 const HomePage = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const { postModal } = useContext(UIContext);
-  const { onChangeSidebarItems } = useContext(RightSidebarContext);
-
-  const router = useRouter();
+  const { onChangeSidebarItems } = useRightSidebarStore();
+  const { postModal } = usePostsStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -26,23 +21,13 @@ const HomePage = () => {
     });
   }, []);
 
-  if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
-  if (isAuthenticated === "authenticated") {
-    return (
-      <MainLayout
-        title="Inicio | Evlun"
-        description="Pagina principal de Evlun"
-      >
-        <NewPost />
-        <FeedPosts url="/all" />
-        {postModal && isAuthenticated === "authenticated" ? (
-          <MoreOptionsModalMobile />
-        ) : null}
-      </MainLayout>
-    );
-  }
-
-  return <FullLoader />;
+  return (
+    <MainLayout title="Inicio | Evlun" description="Pagina principal de Evlun">
+      <NewPost />
+      <FeedPosts url="/all" />
+      {postModal ? <MoreOptionsModalMobile /> : null}
+    </MainLayout>
+  );
 };
 
 export default HomePage;
