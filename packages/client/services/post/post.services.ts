@@ -115,49 +115,46 @@ export const likePostService = async (
   }
 };
 
-//! saved post service
-export const savedPostsService = async (
-  method: "put" | "get",
-  postId?: string
-): Promise<{
+//! get saved posts service
+export const getSavedPostsService = async (): Promise<{
   ok: boolean;
   msg?: string;
   savedPostsList?: string[];
 }> => {
-  if (method === "get") {
-    try {
-      const { data } = await postApi.get(`/savedList`);
+  try {
+    const { data } = await postApi.get(`/savedList`);
 
-      return {
-        ok: true,
-        savedPostsList: data.savedPostsList,
-      };
-    } catch (error: any) {
-      console.error(error);
-      return {
-        ok: false,
-        msg: error.response.data.msg,
-      };
-    }
+    return {
+      ok: true,
+      savedPostsList: data.savedPostsList,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
+};
 
-  if (method === "put") {
-    try {
-      await postApi.put(`/save/${postId}`);
+//! update saved post service
+export const updateSavedPostService = async (
+  postId?: string
+): Promise<{
+  ok: boolean;
+  msg?: string;
+}> => {
+  try {
+    await postApi.put(`/save/${postId}`);
 
-      return {
-        ok: true,
-      };
-    } catch (error: any) {
-      console.error(error);
-      return {
-        ok: false,
-        msg: error.response.data.msg,
-      };
-    }
+    return {
+      ok: true,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
-
-  return {
-    ok: false,
-  };
 };
