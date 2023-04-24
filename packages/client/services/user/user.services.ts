@@ -1,60 +1,67 @@
-import userApi from "../../axios/userApi";
-import axios from "axios";
+//* axios instance *//
+import userApi from "@/axios/userApi";
 
 //* interfaces *//
-import { IUser } from "../../interfaces/user";
+import { IUser } from "@/interfaces";
 
 //! get user service
-interface Return {
+export const getUserService = async (
+  username: string
+): Promise<{
   ok: boolean;
   msg?: string;
   user?: IUser;
-}
-
-export const getUserService = async (username: string): Promise<Return> => {
+}> => {
   try {
     const { data } = await userApi.get(`/username/${username}`);
 
-    return data;
+    return {
+      ok: true,
+      user: data.user,
+    };
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
 };
 
-//! follow or unfollow service
-interface Return {
-  ok: boolean;
-  msg?: string;
-}
-
-export const followOrUnfollowService = async (
-  status: "follow" | "unfollow",
+//! follow user service
+export const followUserService = async (
   userId: string
-): Promise<Return> => {
-  if (status === "follow") {
-    try {
-      const { data } = await userApi.put(`/follow/${userId}`);
+): Promise<{ ok: boolean; msg?: string }> => {
+  try {
+    await userApi.put(`/follow/${userId}`);
 
-      return data;
-    } catch (error: any) {
-      console.log(error);
-      return { ...error.response.data, ok: false };
-    }
+    return {
+      ok: true,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
+};
 
-  if (status === "unfollow") {
-    try {
-      const { data } = await userApi.put(`/unfollow/${userId}`);
+//! unfollow user service
+export const unfollowUserService = async (
+  userId: string
+): Promise<{ ok: boolean; msg?: string }> => {
+  try {
+    await userApi.put(`/unfollow/${userId}`);
 
-      return data;
-    } catch (error: any) {
-      console.log(error);
-      return { ...error.response.data, ok: false };
-    }
+    return {
+      ok: true,
+    };
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ok: false,
+      msg: error.response.data.msg,
+    };
   }
-
-  return {
-    ok: false,
-  };
 };
