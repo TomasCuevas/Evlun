@@ -1,17 +1,17 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { NextPage } from "next";
 
 //* layout *//
-import { MainLayout } from "../components/layouts";
+import { MainLayout } from "@/layouts";
 
 //* components *//
-import { FeedExplore } from "../components/explore";
+import { FeedExplore } from "@/components/explore";
 
 //* context *//
-import { RightSidebarContext } from "../context";
+import { useRightSidebarStore } from "@/store";
 
 const ExplorePage: NextPage = () => {
-  const { onChangeSidebarItems } = useContext(RightSidebarContext);
+  const { onChangeSidebarItems } = useRightSidebarStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -26,6 +26,7 @@ const ExplorePage: NextPage = () => {
       title="Explorar | Evlun"
       description="Pagina para explorar usuarios en Evlun"
       location="explore"
+      withoutAuth
     >
       <FeedExplore />
     </MainLayout>
