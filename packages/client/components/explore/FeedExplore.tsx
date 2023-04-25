@@ -1,17 +1,15 @@
-import { useContext } from "react";
-
 //* components *//
-import { SearchedUser } from "./";
+import { SearchedUser } from "@/components/explore";
 
-//* context *//
-import { DataContext } from "../../context";
+//* stores *//
+import { useSearchesStore } from "@/store";
 
-export const FeedExplore = () => {
-  const { usersSearch } = useContext(DataContext);
+export const FeedExplore: React.FC = () => {
+  const { usersSearched } = useSearchesStore();
 
   return (
     <section className="flex flex-col">
-      {usersSearch.map((user) => (
+      {usersSearched.map((user) => (
         <SearchedUser key={user._id} {...user} />
       ))}
     </section>

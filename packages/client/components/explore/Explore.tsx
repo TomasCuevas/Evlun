@@ -1,20 +1,20 @@
-import { FormEvent, useContext, useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 
 //* icons *//
 import { BsSearch } from "react-icons/bs";
 
 //* components *//
-import { Form } from "../form";
+import { Form } from "@/components/form";
 
 //* hooks *//
-import { useForm } from "../../hooks";
+import { useForm } from "@/hooks";
 
-//* context *//
-import { DataContext, UIContext } from "../../context";
+//* stores *//
+import { useSearchesStore, useUiStore } from "@/store";
 
 export const Explore: React.FC = () => {
-  const { onSearchUsers, usersSearch } = useContext(DataContext);
-  const { onSwitchExploreModal } = useContext(UIContext);
+  const { usersSearched, onSearchUsers } = useSearchesStore();
+  const { onSwitchExploreModal } = useUiStore();
 
   const { search, onInputChange } = useForm({
     search: "",
@@ -47,7 +47,7 @@ export const Explore: React.FC = () => {
           value={search}
           onKeyUp={startSearchUsers}
           onFocus={() => {
-            if (usersSearch.length > 0) onSwitchExploreModal(true);
+            if (usersSearched.length > 0) onSwitchExploreModal(true);
           }}
           onBlur={() => {
             setTimeout(() => {
