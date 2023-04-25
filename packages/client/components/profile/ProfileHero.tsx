@@ -1,14 +1,13 @@
-import { useContext } from "react";
 import Link from "next/link";
 
 //* icons *//
 import { RiCalendar2Line, RiMapPinLine } from "react-icons/ri";
 
 //* components *//
-import { Follow, Following } from "./";
+import { Follow, Following } from "@/components/profile";
 
 //* context *//
-import { AuthContext } from "../../context";
+import { useAuthStore } from "@/store";
 
 //* tailwind-classes *//
 const itemClass = "items-center flex gap-[5px] text-white";
@@ -18,14 +17,14 @@ const numberClass = "text-base font-bold text-white";
 const descriptionClassAlternative = "text-sm font-light text-orange";
 
 //* interfaces *//
-import { IUser } from "../../interfaces/user";
+import { IUser } from "@/interfaces";
 
 interface Props {
   user: IUser;
 }
 
 export const ProfileHero: React.FC<Props> = ({ user }) => {
-  const { user: userContext } = useContext(AuthContext);
+  const { user: userByStore } = useAuthStore();
 
   const date = new Date(user.date!).toLocaleDateString(undefined, {
     month: "long",
@@ -59,7 +58,7 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
           )}
         </div>
         <div className="flex w-full items-center justify-end gap-[10px]">
-          {userContext?.username === user.username ? (
+          {userByStore?.username === user.username ? (
             <Link href="/settings/profile">
               <button className="flex h-full cursor-pointer items-center justify-center rounded-full border border-orange py-[7px] px-[10px] transition-all duration-300 hover:bg-orange/10">
                 <span className="text-[15px] font-bold text-white">
@@ -69,7 +68,7 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
             </Link>
           ) : (
             <>
-              {user.followers.includes(userContext?._id || "") ? (
+              {user.followers.includes(userByStore?._id || "") ? (
                 <Following userToUnfollowId={user._id} />
               ) : (
                 <Follow userToFollowId={user._id} />

@@ -1,11 +1,10 @@
-import { MouseEvent, useContext } from "react";
 import { useRouter } from "next/router";
 
 //* services *//
-import { followOrUnfollowService } from "../../services";
+import { followUserService } from "@/services";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "@/store";
 
 //* interface *//
 interface Props {
@@ -13,16 +12,13 @@ interface Props {
 }
 
 export const Follow: React.FC<Props> = ({ userToFollowId }) => {
-  const { isAuthenticated, onCheckingWithoutLoader } = useContext(AuthContext);
-
+  const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
   const router = useRouter();
 
-  const follow = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-
+  const follow = async () => {
     if (isAuthenticated !== "authenticated") return;
 
-    const result = await followOrUnfollowService("follow", userToFollowId);
+    const result = await followUserService(userToFollowId);
     if (result.ok) {
       onCheckingWithoutLoader();
       router.replace(router.asPath);

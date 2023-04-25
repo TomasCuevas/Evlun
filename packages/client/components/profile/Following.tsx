@@ -1,11 +1,11 @@
-import { useState, useContext, MouseEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 //* services *//
-import { followOrUnfollowService } from "../../services";
+import { unfollowUserService } from "@/services";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "@/store";
 
 //* interface *//
 interface Props {
@@ -13,19 +13,17 @@ interface Props {
 }
 
 export const Following: React.FC<Props> = ({ userToUnfollowId }) => {
-  const { isAuthenticated, onCheckingWithoutLoader } = useContext(AuthContext);
-  const [text, setText] = useState("Siguiendo");
-
+  const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
   const router = useRouter();
 
+  const [text, setText] = useState("Siguiendo");
   const onChangeValue = () => setText("Dejar de seguir");
   const defaultValue = () => setText("Siguiendo");
 
-  const unfollow = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
+  const unfollow = async () => {
     if (isAuthenticated !== "authenticated") return;
 
-    const result = await followOrUnfollowService("unfollow", userToUnfollowId);
+    const result = await unfollowUserService(userToUnfollowId);
     if (result.ok) {
       onCheckingWithoutLoader();
       router.replace(router.asPath);
