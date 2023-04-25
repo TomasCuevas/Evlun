@@ -1,6 +1,5 @@
-import { useState, useContext, MouseEvent, useEffect } from "react";
+import { useState, MouseEvent, useEffect } from "react";
 import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
 
 //* icons *//
 import {
@@ -11,19 +10,22 @@ import {
 } from "react-icons/ri";
 
 //* components *//
-import { MoreOptionsModalDesktop } from "./MoreOptionsModalDesktop";
+import { MoreOptionsModalDesktop } from "@/components/post";
 
 //* helpers *//
-import { getRelativeTime } from "../../helpers";
+import { getRelativeTime } from "@/helpers";
 
 //* services *//
-import { likePostService } from "../../services";
+import { likePostService } from "@/services";
 
-//* context *//
-import { AuthContext, UIContext } from "../../context";
+//* query client *//
+import { queryClient } from "@/pages/_app";
+
+//* stores *//
+import { useAuthStore, usePostsStore } from "@/store";
 
 //* interfaces *//
-import { IPost } from "../../interfaces/post";
+import { IPost } from "@/interfaces";
 
 interface Props {
   post: IPost;
@@ -31,14 +33,12 @@ interface Props {
 }
 
 export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
-  const { isAuthenticated, user } = useContext(AuthContext);
-  const { onSetPost, postModal } = useContext(UIContext);
+  const { user, isAuthenticated } = useAuthStore();
+  const { postModal, onSetPostModal } = usePostsStore();
 
   const [likesValue, setLikesValue] = useState<number>(post.likes.length);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [date, setDate] = useState<string>("");
-
-  const queryClient = useQueryClient();
 
   //! like post
   const onLike = async (event: MouseEvent) => {
@@ -66,7 +66,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
   };
 
   useEffect(() => {
-    setIsLiked(post.likes.includes(user?._id.valueOf() || false));
+    setIsLiked(post.likes.includes(user ? user._id : "") || false);
     setDate(getRelativeTime(post.date));
   }, []);
 
@@ -123,7 +123,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
                 <RiMoreFill
                   onClick={(event) => {
                     event.stopPropagation();
-                    onSetPost(post);
+                    onSetPostModal(post);
                   }}
                   className="cursor-pointer text-xl text-white hover:text-orange"
                 />

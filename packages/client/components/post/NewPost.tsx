@@ -1,25 +1,27 @@
-import { useContext, useState, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useQueryClient } from "@tanstack/react-query";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 
 //* components *//
-import { Form, FormButtonPrimary } from "../form";
+import { Form, FormButtonPrimary } from "@/components/form";
 
 //* services *//
-import { newPostService } from "../../services";
+import { newPostService } from "@/services";
 
 //* helpers *//
-import { postValidation } from "../../helpers";
+import { postValidation } from "@/helpers";
 
 //* hooks *//
-import { useQuill } from "../../hooks";
+import { useQuill } from "@/hooks";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* query client *//
+import { queryClient } from "@/pages/_app";
+
+//* store *//
+import { useAuthStore } from "@/store";
 
 //* interface *//
 interface Props {
@@ -27,8 +29,7 @@ interface Props {
 }
 
 export const NewPost: React.FC<Props> = ({ postRef }) => {
-  const { user } = useContext(AuthContext);
-  const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   const { html, text, onInputChange, reset } = useQuill();
   const [isSending, setIsSending] = useState(false);

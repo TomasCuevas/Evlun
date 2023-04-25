@@ -1,6 +1,5 @@
-import { useContext, useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
 
 //* icons *//
 import {
@@ -13,16 +12,13 @@ import {
 } from "react-icons/ri";
 
 //* components *//
-import { MoreOptionsModalDesktop } from "./";
+import { MoreOptionsModalDesktop } from "@/components/post";
 
-//* services *//
-import { likePostService } from "../../services";
-
-//* context *//
-import { AuthContext, DataContext, UIContext } from "../../context";
+//* store *//
+import { useAuthStore, usePostsStore } from "@/store";
 
 //* interfaces *//
-import { IPost } from "../../interfaces/post";
+import { IPost } from "@/interfaces";
 
 interface Props {
   post: IPost;
@@ -30,10 +26,14 @@ interface Props {
 }
 
 export const FullPost: React.FC<Props> = ({ post, postRef }) => {
-  const { isAuthenticated, user } = useContext(AuthContext);
-  const { onSetPost, postModal } = useContext(UIContext);
-  const { savedPostsList, onSetSavedPost, onRemoveSavedPost } =
-    useContext(DataContext);
+  const { user, isAuthenticated } = useAuthStore();
+  const {
+    savedPostsList,
+    postModal,
+    onUpdateSavedPost,
+    onLikePost,
+    onSetPostModal,
+  } = usePostsStore();
 
   const [likesValue, setLikesValue] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -41,8 +41,6 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     time: "",
     date: "",
   });
-
-  const queryClient = useQueryClient();
 
   //! like post
   const onLike = async (event: MouseEvent) => {
@@ -57,17 +55,13 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
       if (!isLiked) setLikesValue(post.likes.length + 1);
     }
 
+    await onLikePost(post._id);
     isLiked ? setIsLiked(false) : setIsLiked(true);
-
-    const result = await likePostService(post._id);
-    if (result.ok) {
-      return queryClient.refetchQueries(["/all"]);
-    }
   };
 
   useEffect(() => {
     setLikesValue(post.likes.length);
-    setIsLiked(post.likes.includes(user?._id.valueOf() || false));
+    setIsLiked(post.likes.includes(user ? user._id : "") || false);
     setDate({
       time: new Date(post.date).toLocaleTimeString(undefined, {
         hour: "2-digit",
@@ -118,7 +112,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
                 <button
                   onClick={(event) => {
                     event.stopPropagation();
-                    onSetPost(post);
+                    onSetPostModal(post);
                   }}
                 >
                   <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
@@ -174,12 +168,12 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
           <button>
             {savedPostsList.includes(post._id) ? (
               <RiBookmarkFill
-                onClick={() => onRemoveSavedPost(post._id)}
+                onClick={() => onUpdateSavedPost(post._id)}
                 className="text-2xl text-orange hover:text-orange/50"
               />
             ) : (
               <RiBookmarkLine
-                onClick={() => onSetSavedPost(post._id)}
+                onClick={() => onUpdateSavedPost(post._id)}
                 className="text-2xl text-orange/50 hover:text-orange"
               />
             )}

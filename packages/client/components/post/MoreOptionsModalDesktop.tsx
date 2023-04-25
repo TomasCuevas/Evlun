@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useContext } from "react";
 
 //* icons *//
 import {
@@ -10,40 +9,53 @@ import {
 } from "react-icons/ri";
 
 //* components *//
-import { MoreOption } from ".";
+import { MoreOption } from "@/components/post";
 
-//* context *//
-import { AuthContext, DataContext, UIContext } from "../../context";
+//* store *//
+import { useAuthStore, usePostsStore } from "@/store";
 
 export const MoreOptionsModalDesktop: React.FC = () => {
-  const { user } = useContext(AuthContext);
-  const { postModal, onSetPost } = useContext(UIContext);
-  const { savedPostsList, onSetSavedPost, onRemoveSavedPost, onRemovePost } =
-    useContext(DataContext);
+  const { user } = useAuthStore();
+  const {
+    savedPostsList,
+    postModal,
+    onUpdateSavedPost,
+    onRemovePost,
+    onSetPostModal,
+    onRemovePostModal,
+  } = usePostsStore();
 
   const router = useRouter();
+
+  if (!postModal || !user) return <></>;
 
   return (
     <section className="absolute top-0 right-0 hidden xs:flex">
       <div
         onClick={(event) => {
           event.stopPropagation();
-          onSetPost(undefined);
+          onRemovePostModal();
         }}
         className="fixed top-0 left-0 h-screen w-screen cursor-default"
+        style={{ backgroundColor: "#5551" }}
       ></div>
-      <div className="relative flex w-full flex-col items-center overflow-hidden rounded-xl bg-black">
-        <ul className="flex w-full flex-col">
-          {postModal?.added_by._id === user?._id ? (
+      <div
+        className="relative flex w-full flex-col items-center overflow-hidden rounded-xl"
+        style={{ backgroundColor: "#05101b" }}
+      >
+        <ul
+          className="flex w-full flex-col"
+          onClick={(event) => event.stopPropagation()}
+        >
+          {postModal.added_by._id === user._id ? (
             <MoreOption
               icon={RiDeleteBin6Line}
               text="Eliminar"
               color="#FF2222"
-              onClick={(event) => {
-                event.stopPropagation();
-                onRemovePost(postModal!._id);
-                onSetPost(undefined);
-                if (router.asPath === `/post/${postModal?._id}`) {
+              onClick={() => {
+                onRemovePost(postModal._id);
+                onRemovePostModal();
+                if (router.asPath === `/post/${postModal._id}`) {
                   router.back();
                 }
               }}
@@ -52,27 +64,25 @@ export const MoreOptionsModalDesktop: React.FC = () => {
             <MoreOption
               icon={RiFlag2Line}
               text="Denunciar post"
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
+              onClick={() => onRemovePostModal()}
             />
           )}
-          {savedPostsList.includes(postModal!._id) ? (
+          {savedPostsList.includes(postModal._id) ? (
             <MoreOption
               icon={RiBookmark2Line}
               text="Quitar de guardados"
-              onClick={(event) => {
-                event.stopPropagation();
-                onRemoveSavedPost(postModal!._id);
+              onClick={() => {
+                onUpdateSavedPost(postModal._id);
+                onRemovePostModal();
               }}
             />
           ) : (
             <MoreOption
               icon={RiBookmark3Line}
               text="Guardar post"
-              onClick={(event) => {
-                event.stopPropagation();
-                onSetSavedPost(postModal!._id);
+              onClick={() => {
+                onUpdateSavedPost(postModal._id);
+                onRemovePostModal();
               }}
             />
           )}

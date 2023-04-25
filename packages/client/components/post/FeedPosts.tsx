@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 //* components *//
-import { Loader } from "../ui";
-import { Post } from "./";
+import { Loader } from "@/components/ui";
+import { Post } from "@/components/post";
 
 //* hooks *//
-import { usePosts } from "../../hooks";
+import { usePosts } from "@/hooks";
 
 //* interface *//
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 
 export const FeedPosts: React.FC<Props> = ({ url }) => {
   const { postsQuery } = usePosts(url);
-
   const { ref, inView } = useInView();
 
   useEffect(() => {
