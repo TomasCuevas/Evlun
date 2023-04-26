@@ -119,7 +119,7 @@ export const checkJWT = async (
     // obtener usuario por id del jwt recibido
     const user = await UserModel.findById(_id);
     if (!user) {
-      return res.status(500).json({
+      return res.status(400).json({
         message: "No existe usuario con el ID ingresado en el jwt.",
       });
     }

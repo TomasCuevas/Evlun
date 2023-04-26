@@ -10,7 +10,6 @@ export const fieldsValidation = (
 
   if (!errors.isEmpty()) {
     return res.status(400).json({
-      ok: false,
       msg: errors.array()[0].msg,
     });
   }
