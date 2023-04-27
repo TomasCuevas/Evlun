@@ -1,38 +1,31 @@
-import { useContext } from "react";
+import { useEffect } from "react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 
 //* layout *//
-import { SettingLayout } from "../../components/layouts";
+import { SettingLayout } from "@/layouts";
 
 //* components *//
-import { SettingsOption } from "../../components/setting";
-import { FullLoader } from "../../components/ui";
+import { SettingsOption } from "@/components/setting";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useNavbarTopStore } from "@/store";
 
 const SettingsPage: NextPage = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const router = useRouter();
+  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
-  if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
-  if (isAuthenticated === "authenticated") {
-    return (
-      <SettingLayout
-        navText="Configuracion"
-        title="Configuracion | Evlun"
-        description="Pagina principal de configuracion de Evlun"
-      >
-        <SettingsOption
-          optionTitle="Tu cuenta"
-          navigateLink="settings/account"
-        />
-      </SettingLayout>
-    );
-  }
+  useEffect(() => {
+    onSetLocation("settings");
+    onSetNavbarData({ settingText: "Configuración" });
+  }, []);
 
-  return <FullLoader />;
+  return (
+    <SettingLayout
+      title="Configuración | Evlun"
+      description="Pagina principal de configuracion de Evlun"
+    >
+      <SettingsOption optionTitle="Tu cuenta" navigateLink="settings/account" />
+    </SettingLayout>
+  );
 };
 
 export default SettingsPage;

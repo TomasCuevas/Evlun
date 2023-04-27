@@ -1,38 +1,37 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 
 //* components *//
-import { FullLoader } from "../../components/ui";
+import { FullLoader } from "@/components/ui";
 import {
   Form,
   FormButtonPrimary,
   FormCheckbox,
   FormErrorMessage,
-} from "../../components/form";
+} from "@/components/form";
 
 //* layout *//
-import { SettingLayout } from "../../components/layouts";
+import { SettingLayout } from "@/layouts";
 
 //* hooks *//
-import { useForm } from "../../hooks";
+import { useForm } from "@/hooks";
 
 //* services *//
-import { settingServices } from "../../services";
+import { settingServices } from "@/services";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsGenderPage: NextPage = () => {
-  const { user, isAuthenticated, onChecking } = useContext(AuthContext);
+  const { user, onChecking } = useAuthStore();
+  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
   const { newGender, onInputChange, error, setError, isSending, setIsSending } =
     useForm({
       newGender: "",
     });
 
-  const router = useRouter();
-
+  //! on save data
   const onSave = async () => {
     const formData = new FormData();
     formData.append("gender", newGender);
@@ -57,53 +56,50 @@ const SettingsGenderPage: NextPage = () => {
         },
       });
     }
+
+    onSetLocation("settings");
+    onSetNavbarData({ settingText: "Género" });
   }, [user]);
 
   if (isSending) return <FullLoader />;
-  if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
-  if (isAuthenticated === "authenticated") {
-    return (
-      <SettingLayout
-        navText="Genero"
-        title="Cambiar genero | Evlun"
-        description="Pagina para cambiar/modificar el genero en Evlun"
-      >
-        <section className="px-[5%]">
-          <Form onSubmit={onSave}>
-            <FormCheckbox
-              inputName="newGender"
-              isChecked={newGender === "Femenino"}
-              label="Femenino"
-              onCheckChange={onInputChange}
-              inputValue={newGender === "Femenino" ? "" : "Femenino"}
-            />
-            <FormCheckbox
-              inputName="newGender"
-              isChecked={newGender === "Masculino"}
-              label="Masculino"
-              onCheckChange={onInputChange}
-              inputValue={newGender === "Masculino" ? "" : "Masculino"}
-            />
-            <FormCheckbox
-              inputName="newGender"
-              isChecked={newGender === "Otro"}
-              label="Otro"
-              onCheckChange={onInputChange}
-              inputValue={newGender === "Otro" ? "" : "Otro"}
-            />
-            <FormButtonPrimary
-              isDisabled={isSending}
-              label="Guardar"
-              type="submit"
-            />
-            {error ? <FormErrorMessage message={error} /> : null}
-          </Form>
-        </section>
-      </SettingLayout>
-    );
-  }
-
-  return <FullLoader />;
+  return (
+    <SettingLayout
+      title="Cambiar género | Evlun"
+      description="Pagina para cambiar/modificar el genero en Evlun"
+    >
+      <section className="px-[5%]">
+        <Form onSubmit={onSave}>
+          <FormCheckbox
+            inputName="newGender"
+            isChecked={newGender === "Femenino"}
+            label="Femenino"
+            onCheckChange={onInputChange}
+            inputValue={newGender === "Femenino" ? "" : "Femenino"}
+          />
+          <FormCheckbox
+            inputName="newGender"
+            isChecked={newGender === "Masculino"}
+            label="Masculino"
+            onCheckChange={onInputChange}
+            inputValue={newGender === "Masculino" ? "" : "Masculino"}
+          />
+          <FormCheckbox
+            inputName="newGender"
+            isChecked={newGender === "Otro"}
+            label="Otro"
+            onCheckChange={onInputChange}
+            inputValue={newGender === "Otro" ? "" : "Otro"}
+          />
+          <FormButtonPrimary
+            isDisabled={isSending}
+            label="Guardar"
+            type="submit"
+          />
+          {error ? <FormErrorMessage message={error} /> : null}
+        </Form>
+      </section>
+    </SettingLayout>
+  );
 };
 
 export default SettingsGenderPage;

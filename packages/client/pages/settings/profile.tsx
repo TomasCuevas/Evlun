@@ -1,38 +1,38 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 
 //* layout *//
-import { SettingLayout } from "../../components/layouts";
+import { SettingLayout } from "@/layouts";
 
 //* components *//
-import { FullLoader } from "../../components/ui";
-import { AvatarSetting, BannerSetting } from "../../components/setting";
+import { AvatarSetting, BannerSetting } from "@/components/setting";
+import { FullLoader } from "@/components/ui";
 import {
   Form,
   FormErrorMessage,
   FormInputPrimary,
   FormTextareaPrimary,
-} from "../../components/form";
+} from "@/components/form";
 
 //* helpers *//
 import {
   biographyValidation,
   locationValidation,
   nameValidation,
-} from "../../helpers";
+} from "@/helpers";
 
 //* hooks *//
-import { useForm } from "../../hooks";
+import { useForm } from "@/hooks";
 
 //* service *//
-import { settingServices } from "../../services";
+import { settingServices } from "@/services";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingProfilePage: NextPage = () => {
-  const { isAuthenticated, user, onChecking } = useContext(AuthContext);
+  const { user, onChecking } = useAuthStore();
+  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
   const [avatar, setAvatar] = useState<File | false>(false);
   const [avatarPreview, setAvatarPreview] = useState<string>(
@@ -59,8 +59,7 @@ const SettingProfilePage: NextPage = () => {
     location: user?.location || "",
   });
 
-  const router = useRouter();
-
+  //! on load new banner
   const onLoadNewBanner = (newBanner: File | false) => {
     if (!newBanner) {
       setBannerPreview("");
@@ -71,6 +70,7 @@ const SettingProfilePage: NextPage = () => {
     }
   };
 
+  //! on load new avatar
   const onLoadNewAvatar = (newAvatar: File | false) => {
     if (!newAvatar) {
       setAvatarPreview("");
@@ -81,6 +81,7 @@ const SettingProfilePage: NextPage = () => {
     }
   };
 
+  //! on save data
   const onSave = async () => {
     const formData = new FormData();
 
@@ -138,62 +139,58 @@ const SettingProfilePage: NextPage = () => {
         },
       });
     }
+
+    onSetLocation("settings");
+    onSetNavbarData({
+      isButton: true,
+      buttonOnClick: () => onSave(),
+      buttonText: "Guardar",
+      settingText: "Editar perfil",
+    });
   }, [user]);
 
   if (isSending) return <FullLoader />;
-  if (isAuthenticated === "no-authenticated") router.replace("/");
-  if (isAuthenticated === "authenticated") {
-    return (
-      <SettingLayout
-        title={`${user!.name} (${user!.username}) | Evlun`}
-        navText="Editar perfil"
-        button
-        buttonOnClick={onSave}
-        buttonText="Guardar"
-        description="Editar avatar, banner, nombre, biografia y ubicacion en Evlun"
-      >
-        <BannerSetting
-          banner={bannerPreview}
-          loadNewBanner={onLoadNewBanner}
-          deleteBanner={setDeleteBanner}
-        />
-        <section className="px-[5%]">
-          <AvatarSetting
-            avatar={avatarPreview}
-            loadNewAvatar={onLoadNewAvatar}
-          />
-          <div>
-            <Form onSubmit={onSave}>
-              <FormInputPrimary
-                inputChange={onInputChange}
-                inputName="name"
-                inputValue={name}
-                label="Nombre"
-                max={30}
-              />
-              <FormTextareaPrimary
-                inputChange={onInputChange}
-                inputName="biography"
-                inputValue={biography}
-                label="Biografia"
-                max={300}
-              />
-              <FormInputPrimary
-                inputChange={onInputChange}
-                inputName="location"
-                inputValue={location}
-                label="Ubicacion"
-                max={30}
-              />
-              {error ? <FormErrorMessage message={error} /> : null}
-            </Form>
-          </div>
-        </section>
-      </SettingLayout>
-    );
-  }
-
-  return <FullLoader />;
+  return (
+    <SettingLayout
+      title={`${user?.name} (${user?.username}) | Evlun`}
+      description="Editar avatar, banner, nombre, biografia y ubicacion en Evlun"
+    >
+      <BannerSetting
+        banner={bannerPreview}
+        loadNewBanner={onLoadNewBanner}
+        deleteBanner={setDeleteBanner}
+      />
+      <section className="px-[5%]">
+        <AvatarSetting avatar={avatarPreview} loadNewAvatar={onLoadNewAvatar} />
+        <div>
+          <Form onSubmit={onSave}>
+            <FormInputPrimary
+              inputChange={onInputChange}
+              inputName="name"
+              inputValue={name}
+              label="Nombre"
+              max={30}
+            />
+            <FormTextareaPrimary
+              inputChange={onInputChange}
+              inputName="biography"
+              inputValue={biography}
+              label="Biografia"
+              max={300}
+            />
+            <FormInputPrimary
+              inputChange={onInputChange}
+              inputName="location"
+              inputValue={location}
+              label="Ubicacion"
+              max={30}
+            />
+            {error ? <FormErrorMessage message={error} /> : null}
+          </Form>
+        </div>
+      </section>
+    </SettingLayout>
+  );
 };
 
 export default SettingProfilePage;

@@ -1,28 +1,27 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import { countries, Country } from "countries-list";
 
 //* components *//
-import { FullLoader } from "../../components/ui";
+import { FullLoader } from "@/components/ui";
 import {
   Form,
   FormButtonPrimary,
   FormErrorMessage,
   FormSelectOption,
-} from "../../components/form";
+} from "@/components/form";
 
 //* layout *//
-import { SettingLayout } from "../../components/layouts";
+import { SettingLayout } from "@/layouts";
 
 //* hooks *//
-import { useForm } from "../../hooks";
+import { useForm } from "@/hooks";
 
 //* services *//
-import { settingServices } from "../../services";
+import { settingServices } from "@/services";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const fullCountries: any = countries;
 const AllCountries: Country[] = [];
@@ -31,7 +30,8 @@ for (const country in fullCountries) {
 }
 
 const SettingsCountryPage: NextPage = () => {
-  const { user, isAuthenticated, onChecking } = useContext(AuthContext);
+  const { user, onChecking } = useAuthStore();
+  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
   const {
     newCountry,
@@ -44,8 +44,7 @@ const SettingsCountryPage: NextPage = () => {
     newCountry: "",
   });
 
-  const router = useRouter();
-
+  //! on save data
   const onSave = async () => {
     const formData = new FormData();
     formData.append("country", newCountry);
@@ -70,39 +69,36 @@ const SettingsCountryPage: NextPage = () => {
         },
       });
     }
+
+    onSetLocation("settings");
+    onSetNavbarData({ settingText: "Cambiar país" });
   }, [user]);
 
   if (isSending) return <FullLoader />;
-  if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
-  if (isAuthenticated === "authenticated") {
-    return (
-      <SettingLayout
-        navText="Cambiar pais"
-        title="Cambiar pais | Evlun"
-        description="Pagina para cambiar/modificar el pais en Evlun"
-      >
-        <section className="px-[5%]">
-          <Form onSubmit={onSave}>
-            <FormSelectOption
-              inputChange={onInputChange}
-              inputName="newCountry"
-              inputValue={newCountry}
-              label="Pais"
-              optionValues={AllCountries}
-            />
-            <FormButtonPrimary
-              isDisabled={isSending}
-              label="Guardar"
-              type="submit"
-            />
-            {error ? <FormErrorMessage message={error} /> : null}
-          </Form>
-        </section>
-      </SettingLayout>
-    );
-  }
-
-  return <FullLoader />;
+  return (
+    <SettingLayout
+      title="Cambiar país | Evlun"
+      description="Pagina para cambiar/modificar el pais en Evlun"
+    >
+      <section className="px-[5%]">
+        <Form onSubmit={onSave}>
+          <FormSelectOption
+            inputChange={onInputChange}
+            inputName="newCountry"
+            inputValue={newCountry}
+            label="Pais"
+            optionValues={AllCountries}
+          />
+          <FormButtonPrimary
+            isDisabled={isSending}
+            label="Guardar"
+            type="submit"
+          />
+          {error ? <FormErrorMessage message={error} /> : null}
+        </Form>
+      </section>
+    </SettingLayout>
+  );
 };
 
 export default SettingsCountryPage;

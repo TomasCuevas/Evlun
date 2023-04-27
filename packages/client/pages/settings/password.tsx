@@ -1,33 +1,33 @@
-import { useContext } from "react";
+import { useEffect } from "react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 
 //* components *//
-import { FullLoader } from "../../components/ui";
+import { FullLoader } from "@/components/ui";
 import {
   Form,
   FormButtonPrimary,
   FormErrorMessage,
   FormInputPrimary,
-} from "../../components/form";
+} from "@/components/form";
 
 //* layout *//
-import { SettingLayout } from "../../components/layouts";
+import { SettingLayout } from "@/layouts";
 
 //* hooks *//
-import { useForm } from "../../hooks";
+import { useForm } from "@/hooks";
 
 //* helpers *//
-import { passwordValidation } from "../../helpers";
+import { passwordValidation } from "@/helpers";
 
 //* services *//
-import { settingServices } from "../../services";
+import { settingServices } from "@/services";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsPasswordPage: NextPage = () => {
-  const { isAuthenticated, onChecking } = useContext(AuthContext);
+  const { onChecking } = useAuthStore();
+  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
   const {
     currentPassword,
@@ -45,8 +45,7 @@ const SettingsPasswordPage: NextPage = () => {
     repeatNewPassword: "",
   });
 
-  const router = useRouter();
-
+  //! on save data
   const onSave = async () => {
     const formData = new FormData();
     let error = false;
@@ -88,57 +87,56 @@ const SettingsPasswordPage: NextPage = () => {
     }
   };
 
-  if (isSending) return <FullLoader />;
-  if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
-  if (isAuthenticated === "authenticated") {
-    return (
-      <SettingLayout
-        navText="Cambiar tu contraseña"
-        title="Cambiar contraseña | Evlun"
-        description="Pagina para cambiar/modificar el correo electronico en Evlun"
-      >
-        <section className="px-[5%]">
-          <Form onSubmit={onSave}>
-            <FormInputPrimary
-              inputChange={onInputChange}
-              inputName="currentPassword"
-              inputValue={currentPassword}
-              label="Contraseña actual"
-              inputType="password"
-            />
-            <FormInputPrimary
-              inputChange={onInputChange}
-              inputName="newPassword"
-              inputValue={newPassword}
-              label="Nueva contraseña"
-              inputType="password"
-            />
-            <FormInputPrimary
-              inputChange={onInputChange}
-              inputName="repeatNewPassword"
-              inputValue={repeatNewPassword}
-              label="Confirmar contraseña"
-              inputType="password"
-            />
-            <FormButtonPrimary
-              isDisabled={
-                isSending ||
-                !passwordValidation(currentPassword) ||
-                !passwordValidation(newPassword) ||
-                !passwordValidation(repeatNewPassword) ||
-                newPassword !== repeatNewPassword
-              }
-              label="Guardar"
-              type="submit"
-            />
-            {error ? <FormErrorMessage message={error} /> : null}
-          </Form>
-        </section>
-      </SettingLayout>
-    );
-  }
+  useEffect(() => {
+    onSetLocation("settings");
+    onSetNavbarData({ settingText: "Cambiar tu contraseña" });
+  }, []);
 
-  return <FullLoader />;
+  if (isSending) return <FullLoader />;
+  return (
+    <SettingLayout
+      title="Cambiar contraseña | Evlun"
+      description="Pagina para cambiar/modificar el correo electronico en Evlun"
+    >
+      <section className="px-[5%]">
+        <Form onSubmit={onSave}>
+          <FormInputPrimary
+            inputChange={onInputChange}
+            inputName="currentPassword"
+            inputValue={currentPassword}
+            label="Contraseña actual"
+            inputType="password"
+          />
+          <FormInputPrimary
+            inputChange={onInputChange}
+            inputName="newPassword"
+            inputValue={newPassword}
+            label="Nueva contraseña"
+            inputType="password"
+          />
+          <FormInputPrimary
+            inputChange={onInputChange}
+            inputName="repeatNewPassword"
+            inputValue={repeatNewPassword}
+            label="Confirmar contraseña"
+            inputType="password"
+          />
+          <FormButtonPrimary
+            isDisabled={
+              isSending ||
+              !passwordValidation(currentPassword) ||
+              !passwordValidation(newPassword) ||
+              !passwordValidation(repeatNewPassword) ||
+              newPassword !== repeatNewPassword
+            }
+            label="Guardar"
+            type="submit"
+          />
+          {error ? <FormErrorMessage message={error} /> : null}
+        </Form>
+      </section>
+    </SettingLayout>
+  );
 };
 
 export default SettingsPasswordPage;
