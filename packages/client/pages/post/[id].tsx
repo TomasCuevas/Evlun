@@ -1,8 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { NextPage, GetServerSideProps } from "next";
 
 //* service *//
-import { getUniquePostService } from "../../services";
+import { getUniquePostService } from "@/services";
 
 //* components *//
 import {
@@ -11,16 +11,21 @@ import {
   MoreOptionsModalMobile,
   NewPost,
   Post,
-} from "../../components/post";
+} from "@/components/post";
 
 //* layout *//
-import { MainLayout } from "../../components/layouts";
+import { MainLayout } from "@/layouts";
 
-//* context *//
-import { AuthContext, RightSidebarContext, UIContext } from "../../context";
+//* stores *//
+import {
+  useAuthStore,
+  useNavbarTopStore,
+  usePostsStore,
+  useRightSidebarStore,
+} from "@/store";
 
 //* interfaces *//
-import { IPost } from "../../interfaces/post";
+import { IPost } from "@/interfaces";
 
 interface Props {
   post: IPost;
@@ -28,10 +33,10 @@ interface Props {
 }
 
 const PostPage: NextPage<Props> = ({ post, postRef }) => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const { postModal } = useContext(UIContext);
-  const { onChangeSidebarItems, setRelevantPersons } =
-    useContext(RightSidebarContext);
+  const { isAuthenticated } = useAuthStore();
+  const { onChangeSidebarItems, setRelevantPersons } = useRightSidebarStore();
+  const { postModal } = usePostsStore();
+  const { onSetLocation } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -40,25 +45,24 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
       relevant: true,
     });
     setRelevantPersons(
-      postRef ? [postRef.added_by, post.added_by] : [post.added_by]
+      postRef && postRef.added_by.username !== post.added_by.username
+        ? [postRef.added_by, post.added_by]
+        : [post.added_by]
     );
+    onSetLocation("post");
   }, [post]);
 
   return (
     <MainLayout
       title={`${post.added_by.name} en Evlun: "${post.text}"`}
       description={post.content}
-      location="post"
+      withoutAuth
     >
       {postRef ? <Post post={postRef} fromAnswer={true} /> : null}
       <FullPost post={post} postRef={postRef ? true : false} />
-      {isAuthenticated === "authenticated" ? (
-        <NewPost postRef={post._id} />
-      ) : null}
+      {isAuthenticated === "authenticated" && <NewPost postRef={post._id} />}
       <FeedPosts url={`/answers/${post._id}`} />
-      {postModal && isAuthenticated === "authenticated" ? (
-        <MoreOptionsModalMobile />
-      ) : null}
+      {postModal ? <MoreOptionsModalMobile /> : null}
     </MainLayout>
   );
 };
