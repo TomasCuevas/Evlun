@@ -1,7 +1,17 @@
+export interface INavbarData {
+  buttonOnClick?: any;
+  buttonText?: string;
+  isButton?: boolean;
+  profileName?: string;
+  settingText?: string;
+}
+
 export type ILocation =
-  | "main"
-  | "settings"
-  | "profile"
-  | "post"
+  | "bookmarks"
   | "explore"
-  | "bookmarks";
+  | "home"
+  | "no-auth"
+  | "none"
+  | "post"
+  | "profile"
+  | "settings";
