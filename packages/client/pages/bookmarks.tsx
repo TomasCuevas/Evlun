@@ -7,11 +7,16 @@ import { MainLayout } from "@/layouts";
 import { FeedPosts, MoreOptionsModalMobile } from "@/components/post";
 
 //* stores *//
-import { usePostsStore, useRightSidebarStore } from "@/store";
+import {
+  useNavbarTopStore,
+  usePostsStore,
+  useRightSidebarStore,
+} from "@/store";
 
 const BookmarksPage = () => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { postModal } = usePostsStore();
+  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -19,14 +24,14 @@ const BookmarksPage = () => {
       profile: true,
       relevant: false,
     });
+    onSetLocation("bookmarks");
+    onSetNavbarData({ settingText: "Guardados" });
   }, []);
 
   return (
     <MainLayout
-      navText="Guardados"
       title="Guardados | Evlun"
       description="Pagina para ver los posts guardados del usuario en Evlun"
-      location="bookmarks"
     >
       <FeedPosts url="/saved" />
       {postModal ? <MoreOptionsModalMobile /> : null}

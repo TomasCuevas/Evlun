@@ -8,10 +8,11 @@ import { MainLayout } from "@/layouts";
 import { FeedExplore } from "@/components/explore";
 
 //* context *//
-import { useRightSidebarStore } from "@/store";
+import { useNavbarTopStore, useRightSidebarStore } from "@/store";
 
 const ExplorePage: NextPage = () => {
   const { onChangeSidebarItems } = useRightSidebarStore();
+  const { onSetLocation } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -19,13 +20,13 @@ const ExplorePage: NextPage = () => {
       profile: true,
       relevant: false,
     });
+    onSetLocation("explore");
   }, []);
 
   return (
     <MainLayout
       title="Explorar | Evlun"
       description="Pagina para explorar usuarios en Evlun"
-      location="explore"
       withoutAuth
     >
       <FeedExplore />

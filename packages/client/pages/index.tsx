@@ -7,11 +7,16 @@ import { MainLayout } from "@/layouts";
 import { FeedPosts, MoreOptionsModalMobile, NewPost } from "@/components/post";
 
 //* stores *//
-import { usePostsStore, useRightSidebarStore } from "@/store";
+import {
+  useNavbarTopStore,
+  usePostsStore,
+  useRightSidebarStore,
+} from "@/store";
 
 const HomePage = () => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { postModal } = usePostsStore();
+  const { onSetLocation } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -19,6 +24,7 @@ const HomePage = () => {
       profile: true,
       relevant: false,
     });
+    onSetLocation("home");
   }, []);
 
   return (
