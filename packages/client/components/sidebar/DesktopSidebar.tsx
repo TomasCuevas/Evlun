@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 //* icons *//
@@ -15,13 +15,13 @@ import {
 } from "react-icons/ri";
 
 //* components *//
-import { LogoutModal, SidebarLink } from "./";
+import { LogoutModal, SidebarLink } from "@/components/sidebar";
 
-//* contexts *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "@/store";
 
 export const DesktopSidebar: React.FC = () => {
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated } = useAuthStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -65,9 +65,11 @@ export const DesktopSidebar: React.FC = () => {
           link={`/profile/${user?.username}`}
           text="Perfil"
         />
+
         {isModalOpen ? (
           <LogoutModal closeModal={() => setIsModalOpen((prev) => !prev)} />
         ) : null}
+
         {isAuthenticated === "authenticated" ? (
           <div
             onClick={() => setIsModalOpen((prev) => !prev)}
@@ -75,16 +77,16 @@ export const DesktopSidebar: React.FC = () => {
           >
             <div className="flex w-full items-center justify-center gap-4 rounded-full p-3 duration-100 hover:bg-orange/20 xl:pr-7">
               <img
-                src={user!.avatar}
+                src={user?.avatar}
                 alt="profile-img"
                 className="h-[35px] w-[35px] rounded-full object-cover object-center xl:h-[40px] xl:w-[40px]"
               />
               <div className="hidden max-w-[250px] flex-col overflow-hidden text-ellipsis whitespace-nowrap text-white xl:flex">
                 <span className="w-full text-ellipsis text-base font-bold">
-                  {user!.name}
+                  {user?.name}
                 </span>
                 <span className="font-normal text-white/70">
-                  @{user!.username}
+                  @{user?.username}
                 </span>
               </div>
             </div>
