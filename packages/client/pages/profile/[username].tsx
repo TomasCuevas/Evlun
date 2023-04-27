@@ -1,30 +1,34 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { GetServerSideProps, NextPage } from "next";
 
 //* service *//
-import { getUserService } from "../../services";
+import { getUserService } from "@/services";
 
 //* layout *//
-import { MainLayout } from "../../components/layouts";
+import { MainLayout } from "@/layouts";
 
 //* components *//
-import { ProfileHero } from "../../components/profile";
-import { FeedPosts, MoreOptionsModalMobile } from "../../components/post";
+import { FeedPosts, MoreOptionsModalMobile } from "@/components/post";
+import { ProfileHero } from "@/components/profile";
 
-//* context *//
-import { AuthContext, RightSidebarContext, UIContext } from "../../context";
+//* stores *//
+import {
+  useNavbarTopStore,
+  usePostsStore,
+  useRightSidebarStore,
+} from "@/store";
 
 //* interfaces *//
-import { IUser } from "../../interfaces/user";
+import { IUser } from "@/interfaces";
 
 interface Props {
   user: IUser;
 }
 
 const ProfilePage: NextPage<Props> = ({ user }) => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const { postModal } = useContext(UIContext);
-  const { onChangeSidebarItems } = useContext(RightSidebarContext);
+  const { onChangeSidebarItems } = useRightSidebarStore();
+  const { postModal } = usePostsStore();
+  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -32,20 +36,19 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
       profile: false,
       relevant: false,
     });
+    onSetLocation("profile");
+    onSetNavbarData({ profileName: user.name });
   }, []);
 
   return (
     <MainLayout
       title={`${user.name} (${user.username}) | Evlun`}
       description={user.biography}
-      location="profile"
-      name={user.name}
+      withoutAuth
     >
       <ProfileHero user={user} />
       <FeedPosts url={`/user/${user._id}`} />
-      {postModal && isAuthenticated === "authenticated" ? (
-        <MoreOptionsModalMobile />
-      ) : null}
+      {postModal ? <MoreOptionsModalMobile /> : null}
     </MainLayout>
   );
 };
