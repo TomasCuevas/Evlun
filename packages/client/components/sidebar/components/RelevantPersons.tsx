@@ -1,17 +1,17 @@
-import { useContext } from "react";
 import Link from "next/link";
 
 //* components *//
-import { Following, Follow } from "../profile";
+import { Following, Follow } from "@/components/profile";
 
-//* context *//
-import { AuthContext, RightSidebarContext } from "../../context";
+//* stores *//
+import { useAuthStore, useRightSidebarStore } from "@/store";
 
-export const RelevantPersons = () => {
-  const { user } = useContext(AuthContext);
-  const { relevantPersons } = useContext(RightSidebarContext);
+export const RelevantPersons: React.FC = () => {
+  const { user } = useAuthStore();
+  const { relevantPersons } = useRightSidebarStore();
 
-  if (!relevantPersons) return <></>;
+  if (relevantPersons.length === 0) return <></>;
+
   return (
     <div className="mt-4 flex w-full flex-col overflow-hidden rounded-2xl border border-orange/50">
       <h2 className="my-2 px-4 text-xl font-bold text-white">

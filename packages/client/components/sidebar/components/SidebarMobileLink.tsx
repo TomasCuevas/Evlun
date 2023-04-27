@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import Link from "next/link";
 import { IconType } from "react-icons/lib";
 
 //* context *//
-import { UIContext } from "../../context";
+import { useUiStore } from "@/store";
 
 //* interface *//
 interface Props {
@@ -19,14 +18,14 @@ export const SidebarMobileLink: React.FC<Props> = ({
   onClick,
   text,
 }) => {
-  const { onSwitchSidebar } = useContext(UIContext);
+  const { onSwitchMobileSidebar } = useUiStore();
 
   return (
     <li>
       <Link href={link} passHref>
         <a
           onClick={() => {
-            onSwitchSidebar();
+            onSwitchMobileSidebar();
             onClick ? onClick() : null;
           }}
           className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"

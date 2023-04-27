@@ -1,10 +1,8 @@
-import { useContext } from "react";
-
 //* icons *//
 import { RiLogoutBoxLine } from "react-icons/ri";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "@/store";
 
 //* interface *//
 interface Props {
@@ -12,7 +10,7 @@ interface Props {
 }
 
 export const LogoutModal: React.FC<Props> = ({ closeModal }) => {
-  const { user, onLogout } = useContext(AuthContext);
+  const { user, setLogout } = useAuthStore();
 
   return (
     <>
@@ -22,9 +20,7 @@ export const LogoutModal: React.FC<Props> = ({ closeModal }) => {
       ></div>
       <div className="absolute bottom-[80px] left-7 z-20 overflow-hidden rounded-lg border border-orange/50 bg-background">
         <section
-          onClick={() => {
-            onLogout();
-          }}
+          onClick={setLogout}
           className="group w-full cursor-pointer px-4 duration-100 hover:bg-orange/20"
         >
           <div className="flex h-[50px] items-center gap-2">

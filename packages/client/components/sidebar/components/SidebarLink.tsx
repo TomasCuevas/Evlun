@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { IconType } from "react-icons/lib";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "@/store";
 
 //* interface *//
 interface Props {
@@ -22,12 +21,13 @@ export const SidebarLink: React.FC<Props> = ({
   notAuthenticated = false,
   text,
 }) => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   if (notAuthenticated === false && isAuthenticated !== "authenticated") {
     return <></>;
   }
+
   return (
     <div className="flex justify-center xl:justify-start">
       <Link href={link} passHref>

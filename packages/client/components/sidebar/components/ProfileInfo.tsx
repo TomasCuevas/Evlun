@@ -1,10 +1,10 @@
-import { useContext } from "react";
-
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "@/store";
 
 export const ProfileInfo: React.FC = () => {
-  const { user } = useContext(AuthContext);
+  const { user, isAuthenticated } = useAuthStore();
+
+  if (isAuthenticated !== "authenticated") return <></>;
 
   return (
     <div className="mt-4 w-full overflow-hidden rounded-2xl">
