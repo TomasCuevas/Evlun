@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 //* components *//
-import { FeedExploreModal, Explore } from "../explore";
+import { FeedExploreModal, Explore } from "@/components/explore";
 
-export const NavTopNoAuth: React.FC = () => {
+export const NoAuthLocation: React.FC = () => {
   return (
     <div className="sticky top-0 z-10 w-full border-b border-orange/50 bg-background/5 backdrop-blur-xl">
       <nav className="flex h-[55px] w-full items-center gap-[20px] px-4 xl:hidden">
