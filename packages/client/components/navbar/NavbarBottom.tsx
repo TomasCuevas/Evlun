@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -11,8 +10,8 @@ import {
   RiUserFill,
 } from "react-icons/ri";
 
-//* context *//
-import { AuthContext } from "../../context";
+//* store *//
+import { useAuthStore } from "@/store";
 
 //* tailwind-classes *//
 const activeClass =
@@ -21,8 +20,8 @@ const noActiveClass =
   "items-center text-orange/30 flex h-full justify-center cursor-pointer";
 const iconClass = "text-[26px]";
 
-export const NavMobileBottom: React.FC = () => {
-  const { user } = useContext(AuthContext);
+export const NavbarBottom: React.FC = () => {
+  const { user } = useAuthStore();
   const router = useRouter();
 
   return (
@@ -45,15 +44,15 @@ export const NavMobileBottom: React.FC = () => {
           <RiSearchLine className={iconClass} />
         </a>
       </Link>
-      <Link href={`/profile/${user!.username}`} passHref>
+      <Link href={`/profile/${user?.username}`} passHref>
         <a
           className={
-            router.asPath === `/profile/${user!.username}`
+            router.asPath === `/profile/${user?.username}`
               ? activeClass
               : noActiveClass
           }
         >
-          {router.asPath === `/profile/${user!.username}` ? (
+          {router.asPath === `/profile/${user?.username}` ? (
             <RiUserFill className={iconClass} />
           ) : (
             <RiUserLine className={iconClass} />
