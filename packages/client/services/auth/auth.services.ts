@@ -72,7 +72,7 @@ export const checkService = async (): Promise<{
     console.error(error);
     return {
       ok: false,
-      msg: error.response.data,
+      msg: error.response.data.msg,
     };
   }
 };
@@ -95,7 +95,7 @@ export const reactivateService = async (
     console.error(error);
     return {
       ok: false,
-      msg: error.response.data,
+      msg: error.response.data.msg,
     };
   }
 };
@@ -118,7 +118,7 @@ export const deactivateService = async (
     console.error(error);
     return {
       ok: false,
-      msg: error.response.data,
+      msg: error.response.data.msg,
     };
   }
 };
