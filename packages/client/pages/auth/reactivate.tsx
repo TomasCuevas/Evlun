@@ -1,4 +1,3 @@
-import { FormEvent, useContext } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -9,28 +8,23 @@ import {
   FormErrorMessage,
   FormInputPrimary,
   FormQuestion,
-} from "../../components/form";
-import { FullLoader } from "../../components/ui";
-import { HeroText } from "../../components/auth";
+} from "@/components/form";
+import { FullLoader } from "@/components/ui";
+import { HeroText } from "@/components/auth";
 
 //* layout *//
-import { AuthLayout } from "../../components/layouts";
+import { AuthLayout } from "@/layouts";
 
 //* hooks *//
-import { useForm } from "../../hooks";
+import { useForm } from "@/hooks";
 
 //* services *//
-import { reactivateService } from "../../services";
+import { reactivateService } from "@/services";
 
 //* helpers *//
-import { emailValidation, passwordValidation } from "../../helpers";
-
-//* context *//
-import { AuthContext } from "../../context";
+import { emailValidation, passwordValidation } from "@/helpers";
 
 const ReactivatePage: NextPage = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-
   const router = useRouter();
 
   const {
@@ -48,8 +42,8 @@ const ReactivatePage: NextPage = () => {
     password: "",
   });
 
-  const startReactivate = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  //! start reactivate account
+  const startReactivate = async () => {
     onSetError("");
 
     const formData = new FormData();
@@ -65,59 +59,54 @@ const ReactivatePage: NextPage = () => {
       reset();
       return router.replace("/auth/login");
     } else {
-      onSetError(result.msg || "Ocurrio un error. Intente de nuevo");
+      onSetError(result.msg || "Ocurrio un error. Intente de nuevo.");
     }
   };
 
   if (isSending) return <FullLoader />;
-  if (isAuthenticated === "authenticated") router.replace("/");
-  if (isAuthenticated === "no-authenticated") {
-    return (
-      <AuthLayout
-        title="Reactivar cuenta| Evlun"
-        description="Reactivar cuenta de Evlun"
-      >
-        <section>
-          <HeroText strong="Evlun" text="Reactivar tu cuenta de" />
-        </section>
-        <section>
-          <Form onSubmit={startReactivate}>
-            <FormInputPrimary
-              inputChange={onInputChange}
-              inputName="email"
-              inputType="email"
-              inputValue={email}
-              label="Correo electronico"
-            />
-            <FormInputPrimary
-              inputChange={onInputChange}
-              inputName="password"
-              inputType="password"
-              inputValue={password}
-              label="Contraseña"
-            />
-            <FormButtonPrimary
-              isDisabled={
-                isSending ||
-                !emailValidation(email) ||
-                !passwordValidation(password)
-              }
-              label="Reactivar Cuenta"
-              type="submit"
-            />
-            {error ? <FormErrorMessage message={error} /> : null}
-          </Form>
-          <FormQuestion
-            link="/auth/login"
-            linkPlaceholder="Iniciar sesion"
-            question="¿Quieres iniciar sesion?"
+  return (
+    <AuthLayout
+      title="Reactivar cuenta| Evlun"
+      description="Reactivar cuenta de Evlun"
+    >
+      <section>
+        <HeroText strong="Evlun" text="Reactivar tu cuenta de" />
+      </section>
+      <section>
+        <Form onSubmit={() => startReactivate()}>
+          <FormInputPrimary
+            inputChange={onInputChange}
+            inputName="email"
+            inputType="email"
+            inputValue={email}
+            label="Correo electronico"
           />
-        </section>
-      </AuthLayout>
-    );
-  }
-
-  return <FullLoader />;
+          <FormInputPrimary
+            inputChange={onInputChange}
+            inputName="password"
+            inputType="password"
+            inputValue={password}
+            label="Contraseña"
+          />
+          <FormButtonPrimary
+            isDisabled={
+              isSending ||
+              !emailValidation(email) ||
+              !passwordValidation(password)
+            }
+            label="Reactivar Cuenta"
+            type="submit"
+          />
+          {error ? <FormErrorMessage message={error} /> : null}
+        </Form>
+        <FormQuestion
+          link="/auth/login"
+          linkPlaceholder="Iniciar sesion"
+          question="¿Quieres iniciar sesion?"
+        />
+      </section>
+    </AuthLayout>
+  );
 };
 
 export default ReactivatePage;
