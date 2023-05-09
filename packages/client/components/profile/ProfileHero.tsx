@@ -69,9 +69,9 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
           ) : (
             <>
               {user.followers.includes(userByStore?._id || "") ? (
-                <Following userToUnfollowId={user._id} />
+                <Following userToUnfollow={user} />
               ) : (
-                <Follow userToFollowId={user._id} />
+                <Follow userToFollow={user} />
               )}
             </>
           )}

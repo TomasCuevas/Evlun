@@ -6,6 +6,9 @@ import { Following, Follow } from "@/components/profile";
 //* stores *//
 import { useAuthStore, useRightSidebarStore } from "@/store";
 
+//* interfaces *//
+import { IUser } from "@/interfaces";
+
 export const RelevantPersons: React.FC = () => {
   const { user } = useAuthStore();
   const { relevantPersons } = useRightSidebarStore();
@@ -37,11 +40,14 @@ export const RelevantPersons: React.FC = () => {
                 </span>
               </div>
               {user && user._id === person._id ? null : (
-                <div className="my-auto ml-auto">
+                <div
+                  className="my-auto ml-auto"
+                  onClick={(event) => event.stopPropagation()}
+                >
                   {user && user.followings.includes(person._id) ? (
-                    <Following userToUnfollowId={person._id} />
+                    <Following userToUnfollow={person as IUser} />
                   ) : (
-                    <Follow userToFollowId={person._id} />
+                    <Follow userToFollow={person as IUser} />
                   )}
                 </div>
               )}
