@@ -1,27 +1,27 @@
-import { useRouter } from "next/router";
-
 //* services *//
 import { followUserService } from "@/services";
 
 //* store *//
-import { useAuthStore } from "@/store";
+import { useAuthStore, useUserStore } from "@/store";
 
 //* interface *//
+import { IUser } from "@/interfaces";
+
 interface Props {
-  userToFollowId: string;
+  userToFollow: IUser;
 }
 
-export const Follow: React.FC<Props> = ({ userToFollowId }) => {
+export const Follow: React.FC<Props> = ({ userToFollow }) => {
   const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
-  const router = useRouter();
+  const { getUser } = useUserStore();
 
   const follow = async () => {
     if (isAuthenticated !== "authenticated") return;
 
-    const result = await followUserService(userToFollowId);
+    const result = await followUserService(userToFollow._id);
     if (result.ok) {
       onCheckingWithoutLoader();
-      router.replace(router.asPath);
+      getUser(userToFollow.username);
     }
   };
 
