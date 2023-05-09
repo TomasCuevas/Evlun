@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 
 //* service *//
 import { getUserService } from "@/services";
@@ -16,6 +17,7 @@ import {
   useNavbarTopStore,
   usePostsStore,
   useRightSidebarStore,
+  useUserStore,
 } from "@/store";
 
 //* interfaces *//
@@ -29,6 +31,8 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { postModal } = usePostsStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { userUpdated, getUser } = useUserStore();
+  const { asPath } = useRouter();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -38,7 +42,8 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
     });
     onSetLocation("profile");
     onSetNavbarData({ profileName: user.name });
-  }, []);
+    getUser(user.username);
+  }, [asPath]);
 
   return (
     <MainLayout
@@ -46,14 +51,21 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
       description={user.biography}
       withoutAuth
     >
-      <ProfileHero user={user} />
+      <ProfileHero user={userUpdated || user} />
       <FeedPosts url={`/user/${user._id}`} />
       {postModal ? <MoreOptionsModalMobile /> : null}
     </MainLayout>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { username } = params as { username: string };
   const { user } = await getUserService(username);
   if (!user) {
@@ -69,6 +81,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: {
       user,
     },
+    revalidate: 172800,
   };
 };
 
