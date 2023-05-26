@@ -1,3 +1,3 @@
-export * from "./AuthLayout";
-export * from "./MainLayout";
-export * from "./SettingLayout";
+export * from "./authLayout/AuthLayout";
+export * from "./mainLayout/MainLayout";
+export * from "./settingLayout/SettingLayout";
