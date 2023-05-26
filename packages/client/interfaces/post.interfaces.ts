@@ -16,3 +16,9 @@ export interface AddedBy {
   name: string;
   username: string;
 }
+
+export interface ICreatePost {
+  text: string;
+  content: string;
+  postRef?: string;
+}
