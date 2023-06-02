@@ -15,9 +15,9 @@ export const SettingsLocation: React.FC = () => {
       <div className="flex h-full w-full items-center gap-[20px]">
         <BackArrow />
         <NavText textBig={settingText!} textSmall={`@${user?.username}`} />
-        {navbarData.isButton ? (
+        {navbarData.isButton && (
           <NavTextButton text={buttonText!} onClick={buttonOnClick} />
-        ) : null}
+        )}
       </div>
     </nav>
   );
