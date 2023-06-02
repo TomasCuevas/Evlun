@@ -8,7 +8,7 @@ import { FullLoader } from "@/components/ui";
 import {
   Form,
   FormButtonPrimary,
-  FormCheckbox,
+  FormRadio,
   FormErrorMessage,
 } from "@/components/form";
 
@@ -58,21 +58,21 @@ const SettingsGenderPage: NextPage = () => {
     >
       <section className="px-[5%]">
         <Form onSubmit={formik.handleSubmit}>
-          <FormCheckbox
+          <FormRadio
             inputName="gender"
             isChecked={formik.values.gender === "Femenino"}
             label="Femenino"
             onCheckChange={formik.handleChange}
             inputValue={formik.values.gender === "Femenino" ? "" : "Femenino"}
           />
-          <FormCheckbox
+          <FormRadio
             inputName="gender"
             isChecked={formik.values.gender === "Masculino"}
             label="Masculino"
             onCheckChange={formik.handleChange}
             inputValue={formik.values.gender === "Masculino" ? "" : "Masculino"}
           />
-          <FormCheckbox
+          <FormRadio
             inputName="gender"
             isChecked={formik.values.gender === "Otro"}
             label="Otro"
