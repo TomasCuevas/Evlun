@@ -12,13 +12,11 @@ export const getRelativeTime = (date: number): string => {
     return Math.round(elapsed / msPerMinute) + "min";
   } else if (elapsed < msPerDay) {
     return Math.round(elapsed / msPerHour) + "h";
-  } else if (elapsed < msPerMonth) {
+  } else {
     const newDate = new Date(date);
     return newDate.toLocaleString(undefined, {
       day: "numeric",
       month: "short",
     });
   }
-
-  return "";
 };
