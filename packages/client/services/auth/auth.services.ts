@@ -1,5 +1,5 @@
 //* axios instance *//
-import authApi from "@/axios/authApi";
+import { authApi } from "@/axios";
 
 //* interface *//
 import { IUser, ILogin, IRegister } from "@/interfaces";
@@ -67,7 +67,6 @@ export const reactivateService = async (loginData: ILogin): Promise<void> => {
 export const deactivateService = async (formValues: any): Promise<void> => {
   try {
     await authApi.put(`/deactivate`, formValues);
-
     return;
   } catch (error: any) {
     throw error.response.data;

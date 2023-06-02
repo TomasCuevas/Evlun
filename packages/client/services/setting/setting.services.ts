@@ -1,15 +1,11 @@
-import settingsApi from "../../axios/settingsApi";
+//* axios instance *//
+import { settingsApi } from "@/axios";
 
-//! setting services
-interface Return {
-  ok: boolean;
-  msg?: string;
-}
-
+//! setting [services]
 export const settingServices = async (
   url: string,
-  formValues: FormData
-): Promise<Return> => {
+  formValues: any
+): Promise<void> => {
   try {
     const { data } = await settingsApi.put(`/${url}`, formValues, {
       headers: {
@@ -19,7 +15,6 @@ export const settingServices = async (
 
     return data;
   } catch (error: any) {
-    console.log(error);
-    return { ...error.response.data, ok: false };
+    throw error.response.data;
   }
 };

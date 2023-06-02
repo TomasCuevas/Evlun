@@ -5,13 +5,7 @@ import { userApi } from "@/axios";
 import { IUser } from "@/interfaces";
 
 //! search service
-export const searchService = async (
-  search: string
-): Promise<{
-  ok: boolean;
-  users?: IUser[];
-  msg?: string;
-}> => {
+export const searchService = async (search: string): Promise<IUser[]> => {
   try {
     const params = new URLSearchParams();
     params.append("search", search);
@@ -20,15 +14,8 @@ export const searchService = async (
       params,
     });
 
-    return {
-      ok: true,
-      users: data.users,
-    };
+    return data.users;
   } catch (error: any) {
-    console.log(error);
-    return {
-      ok: false,
-      msg: error.response.data.msg,
-    };
+    throw error.response.data;
   }
 };

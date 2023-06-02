@@ -2,21 +2,15 @@
 import { postApi } from "@/axios";
 
 //* interfaces *//
-import { IPost } from "@/interfaces/post.interfaces";
+import { ICreatePost, IPost } from "@/interfaces";
 
 //! new post service
-export const newPostService = async (formData: FormData): Promise<boolean> => {
+export const newPostService = async (postData: ICreatePost): Promise<IPost> => {
   try {
-    await postApi.post(`/create`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    return true;
-  } catch (error) {
-    console.error(error);
-    return false;
+    const { data } = await postApi.post(`/create`, postData);
+    return data.post;
+  } catch (error: any) {
+    throw error.response.data;
   }
 };
 
@@ -29,27 +23,15 @@ interface GetPostsServiceProps {
 export const getPostsService = async ({
   pageParam = 0,
   url,
-}: GetPostsServiceProps): Promise<{
-  ok: boolean;
-  posts?: IPost[];
-  msg?: string;
-}> => {
+}: GetPostsServiceProps): Promise<IPost[]> => {
   try {
     const params = new URLSearchParams();
     params.append("page", pageParam.toString());
 
     const { data } = await postApi.get(`${url}`, { params });
-
-    return {
-      ok: true,
-      posts: data.posts,
-    };
+    return data.posts;
   } catch (error: any) {
-    console.error(error);
-    return {
-      ok: false,
-      msg: error.response.data.msg,
-    };
+    throw error.response.data;
   }
 };
 
@@ -57,104 +39,60 @@ export const getPostsService = async ({
 export const getUniquePostService = async (
   postId: string
 ): Promise<{
-  ok: boolean;
-  msg?: string;
   post?: IPost;
   postRef?: IPost;
 }> => {
   try {
     const { data } = await postApi.get(`/id/${postId}`);
-
     return {
-      ok: true,
       post: data.post,
       postRef: data.postRef,
     };
   } catch (error: any) {
-    console.error(error);
-    return {
-      ok: false,
-      msg: error.response.data.msg,
-    };
+    throw error.response.data;
   }
 };
 
 //! remove post service
-export const removePostService = async (
-  postId: string
-): Promise<{ ok: boolean; msg?: string }> => {
+export const removePostService = async (postId: string): Promise<void> => {
   try {
     await postApi.put(`/delete/${postId}`);
-    return {
-      ok: true,
-    };
+    return;
   } catch (error: any) {
-    console.error(error);
-    return {
-      ok: false,
-      msg: error.response.data.msg,
-    };
+    throw error.response.data;
   }
 };
 
-//! like post service
-export const likePostService = async (
+//! like or dislike post service
+export const likeOrDislikePostService = async (
   postId: string
-): Promise<{ ok: boolean; msg?: string }> => {
+): Promise<void> => {
   try {
     await postApi.put(`/like/${postId}`);
-    return {
-      ok: true,
-    };
+    return;
   } catch (error: any) {
-    console.error(error);
-    return {
-      ok: false,
-      msg: error.response.data.msg,
-    };
+    throw error.response.data;
   }
 };
 
 //! get saved posts service
-export const getSavedPostsService = async (): Promise<{
-  ok: boolean;
-  msg?: string;
-  savedPostsList?: string[];
-}> => {
+export const getSavedPostsService = async (): Promise<string[]> => {
   try {
-    const { data } = await postApi.get(`/savedList`);
-
-    return {
-      ok: true,
-      savedPostsList: data.savedPostsList,
-    };
+    const { data } = await postApi.get(`/saved/list`);
+    return data.savedPostsList;
   } catch (error: any) {
-    console.error(error);
-    return {
-      ok: false,
-      msg: error.response.data.msg,
-    };
+    throw error.response.data;
   }
 };
 
 //! update saved post service
 export const updateSavedPostService = async (
   postId?: string
-): Promise<{
-  ok: boolean;
-  msg?: string;
-}> => {
+): Promise<void> => {
   try {
     await postApi.put(`/save/${postId}`);
-
-    return {
-      ok: true,
-    };
+    return;
   } catch (error: any) {
-    console.error(error);
-    return {
-      ok: false,
-      msg: error.response.data.msg,
-    };
+    throw error.response.data;
   }
 };
