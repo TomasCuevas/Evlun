@@ -9,13 +9,6 @@ import { Follow, Following } from "@/components/profile";
 //* context *//
 import { useAuthStore } from "@/store";
 
-//* tailwind-classes *//
-const itemClass = "items-center flex gap-[5px] text-white";
-const iconClass = "text-orange text-lg";
-const descriptionClass = "text-sm text-white/80";
-const numberClass = "text-base font-bold text-white";
-const descriptionClassAlternative = "text-sm font-light text-orange";
-
 //* interfaces *//
 import { IUser } from "@/interfaces";
 
@@ -60,20 +53,20 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
         <div className="flex w-full items-center justify-end gap-[10px]">
           {userByStore?.username === user.username ? (
             <Link href="/settings/profile">
-              <button className="flex h-full cursor-pointer items-center justify-center rounded-full border border-orange py-[7px] px-[10px] transition-all duration-300 hover:bg-orange/10">
+              <button className="flex h-full cursor-pointer items-center justify-center rounded-full border border-orange py-[7px] px-[10px] hover:bg-orange/10">
                 <span className="text-[15px] font-bold text-white">
                   Editar Perfil
                 </span>
               </button>
             </Link>
           ) : (
-            <>
+            <div>
               {user.followers.includes(userByStore?._id || "") ? (
                 <Following userToUnfollow={user} />
               ) : (
                 <Follow userToFollow={user} />
               )}
-            </>
+            </div>
           )}
         </div>
       </section>
@@ -89,27 +82,25 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
         </span>
       </section>
 
-      <section className="mt-4 flex w-full flex-wrap gap-[15px] px-4">
-        {user.location && (
-          <span className={itemClass}>
-            <RiMapPinLine className={iconClass} />
-            <span className={descriptionClass}>{user.location}</span>
-          </span>
-        )}
-        <span className={itemClass}>
-          <RiCalendar2Line className={iconClass} />
-          <span className={descriptionClass}>{`Se unio en ${date}`}</span>
+      <section className="mt-4 flex w-full flex-wrap gap-[15px] px-4 [&>span]:flex [&>span]:items-center [&>span]:gap-[5px] [&>span]:text-white [&>span>svg]:text-lg [&>span>svg]:text-orange [&>span>p]:text-sm [&>span>p]:text-white/80">
+        <span style={{ display: user.location ? "flex" : "none" }}>
+          <RiMapPinLine />
+          <p>{user.location}</p>
+        </span>
+        <span>
+          <RiCalendar2Line />
+          <p>{`Se unio en ${date}`}</p>
         </span>
       </section>
 
-      <section className="flex gap-[10px] border-b border-orange py-[15px]  px-4">
+      <section className="flex gap-[10px] border-b border-orange py-[15px] px-4 [&>div>span]:text-base [&>div>span]:font-bold [&>div>span]:text-white [&>div>p]:text-sm [&>div>p]:font-light [&>div>p]:text-orange">
         <div className="flex items-center gap-[5px]">
-          <span className={numberClass}>{user.followings.length}</span>
-          <span className={descriptionClassAlternative}>Siguiendo</span>
+          <span>{user.followings.length}</span>
+          <p>Siguiendo</p>
         </div>
         <div className="flex items-center gap-[5px]">
-          <span className={numberClass}>{user.followers.length}</span>
-          <span className={descriptionClassAlternative}>Seguidores</span>
+          <span>{user.followers.length}</span>
+          <p>Seguidores</p>
         </div>
       </section>
     </article>

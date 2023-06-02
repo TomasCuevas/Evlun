@@ -32,7 +32,7 @@ export const FormTextareaPrimary: React.FC<Props> = ({
 
   return (
     <div
-      className={`relative flex transition-all duration-300 ${
+      className={`relative flex ${
         focus ? "h-[200px]" : "h-[60px]"
       }  flex-col  rounded-md bg-white/80 px-5`}
     >
@@ -40,8 +40,8 @@ export const FormTextareaPrimary: React.FC<Props> = ({
         htmlFor={inputName}
         className={
           focus
-            ? "absolute top-[5px] text-xs font-light text-orange transition-all"
-            : "absolute top-[50%] translate-y-[-50%] font-medium text-orange duration-300"
+            ? "absolute top-[5px] text-xs font-light text-orange"
+            : "absolute top-[50%] translate-y-[-50%] font-medium text-orange"
         }
       >
         {label}

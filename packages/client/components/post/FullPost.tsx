@@ -28,19 +28,18 @@ interface Props {
 export const FullPost: React.FC<Props> = ({ post, postRef }) => {
   const { user, isAuthenticated } = useAuthStore();
   const {
-    savedPostsList,
-    postModal,
+    onLikeOrDislikePost,
+    onOpenModal,
     onUpdateSavedPost,
-    onLikePost,
-    onSetPostModal,
+    postModal,
+    savedPostsList,
   } = usePostsStore();
 
   const [likesValue, setLikesValue] = useState<number>(0);
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [date, setDate] = useState<{ time: string; date: string }>({
-    time: "",
-    date: "",
-  });
+  const [IsLiked, setIsLiked] = useState<boolean>(false);
+  const [date, setDate] = useState({ time: "", date: "" });
+
+  const IsPostSaved = savedPostsList.includes(post._id);
 
   //! like post
   const onLike = async (event: MouseEvent) => {
@@ -48,15 +47,16 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     if (isAuthenticated !== "authenticated") return;
 
     if (post.likes.includes(user!._id)) {
-      if (isLiked) setLikesValue((prev) => prev - 1);
-      if (!isLiked) setLikesValue(post.likes.length);
+      IsLiked
+        ? setLikesValue((prev) => prev - 1)
+        : setLikesValue(post.likes.length);
     } else {
-      if (isLiked) setLikesValue((prev) => prev - 1);
-      if (!isLiked) setLikesValue(post.likes.length + 1);
+      IsLiked
+        ? setLikesValue((prev) => prev - 1)
+        : setLikesValue(post.likes.length + 1);
     }
 
-    await onLikePost(post._id);
-    isLiked ? setIsLiked(false) : setIsLiked(true);
+    IsLiked ? setIsLiked(false) : setIsLiked(true);
   };
 
   useEffect(() => {
@@ -78,11 +78,13 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
 
   return (
     <>
-      {postRef ? (
-        <div className="flex w-full px-4">
-          <span className="ml-[22px] h-3 w-[2px] bg-orange/50"></span>
-        </div>
-      ) : null}
+      <div
+        style={{ display: postRef ? "flex" : "none" }}
+        className="flex w-full px-4"
+      >
+        <span className="ml-[22px] h-3 w-[2px] bg-orange/50"></span>
+      </div>
+
       <article
         className={
           postRef
@@ -112,7 +114,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
                 <button
                   onClick={(event) => {
                     event.stopPropagation();
-                    onSetPostModal(post);
+                    onOpenModal(post);
                   }}
                 >
                   <RiMoreFill className="cursor-pointer text-xl text-white hover:text-orange" />
@@ -150,23 +152,22 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
           </div>
         </time>
 
-        {likesValue > 0 ? (
-          <section className="w-full border-b border-orange/50 py-[15px] px-4">
-            <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-white">
-                {likesValue}
-              </span>
-              <span className="text-sm font-light text-orange">Likes</span>
-            </div>
-          </section>
-        ) : null}
+        <section
+          style={{ display: likesValue > 0 ? "block" : "none" }}
+          className="w-full border-b border-orange/50 py-[15px] px-4"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-base font-bold text-white">{likesValue}</span>
+            <span className="text-sm font-light text-orange">Likes</span>
+          </div>
+        </section>
 
         <footer className="flex w-full items-center justify-around gap-[100px] border-b border-orange/50 py-[10px] px-4 text-orange/50">
           <div>
             <RiChat4Line className="text-2xl" />
           </div>
           <button>
-            {savedPostsList.includes(post._id) ? (
+            {IsPostSaved ? (
               <RiBookmarkFill
                 onClick={() => onUpdateSavedPost(post._id)}
                 className="text-2xl text-orange hover:text-orange/50"
@@ -179,14 +180,20 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
             )}
           </button>
           <button>
-            {isLiked ? (
+            {IsLiked ? (
               <RiHeartFill
-                onClick={onLike}
+                onClick={(event) => {
+                  onLike(event);
+                  onLikeOrDislikePost(post._id);
+                }}
                 className="text-2xl text-orange hover:text-orange/50"
               />
             ) : (
               <RiHeartLine
-                onClick={onLike}
+                onClick={(event) => {
+                  onLike(event);
+                  onLikeOrDislikePost(post._id);
+                }}
                 className="text-2xl hover:text-orange"
               />
             )}

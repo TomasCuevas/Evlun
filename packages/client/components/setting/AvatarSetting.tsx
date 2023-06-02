@@ -3,12 +3,6 @@ import { ChangeEvent, useRef } from "react";
 //* icons *//
 import { BsCamera } from "react-icons/bs";
 
-//* tailwind-classes *//
-const iconsContainerClass =
-  "flex justify-center items-center gap-[20px] absolute top-0 left-0 h-full w-full";
-const iconContainerClass =
-  "grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 transition-all duration-300 hover:bg-orange/40 hover:text-white";
-
 //* interface *//
 interface Props {
   avatar: string;
@@ -26,10 +20,10 @@ export const AvatarSetting: React.FC<Props> = ({ avatar, loadNewAvatar }) => {
   return (
     <div className="relative h-[60px]">
       <div className="absolute left-0 top-[-45px]">
-        <div className={iconsContainerClass}>
+        <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center gap-[20px]">
           <span
             onClick={() => fileInputRef.current!.click()}
-            className={iconContainerClass}
+            className="grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 hover:bg-orange/40 hover:text-white"
           >
             <BsCamera />
           </span>

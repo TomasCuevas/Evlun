@@ -4,14 +4,6 @@ import { ChangeEvent, useRef } from "react";
 import { BsCamera } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
 
-//* tailwind-classes *//
-const bannerClass =
-  "h-[130px] w-full bg-orange/30 object-cover object-center xs:h-[150px] sm:h-[200px]";
-const iconsContainerClass =
-  "flex justify-center items-center gap-[20px] absolute top-0 left-0 h-full w-full bg-background/70";
-const iconContainerClass =
-  "grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 transition-all duration-300 hover:bg-orange hover:text-white";
-
 //* interface *//
 interface Props {
   banner: string | null;
@@ -35,11 +27,15 @@ export const BannerSetting: React.FC<Props> = ({
     <section className="relative min-w-full overflow-hidden">
       {banner ? (
         <>
-          <img src={banner} alt="banner img" className={bannerClass} />
-          <div className={iconsContainerClass}>
+          <img
+            src={banner}
+            alt="banner img"
+            className="h-[130px] w-full bg-orange/30 object-cover object-center xs:h-[150px] sm:h-[200px]"
+          />
+          <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center gap-[20px] bg-background/70">
             <span
               onClick={() => fileInputRef.current!.click()}
-              className={iconContainerClass}
+              className="grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 hover:bg-orange hover:text-white"
             >
               <BsCamera />
             </span>
@@ -49,7 +45,7 @@ export const BannerSetting: React.FC<Props> = ({
                 loadNewBanner(false);
                 deleteBanner(true);
               }}
-              className={iconContainerClass}
+              className="grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 hover:bg-orange hover:text-white"
             >
               <MdOutlineClose />
             </span>
@@ -57,11 +53,11 @@ export const BannerSetting: React.FC<Props> = ({
         </>
       ) : (
         <>
-          <div className={bannerClass}></div>
-          <div className={iconsContainerClass}>
+          <div className="h-[130px] w-full bg-orange/30 object-cover object-center xs:h-[150px] sm:h-[200px]"></div>
+          <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center gap-[20px] bg-background/70">
             <span
               onClick={() => fileInputRef.current!.click()}
-              className={iconContainerClass}
+              className="grid cursor-pointer place-items-center rounded-full border border-orange/50 bg-orange/50 p-2 text-2xl text-white/80 hover:bg-orange hover:text-white"
             >
               <BsCamera />
             </span>

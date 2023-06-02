@@ -24,7 +24,7 @@ export const FormButtonPrimary: React.FC<Props> = ({
       className={
         className
           ? className
-          : "border-text  bg-background my-[10px] mx-0 h-[50px] cursor-pointer rounded-md border border-orange text-xl font-bold text-orange outline-none transition-all duration-100 hover:shadow-md hover:shadow-orange/20  disabled:cursor-not-allowed disabled:border-white disabled:text-white disabled:opacity-40"
+          : "border-text  my-[10px] mx-0 h-[50px] cursor-pointer rounded-md border border-orange bg-background text-xl font-bold text-orange outline-none hover:bg-orange hover:text-white  disabled:cursor-not-allowed disabled:border-white disabled:text-white disabled:opacity-40"
       }
     >
       {label}

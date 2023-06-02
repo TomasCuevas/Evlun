@@ -13,7 +13,7 @@ export const FormQuestion: React.FC<Props> = ({
   link,
 }) => {
   return (
-    <div className="flex gap-[5px] text-base font-medium">
+    <div className="flex gap-[5px] text-base font-normal">
       <p className="gap-[5px] text-white">{question}</p>
       <NextLink href={link} passHref>
         <a className="text-orange underline">{linkPlaceholder}</a>

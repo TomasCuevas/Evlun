@@ -23,7 +23,7 @@ export const ProfileInfo: React.FC = () => {
               alt="user avatar image"
               className="h-[60px] w-[60px] rounded-full border-[2px] border-orange bg-orange/30 object-cover object-center"
             />
-            <div className="rounded-xl bg-light/50 px-10 py-1 backdrop-blur-sm">
+            <div className="rounded-xl bg-grayLight/50 px-10 py-1 backdrop-blur-sm">
               <h4 className="text-center text-lg font-bold text-white">
                 {user!.name}
               </h4>
@@ -34,7 +34,7 @@ export const ProfileInfo: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="flex justify-around bg-light px-4 py-2">
+      <section className="flex justify-around bg-grayLight px-4 py-2">
         <div className="flex flex-col items-center">
           <p className="text-sm font-light text-orange">Siguiendo</p>
           <span className="font-bold text-white">
