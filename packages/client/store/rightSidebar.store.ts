@@ -23,11 +23,15 @@ export const useRightSidebarStore = create<useRightSidebarState>((set) => ({
     profile: false,
     relevant: false,
   },
+
+  //! change sidebar items
   onChangeSidebarItems(item: RightSidebarItems) {
     set(() => ({
       sidebarItems: item,
     }));
   },
+
+  //! set relevant persons
   setRelevantPersons(persons: AddedBy[]) {
     set(() => ({
       relevantPersons: persons,

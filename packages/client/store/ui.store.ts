@@ -11,6 +11,8 @@ interface useUiState {
 export const useUiStore = create<useUiState>((set, get) => ({
   isMobileSidebarOpen: false,
   isExploreModalOpen: false,
+
+  //! switch mobile sidebar
   onSwitchMobileSidebar() {
     const { isMobileSidebarOpen } = get();
 
@@ -22,6 +24,8 @@ export const useUiStore = create<useUiState>((set, get) => ({
 
     set(() => ({ isMobileSidebarOpen: !isMobileSidebarOpen }));
   },
+
+  //! switch explore modal
   onSwitchExploreModal(status?: boolean) {
     const { isExploreModalOpen } = get();
     set(() => ({ isExploreModalOpen: status || !isExploreModalOpen }));

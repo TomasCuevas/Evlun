@@ -14,13 +14,17 @@ interface useUserState {
 
 export const useUserStore = create<useUserState>((set) => ({
   userUpdated: undefined,
+
+  //! clear user
   clearUser() {
     set(() => ({ userUpdated: undefined }));
   },
+
+  //! get user
   async getUser(username: string) {
-    const result = await getUserService(username);
-    if (result.ok) {
-      set(() => ({ userUpdated: result.user }));
-    }
+    try {
+      const user = await getUserService(username);
+      set(() => ({ userUpdated: user }));
+    } catch (error) {}
   },
 }));

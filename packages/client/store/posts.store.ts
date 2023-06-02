@@ -6,7 +6,8 @@ import { queryClient } from "@/pages/_app";
 //* services *//
 import {
   getSavedPostsService,
-  likePostService,
+  likeOrDislikePostService,
+  newPostService,
   removePostService,
   updateSavedPostService,
 } from "@/services";
@@ -15,15 +16,16 @@ import {
 import { useAuthStore } from "./auth.store";
 
 //* interfaces *//
-import { IPost } from "@/interfaces";
+import { ICreatePost, IPost } from "@/interfaces";
 
 interface usePostsState {
   savedPostsList: string[];
   postModal?: IPost;
-  onSetPostModal(post: IPost): void;
-  onRemovePostModal(): void;
+  onOpenModal(post: IPost): void;
+  onCloseModal(): void;
+  onCreatePost(postData: ICreatePost, postRef?: string): Promise<IPost>;
   onGetSavedPostsList(): Promise<void>;
-  onLikePost(postId: string): Promise<void>;
+  onLikeOrDislikePost(postId: string, postRef?: string): Promise<void>;
   onRemovePost(postId: string): Promise<void>;
   onUpdateSavedPost(postId: string): Promise<void>;
 }
@@ -31,39 +33,84 @@ interface usePostsState {
 export const usePostsStore = create<usePostsState>((set, get) => ({
   savedPostsList: [],
   postModal: undefined,
-  async onSetPostModal(post: IPost) {
+
+  //! open modal
+  async onOpenModal(post) {
     document.body.classList.add("body__fix");
     set(() => ({ postModal: post }));
   },
-  onRemovePostModal() {
+
+  //! close modal
+  onCloseModal() {
     document.body.classList.remove("body__fix");
     set(() => ({ postModal: undefined }));
   },
+
+  //! create post
+  async onCreatePost(postData, postRef) {
+    try {
+      const result = await newPostService(postData);
+
+      if (postRef) {
+        queryClient.invalidateQueries([`/answers/${postRef}`]);
+      } else {
+        queryClient.invalidateQueries(["/all"]);
+      }
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  //! get saved posts list
   async onGetSavedPostsList() {
     const { isAuthenticated } = useAuthStore.getState();
+    if (isAuthenticated !== "authenticated") return;
 
-    if (isAuthenticated === "authenticated") {
+    try {
       const result = await getSavedPostsService();
-      if (result.ok) set(() => ({ savedPostsList: result.savedPostsList }));
+      set(() => ({ savedPostsList: result }));
+    } catch (error) {
+      throw error;
     }
   },
-  async onLikePost(postId: string) {
-    const result = await likePostService(postId);
-    if (result.ok) {
+
+  //! like or dislike post
+  async onLikeOrDislikePost(postId, postRef) {
+    try {
+      await likeOrDislikePostService(postId);
+
+      if (postRef) {
+        queryClient.refetchQueries([`/answers/${postRef}`]);
+      } else {
+        queryClient.refetchQueries(["/all"]);
+      }
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  //! remove post
+  async onRemovePost(postId) {
+    try {
+      await removePostService(postId);
       queryClient.refetchQueries(["/all"]);
+    } catch (error) {
+      throw error;
     }
   },
-  async onRemovePost(postId: string) {
-    const result = await removePostService(postId);
-    if (result.ok) queryClient.refetchQueries(["/all"]);
-  },
+
+  //! update saved post
   async onUpdateSavedPost(postId) {
     const { onGetSavedPostsList } = get();
 
-    const result = await updateSavedPostService(postId);
-    if (result.ok) {
+    try {
+      await updateSavedPostService(postId);
       queryClient.refetchQueries(["/saved"]);
       onGetSavedPostsList();
+    } catch (error) {
+      throw error;
     }
   },
 }));
