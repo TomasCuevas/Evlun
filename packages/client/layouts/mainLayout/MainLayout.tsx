@@ -7,7 +7,11 @@ import {
   MobileSidebar,
   RightSidebar,
 } from "@/components/sidebar";
-import { NavbarTop, NavbarBottom } from "@/components/navbar";
+import {
+  NavbarTop,
+  NavbarBottom,
+  NavbarBottomLogout,
+} from "@/components/navbar";
 import { FullLoader } from "@/components/ui";
 
 //* store *//
@@ -52,16 +56,18 @@ export const MainLayout: React.FC<Props> = ({
 
       <div className="flex min-h-[calc(100vh_+_10px)] w-full flex-col items-start bg-background xs:flex-row xs:justify-center">
         {isAuthenticated === "authenticated" ? <MobileSidebar /> : null}
+
         <DesktopSidebar />
+
         <main className="min-h-[calc(100vh_+_10px)] w-full xs:w-[calc(100%_-_70px)] xs:border-r xs:border-orange/50 sm:max-w-[600px]">
           <NavbarTop />
           {children}
         </main>
+
         <RightSidebar />
 
-        {isAuthenticated === "authenticated" && navBottom ? (
-          <NavbarBottom />
-        ) : null}
+        {isAuthenticated === "authenticated" && navBottom && <NavbarBottom />}
+        {isAuthenticated === "no-authenticated" && <NavbarBottomLogout />}
       </div>
     </>
   );

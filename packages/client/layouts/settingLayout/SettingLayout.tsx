@@ -32,7 +32,7 @@ export const SettingLayout: React.FC<Props> = ({
   }, []);
 
   if (isAuthenticated === "no-authenticated") router.replace("/auth/login");
-  if (isAuthenticated !== "authenticated") return <FullLoader />;
+  if (isAuthenticated === "checking") return <FullLoader />;
 
   return (
     <>
