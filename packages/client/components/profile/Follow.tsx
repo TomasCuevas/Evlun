@@ -18,11 +18,11 @@ export const Follow: React.FC<Props> = ({ userToFollow }) => {
   const follow = async () => {
     if (isAuthenticated !== "authenticated") return;
 
-    const result = await followUserService(userToFollow._id);
-    if (result.ok) {
-      onCheckingWithoutLoader();
+    try {
+      await followUserService(userToFollow._id);
       getUser(userToFollow.username);
-    }
+      onCheckingWithoutLoader();
+    } catch (error) {}
   };
 
   return (

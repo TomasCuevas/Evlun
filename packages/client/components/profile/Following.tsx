@@ -24,11 +24,11 @@ export const Following: React.FC<Props> = ({ userToUnfollow }) => {
   const unfollow = async () => {
     if (isAuthenticated !== "authenticated") return;
 
-    const result = await unfollowUserService(userToUnfollow._id);
-    if (result.ok) {
+    try {
+      await unfollowUserService(userToUnfollow._id);
       onCheckingWithoutLoader();
       getUser(userToUnfollow.username);
-    }
+    } catch (error) {}
   };
 
   return (
