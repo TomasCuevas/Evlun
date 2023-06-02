@@ -2,6 +2,8 @@ import { useState } from "react";
 import { NextPage } from "next";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 //* components *//
 import {
@@ -13,14 +15,24 @@ import {
 } from "@/components/form";
 import { HeroText } from "@/components/auth";
 
+//* regex *//
+import { emailRegex } from "@/regex";
+
+//* form-values and form-validations *//
+const formValues = () => ({
+  email: "",
+  password: "",
+});
+
+const formValidations = () => {
+  return Yup.object({
+    email: Yup.string().matches(emailRegex).required(),
+    password: Yup.string().min(8).max(30).required(),
+  });
+};
+
 //* layout *//
 import { AuthLayout } from "@/layouts";
-
-//* hooks *//
-import { useForm } from "@/hooks";
-
-//* helpers *//
-import { emailValidation, passwordValidation } from "@/helpers";
 
 //* store *//
 import { useAuthStore } from "@/store";
@@ -28,29 +40,24 @@ import { useAuthStore } from "@/store";
 const LoginPage: NextPage = () => {
   const { onLogin } = useAuthStore();
   const [isUserDisable, setIsUserDisable] = useState(false);
-
   const router = useRouter();
 
-  const { email, password, formValues, error, onInputChange, onSetError } =
-    useForm({
-      email: "",
-      password: "",
-    });
+  const formik = useFormik({
+    initialValues: formValues(),
+    validationSchema: formValidations(),
+    validateOnMount: true,
+    onSubmit: async (formValues) => {
+      setIsUserDisable(false);
 
-  //! start login
-  const startLogin = async () => {
-    setIsUserDisable(false);
-    onSetError("");
-
-    const result = await onLogin(formValues);
-
-    if (result.ok) {
-      return router.replace("/");
-    } else {
-      if (result.status === 410) setIsUserDisable(true);
-      onSetError(result.msg || "Ocurrio un error. Intente de nuevo");
-    }
-  };
+      try {
+        await onLogin(formValues);
+        router.replace("/");
+      } catch (error: any) {
+        if (error.status === 410) setIsUserDisable(true);
+        formik.setStatus(error.msg);
+      }
+    },
+  });
 
   return (
     <AuthLayout title="Login | Evlun" description="Iniciar sesión en en Evlun">
@@ -58,38 +65,34 @@ const LoginPage: NextPage = () => {
         <HeroText strong="Evlun" text="Iniciar Sesión en" />
       </section>
       <section>
-        <Form onSubmit={() => startLogin()}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="email"
             inputType="email"
-            inputValue={email}
+            inputValue={formik.values.email}
             label="Correo electronico"
           />
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="password"
             inputType="password"
-            inputValue={password}
+            inputValue={formik.values.password}
             label="Contraseña"
           />
           <FormButtonPrimary
-            isDisabled={
-              !emailValidation(email) || !passwordValidation(password)
-            }
+            isDisabled={Object.keys(formik.errors).length > 0}
             label="Iniciar Sesión"
             type="submit"
           />
-          {error ? <FormErrorMessage message={error} /> : null}
-          {isUserDisable ? (
-            <div>
-              <NextLink href="/auth/reactivate" passHref>
-                <a className="text-sm font-bold text-orange underline">
-                  Click aquí si deseas reactivar tu cuenta.
-                </a>
-              </NextLink>
-            </div>
-          ) : null}
+          {formik.status ? <FormErrorMessage message={formik.status} /> : null}
+          <div style={{ display: isUserDisable ? "block" : "none" }}>
+            <NextLink href="/auth/reactivate" passHref>
+              <a className="text-sm font-bold text-orange underline">
+                Clic aquí si deseas reactivar tu cuenta.
+              </a>
+            </NextLink>
+          </div>
         </Form>
         <FormQuestion
           link="/auth/register"

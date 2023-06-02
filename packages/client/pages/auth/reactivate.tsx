@@ -1,5 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 //* components *//
 import {
@@ -12,58 +14,48 @@ import {
 import { FullLoader } from "@/components/ui";
 import { HeroText } from "@/components/auth";
 
+//* regex *//
+import { emailRegex } from "@/regex";
+
+//* form-values and for-validations
+const formValues = () => ({
+  email: "",
+  password: "",
+});
+
+const formValidations = () => {
+  return Yup.object({
+    email: Yup.string().matches(emailRegex).required(),
+    password: Yup.string().min(8).max(30).required(),
+  });
+};
+
 //* layout *//
 import { AuthLayout } from "@/layouts";
-
-//* hooks *//
-import { useForm } from "@/hooks";
 
 //* services *//
 import { reactivateService } from "@/services";
 
-//* helpers *//
-import { emailValidation, passwordValidation } from "@/helpers";
-
 const ReactivatePage: NextPage = () => {
   const router = useRouter();
 
-  const {
-    email,
-    error,
-    formValues,
-    isSending,
-    onInputChange,
-    onSetError,
-    password,
-    reset,
-    setIsSending,
-  } = useForm({
-    email: "",
-    password: "",
+  const formik = useFormik({
+    initialValues: formValues(),
+    validationSchema: formValidations(),
+    validateOnMount: true,
+    onSubmit: async (formValues) => {
+      try {
+        await reactivateService(formValues);
+        router.replace("/auth/login");
+      } catch (error: any) {
+        formik.setStatus(error.msg || "Ocurrio un error. Intente de nuevo.");
+        return;
+      }
+    },
   });
 
-  //! start reactivate account
-  const startReactivate = async () => {
-    onSetError("");
+  if (formik.isSubmitting) return <FullLoader />;
 
-    const formData = new FormData();
-
-    formData.append("email", email);
-    formData.append("password", password);
-
-    setIsSending(true);
-    const result = await reactivateService(formValues);
-    setIsSending(false);
-
-    if (result.ok) {
-      reset();
-      return router.replace("/auth/login");
-    } else {
-      onSetError(result.msg || "Ocurrio un error. Intente de nuevo.");
-    }
-  };
-
-  if (isSending) return <FullLoader />;
   return (
     <AuthLayout
       title="Reactivar cuenta| Evlun"
@@ -73,31 +65,27 @@ const ReactivatePage: NextPage = () => {
         <HeroText strong="Evlun" text="Reactivar tu cuenta de" />
       </section>
       <section>
-        <Form onSubmit={() => startReactivate()}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="email"
             inputType="email"
-            inputValue={email}
+            inputValue={formik.values.email}
             label="Correo electronico"
           />
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="password"
             inputType="password"
-            inputValue={password}
+            inputValue={formik.values.password}
             label="Contraseña"
           />
           <FormButtonPrimary
-            isDisabled={
-              isSending ||
-              !emailValidation(email) ||
-              !passwordValidation(password)
-            }
+            isDisabled={Object.keys(formik.errors).length > 0}
             label="Reactivar Cuenta"
             type="submit"
           />
-          {error ? <FormErrorMessage message={error} /> : null}
+          {formik.status ? <FormErrorMessage message={formik.status} /> : null}
         </Form>
         <FormQuestion
           link="/auth/login"

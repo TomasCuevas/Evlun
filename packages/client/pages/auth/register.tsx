@@ -1,5 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 //* components *//
 import {
@@ -11,11 +13,30 @@ import {
 } from "@/components/form";
 import { HeroText } from "@/components/auth";
 
+//* regexs *//
+import { emailRegex, nameRegex, usernameRegex } from "@/regex";
+
+//* form-values and form-validations *//
+const initialValues = () => ({
+  email: "",
+  name: "",
+  password: "",
+  repeatPassword: "",
+  username: "",
+});
+
+const formValidations = () => {
+  return Yup.object({
+    email: Yup.string().matches(emailRegex).required(),
+    name: Yup.string().matches(nameRegex).required(),
+    password: Yup.string().min(8).max(30).required(),
+    repeatPassword: Yup.string().min(8).max(30).required(),
+    username: Yup.string().matches(usernameRegex).required(),
+  });
+};
+
 //* layout *//
 import { AuthLayout } from "@/layouts";
-
-//* hooks *//
-import { useForm } from "@/hooks";
 
 //* store *//
 import { useAuthStore } from "@/store";
@@ -24,31 +45,25 @@ const RegisterPage: NextPage = () => {
   const { onRegister } = useAuthStore();
   const router = useRouter();
 
-  const {
-    email,
-    name,
-    password,
-    username,
-    formValues,
-    error,
-    onInputChange,
-    onSetError,
-  } = useForm({
-    email: "",
-    name: "",
-    password: "",
-    username: "",
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: formValidations(),
+    validateOnMount: true,
+    onSubmit: async (formValues) => {
+      const { repeatPassword, ...values } = formValues;
+      if (repeatPassword !== values.password) {
+        formik.setStatus("Las contraseñas ingresadas no coinciden.");
+        return;
+      }
+
+      try {
+        await onRegister(values);
+        router.replace("/");
+      } catch (error: any) {
+        formik.setStatus(error.msg || "Ocurrio un error. Intente de nuevo.");
+      }
+    },
   });
-
-  const startRegister = async () => {
-    const result = await onRegister(formValues);
-
-    if (result.ok) {
-      return router.replace("/");
-    } else {
-      onSetError(result.msg || "Ocurrio un error. Intente de nuevo");
-    }
-  };
 
   return (
     <AuthLayout title="Registro | Evlun" description="Registrarse en Evlun">
@@ -56,46 +71,48 @@ const RegisterPage: NextPage = () => {
         <HeroText strong="Evlun" text="Unete a" textAfterStrong="hoy mismo" />
       </section>
       <section>
-        <Form onSubmit={() => startRegister()}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="name"
             inputType="text"
-            inputValue={name}
+            inputValue={formik.values.name}
             label="Nombre completo"
           />
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="username"
             inputType="text"
-            inputValue={username}
+            inputValue={formik.values.username}
             label="Nombre de usuario"
           />
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="email"
             inputType="email"
-            inputValue={email}
+            inputValue={formik.values.email}
             label="Correo electronico"
           />
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="password"
             inputType="password"
-            inputValue={password}
+            inputValue={formik.values.password}
             label="Contraseña"
           />
+          <FormInputPrimary
+            inputChange={formik.handleChange}
+            inputName="repeatPassword"
+            inputType="password"
+            inputValue={formik.values.repeatPassword}
+            label="Repite la Contraseña"
+          />
           <FormButtonPrimary
-            isDisabled={
-              email.length < 1 ||
-              name.length < 1 ||
-              password.length < 1 ||
-              username.length < 1
-            }
+            isDisabled={Object.keys(formik.errors).length > 0}
             label="Registrarme"
             type="submit"
           />
-          {error ? <FormErrorMessage message={error!} /> : null}
+          {formik.status ? <FormErrorMessage message={formik.status} /> : null}
         </Form>
         <FormQuestion
           link="/auth/login"

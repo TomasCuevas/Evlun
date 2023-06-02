@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { NextPage } from "next";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 //* components *//
 import { FullLoader } from "@/components/ui";
@@ -13,12 +15,6 @@ import {
 //* layout *//
 import { SettingLayout } from "@/layouts";
 
-//* hooks *//
-import { useForm } from "@/hooks";
-
-//* helpers *//
-import { phoneValidation } from "@/helpers";
-
 //* services *//
 import { settingServices } from "@/services";
 
@@ -29,63 +25,57 @@ const SettingsPhonePage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
-  const { newPhone, onInputChange, error, setError, isSending, setIsSending } =
-    useForm({
-      newPhone: "",
-    });
-
-  //! on save data
-  const onSave = async () => {
-    const formData = new FormData();
-    formData.append("phone", newPhone);
-
-    setIsSending(true);
-    const result = await settingServices("phone", formData);
-    setIsSending(false);
-
-    if (result.ok) {
-      await onChecking();
-    } else {
-      setError(result.msg);
-    }
-  };
+  const formik = useFormik({
+    initialValues: { phone: user?.phone || "" },
+    validationSchema: Yup.object({
+      phone: Yup.string()
+        .min(9)
+        .max(15)
+        .required()
+        .test("diferent-value", (value) => value !== user?.phone),
+    }),
+    onSubmit: async (formValues) => {
+      try {
+        await settingServices("phone", formValues);
+        await onChecking();
+      } catch (error: any) {
+        formik.setStatus(error.msg || "Ocurrio un error.");
+      }
+    },
+  });
 
   useEffect(() => {
-    if (user) {
-      onInputChange({
-        target: {
-          name: "newPhone",
-          value: user.phone ? user.phone : "",
-        },
-      });
-    }
-
-    onSetLocation("settings");
-    onSetNavbarData({ settingText: "Cambiar número de teléfono" });
+    if (user) formik.setFieldValue("phone", user.phone);
   }, [user]);
 
-  if (isSending) return <FullLoader />;
+  useEffect(() => {
+    onSetLocation("settings");
+    onSetNavbarData({ settingText: "Cambiar número de teléfono" });
+  }, []);
+
+  if (formik.isSubmitting) return <FullLoader />;
+
   return (
     <SettingLayout
       title="Cambiar número de teléfono | Evlun"
       description="Pagina para cambiar/modificar el numero de telefono en Evlun"
     >
       <section className="px-[5%]">
-        <Form onSubmit={onSave}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormInputPrimary
-            inputChange={onInputChange}
-            inputName="newPhone"
-            inputValue={newPhone}
+            inputChange={formik.handleChange}
+            inputName="phone"
+            inputValue={formik.values.phone}
             label="Numero de telefono"
             inputType="number"
-            max={30}
+            max={15}
           />
           <FormButtonPrimary
-            isDisabled={isSending || !phoneValidation(newPhone)}
+            isDisabled={Object.keys(formik.errors).length > 0}
             label="Guardar"
             type="submit"
           />
-          {error ? <FormErrorMessage message={error} /> : null}
+          {formik.status ? <FormErrorMessage message={formik.status} /> : null}
         </Form>
       </section>
     </SettingLayout>

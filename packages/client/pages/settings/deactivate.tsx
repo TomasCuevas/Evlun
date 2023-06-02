@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { NextPage } from "next";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 //* components *//
 import { FullLoader } from "@/components/ui";
@@ -10,20 +12,17 @@ import {
   FormInputPrimary,
 } from "@/components/form";
 
+//* regex *//
+import { passwordRegex } from "@/regex";
+
 //* layout *//
 import { SettingLayout } from "@/layouts";
-
-//* helpers *//
-import { passwordValidation } from "@/helpers";
 
 //* components *//
 import { ProfileDeactivate } from "@/components/setting";
 
 //* services *//
 import { deactivateService } from "@/services";
-
-//* hooks *//
-import { useForm } from "@/hooks";
 
 //* store *//
 import { useAuthStore, useNavbarTopStore } from "@/store";
@@ -32,50 +31,30 @@ const SettingsDeactivatePage: NextPage = () => {
   const { onChecking } = useAuthStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
-  const {
-    password,
-    onInputChange,
-    isSending,
-    setIsSending,
-    onSetError,
-    error,
-    reset,
-  } = useForm({
-    password: "",
+  const formik = useFormik({
+    initialValues: { password: "" },
+    validationSchema: Yup.object({
+      password: Yup.string().matches(passwordRegex).required(),
+    }),
+    validateOnMount: true,
+    onSubmit: async (formValues) => {
+      try {
+        await deactivateService(formValues);
+        formik.resetForm();
+        await onChecking();
+      } catch (error: any) {
+        formik.setStatus(error.msg || "Ocurrio un error.");
+      }
+    },
   });
-
-  //! on save data
-  const onSave = async (event: Event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    onSetError("");
-
-    if (passwordValidation(password)) {
-      formData.append("password", password);
-    } else {
-      return onSetError(
-        "La contraseña ingresa, no contiene un formato valido."
-      );
-    }
-
-    setIsSending(true);
-    const result = await deactivateService(formData);
-    setIsSending(false);
-
-    if (result.ok) {
-      reset();
-      await onChecking();
-    } else {
-      onSetError(result.msg || "Ocurrio un error");
-    }
-  };
 
   useEffect(() => {
     onSetLocation("settings");
     onSetNavbarData({ settingText: "Desactivar tu cuenta" });
   }, []);
 
-  if (isSending) return <FullLoader />;
+  if (formik.isSubmitting) return <FullLoader />;
+
   return (
     <SettingLayout
       title="Desactivar tu cuenta | Evlun"
@@ -91,21 +70,21 @@ const SettingsDeactivatePage: NextPage = () => {
           Tu nombre visible, tu @usuario y tu perfil público ya no se podrán ver
           en Evlun.
         </span>
-        <Form onSubmit={onSave}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormInputPrimary
-            inputChange={onInputChange}
+            inputChange={formik.handleChange}
             inputName="password"
-            inputValue={password}
+            inputValue={formik.values.password}
             label="Confirmar contraseña"
             inputType="password"
           />
           <FormButtonPrimary
             label="Desactivar"
             type="submit"
-            isDisabled={isSending || !passwordValidation(password)}
-            className="mt-2 flex h-[50px] w-full cursor-pointer items-center justify-center rounded-md border border-error font-bold text-error transition-all duration-300 disabled:cursor-not-allowed disabled:border-error/50 disabled:text-error/60"
+            isDisabled={Object.keys(formik.errors).length > 0}
+            className="mt-2 flex h-[50px] w-full cursor-pointer items-center justify-center rounded-md border border-error font-bold text-error disabled:cursor-not-allowed disabled:border-error/50 disabled:text-error/60"
           />
-          {error ? <FormErrorMessage message={error} /> : null}
+          {formik.status ? <FormErrorMessage message={formik.status} /> : null}
         </Form>
       </section>
     </SettingLayout>

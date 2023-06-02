@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { NextPage } from "next";
 import { countries, Country } from "countries-list";
+import { useFormik } from "formik";
 
 //* components *//
 import { FullLoader } from "@/components/ui";
@@ -14,15 +15,13 @@ import {
 //* layout *//
 import { SettingLayout } from "@/layouts";
 
-//* hooks *//
-import { useForm } from "@/hooks";
-
 //* services *//
 import { settingServices } from "@/services";
 
 //* store *//
 import { useAuthStore, useNavbarTopStore } from "@/store";
 
+//* countries *//
 const fullCountries: any = countries;
 const AllCountries: Country[] = [];
 for (const country in fullCountries) {
@@ -33,68 +32,51 @@ const SettingsCountryPage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
-  const {
-    newCountry,
-    onInputChange,
-    error,
-    setError,
-    isSending,
-    setIsSending,
-  } = useForm({
-    newCountry: "",
+  const formik = useFormik({
+    initialValues: { country: user?.country || "" },
+    onSubmit: async (formValues) => {
+      try {
+        await settingServices("country", formValues);
+        onChecking();
+      } catch (error: any) {
+        formik.setStatus(error.msg || "Ocurrio un error.");
+      }
+    },
   });
 
-  //! on save data
-  const onSave = async () => {
-    const formData = new FormData();
-    formData.append("country", newCountry);
-
-    setIsSending(true);
-    const result = await settingServices("country", formData);
-    setIsSending(false);
-
-    if (result.ok) {
-      await onChecking();
-    } else {
-      setError(result.msg);
-    }
-  };
-
   useEffect(() => {
-    if (user) {
-      onInputChange({
-        target: {
-          name: "newCountry",
-          value: user.country ? user.country : "",
-        },
-      });
-    }
-
-    onSetLocation("settings");
-    onSetNavbarData({ settingText: "Cambiar país" });
+    if (user) formik.setFieldValue("country", user.country);
   }, [user]);
 
-  if (isSending) return <FullLoader />;
+  useEffect(() => {
+    onSetLocation("settings");
+    onSetNavbarData({ settingText: "Cambiar país" });
+  }, []);
+
+  if (formik.isSubmitting) return <FullLoader />;
+
   return (
     <SettingLayout
       title="Cambiar país | Evlun"
       description="Pagina para cambiar/modificar el pais en Evlun"
     >
       <section className="px-[5%]">
-        <Form onSubmit={onSave}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormSelectOption
-            inputChange={onInputChange}
-            inputName="newCountry"
-            inputValue={newCountry}
+            inputChange={formik.handleChange}
+            inputName="country"
+            inputValue={formik.values.country}
             label="Pais"
             optionValues={AllCountries}
           />
           <FormButtonPrimary
-            isDisabled={isSending}
+            isDisabled={
+              formik.isSubmitting || formik.values.country === user?.country
+            }
             label="Guardar"
             type="submit"
           />
-          {error ? <FormErrorMessage message={error} /> : null}
+          {formik.status ? <FormErrorMessage message={formik.status} /> : null}
         </Form>
       </section>
     </SettingLayout>

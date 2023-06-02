@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { NextPage } from "next";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 //* components *//
 import { FullLoader } from "@/components/ui";
@@ -10,14 +12,11 @@ import {
   FormInputPrimary,
 } from "@/components/form";
 
+//* regex *//
+import { emailRegex } from "@/regex";
+
 //* layout *//
 import { SettingLayout } from "@/layouts";
-
-//* hooks *//
-import { useForm } from "@/hooks";
-
-//* helpers *//
-import { emailValidation } from "@/helpers";
 
 //* services *//
 import { settingServices } from "@/services";
@@ -29,74 +28,55 @@ const SettingsEmailPage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
-  const {
-    newEmail,
-    onInputChange,
-    error,
-    setError,
-    isSending,
-    setIsSending,
-    reset,
-  } = useForm({
-    newEmail: "",
+  const formik = useFormik({
+    initialValues: { email: user?.email || "" },
+    validationSchema: Yup.object({
+      email: Yup.string().matches(emailRegex).required(),
+    }),
+    onSubmit: async (formValues) => {
+      try {
+        await settingServices("email", formValues);
+        await onChecking();
+      } catch (error: any) {
+        formik.setStatus(error.msg);
+      }
+    },
   });
 
-  //! on save data
-  const onSave = async () => {
-    const formData = new FormData();
-    formData.append("email", newEmail);
-
-    setIsSending(true);
-    const result = await settingServices("email", formData);
-    setIsSending(false);
-
-    if (result.ok) {
-      reset();
-      await onChecking();
-    } else {
-      setError(result.msg);
-    }
-  };
-
   useEffect(() => {
-    if (user) {
-      onInputChange({
-        target: {
-          name: "newEmail",
-          value: user.email ? user.email : "",
-        },
-      });
-    }
-
-    onSetLocation("settings");
-    onSetNavbarData({ settingText: "Cambiar el correo electrónico" });
+    if (user) formik.setFieldValue("email", user.email);
   }, [user]);
 
-  if (isSending) return <FullLoader />;
+  useEffect(() => {
+    onSetLocation("settings");
+    onSetNavbarData({ settingText: "Cambiar el correo electrónico" });
+  }, []);
+
+  if (formik.isSubmitting) return <FullLoader />;
+
   return (
     <SettingLayout
       title="Cambiar el correo electrónico | Evlun"
       description="Pagina para cambiar/modificar el correo electronico en Evlun"
     >
       <section className="px-[5%]">
-        <Form onSubmit={onSave}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormInputPrimary
-            inputChange={onInputChange}
-            inputName="newEmail"
-            inputValue={newEmail}
+            inputChange={formik.handleChange}
+            inputName="email"
+            inputValue={formik.values.email}
             label="Correo electronico"
             inputType="text"
           />
           <FormButtonPrimary
             isDisabled={
-              isSending ||
-              !emailValidation(newEmail) ||
-              newEmail === user?.email
+              Object.keys(formik.errors).length > 0 ||
+              formik.values.email === user?.email
             }
             label="Guardar"
             type="submit"
           />
-          {error ? <FormErrorMessage message={error} /> : null}
+          {formik.status ? <FormErrorMessage message={formik.status} /> : null}
         </Form>
       </section>
     </SettingLayout>

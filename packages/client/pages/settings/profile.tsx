@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+useRouter;
 
 //* layout *//
 import { SettingLayout } from "@/layouts";
@@ -14,15 +18,41 @@ import {
   FormTextareaPrimary,
 } from "@/components/form";
 
-//* helpers *//
-import {
-  biographyValidation,
-  locationValidation,
-  nameValidation,
-} from "@/helpers";
+//* regexs *//
+import { biographyRegex, locationRegex, nameRegex } from "@/regex";
 
-//* hooks *//
-import { useForm } from "@/hooks";
+//* form-values and form-validations
+const formValues = (
+  avatar: string,
+  banner?: string,
+  biography?: string,
+  location?: string,
+  name?: string
+) => ({
+  avatar: avatar,
+  banner: banner || "",
+  biography: biography || "",
+  location: location || "",
+  name: name || "",
+});
+
+const formValidation = () => {
+  return Yup.object({
+    avatar: Yup.string().required(),
+    banner: Yup.string(),
+    biography: Yup.string().matches(
+      biographyRegex,
+      "Por favor, ingresa una biografía válida."
+    ),
+    location: Yup.string().matches(
+      locationRegex,
+      "Por favor, ingresa una ubicación válida."
+    ),
+    name: Yup.string()
+      .matches(nameRegex, "Por favor, ingresa un nombre válido.")
+      .required("Por favor, ingresa tu nombre."),
+  });
+};
 
 //* service *//
 import { settingServices } from "@/services";
@@ -34,39 +64,44 @@ const SettingProfilePage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
-  const [avatar, setAvatar] = useState<File | false>(false);
-  const [avatarPreview, setAvatarPreview] = useState<string>(
-    user?.avatar || ""
-  );
-  const [banner, setBanner] = useState<File | false>(false);
-  const [deleteBanner, setDeleteBanner] = useState<boolean>(false);
-  const [bannerPreview, setBannerPreview] = useState<string>(
-    user?.banner || ""
-  );
+  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || "");
+  const [bannerPreview, setBannerPreview] = useState(user?.banner || "");
+  const [deleteBanner, setDeleteBanner] = useState(false);
 
-  const {
-    biography,
-    location,
-    name,
-    onInputChange,
-    setError,
-    error,
-    setIsSending,
-    isSending,
-  } = useForm({
-    name: user?.name || "",
-    biography: user?.biography || "",
-    location: user?.location || "",
+  const router = useRouter();
+
+  const formik = useFormik({
+    initialValues: formValues(
+      user?.avatar || "",
+      user?.banner,
+      user?.biography,
+      user?.location,
+      user?.name
+    ),
+    validationSchema: formValidation(),
+    onSubmit: async (formValues) => {
+      try {
+        await settingServices("profile", {
+          ...formValues,
+          noBanner: deleteBanner ? true : false,
+        });
+
+        router.replace(`/profile/${user?.username}`);
+        await onChecking();
+      } catch (error: any) {
+        formik.setStatus(error.msg);
+      }
+    },
   });
 
   //! on load new banner
   const onLoadNewBanner = (newBanner: File | false) => {
     if (!newBanner) {
       setBannerPreview("");
-      setBanner(false);
+      formik.setFieldValue("banner", "");
     } else {
-      setBannerPreview(URL.createObjectURL(newBanner!));
-      setBanner(newBanner);
+      setBannerPreview(URL.createObjectURL(newBanner));
+      formik.setFieldValue("banner", newBanner);
     }
   };
 
@@ -74,82 +109,40 @@ const SettingProfilePage: NextPage = () => {
   const onLoadNewAvatar = (newAvatar: File | false) => {
     if (!newAvatar) {
       setAvatarPreview("");
-      setAvatar(false);
+      formik.setFieldValue("avatar", "");
     } else {
-      setAvatarPreview(URL.createObjectURL(newAvatar!));
-      setAvatar(newAvatar);
-    }
-  };
-
-  //! on save data
-  const onSave = async () => {
-    const formData = new FormData();
-
-    avatar ? formData.append("avatar", avatar, "avatar") : null;
-    banner ? formData.append("banner", banner, "banner") : null;
-    deleteBanner ? formData.append("noBanner", "false") : null;
-
-    if (biographyValidation(biography)) {
-      formData.append("biography", biography);
-    } else {
-      return setError("La biografia ingresada no es valida.");
-    }
-    if (locationValidation(location)) {
-      formData.append("location", location);
-    } else {
-      return setError("La ubicacion ingresada no es valida.");
-    }
-    if (nameValidation(name)) {
-      formData.append("name", name);
-    } else {
-      return setError("El nombre ingresado no es valido.");
-    }
-
-    setIsSending(true);
-    const result = await settingServices("profile", formData);
-    setIsSending(false);
-
-    if (result.ok) {
-      await onChecking();
-    } else {
-      setError(result.msg);
+      setDeleteBanner(false);
+      setAvatarPreview(URL.createObjectURL(newAvatar));
+      formik.setFieldValue("avatar", newAvatar);
     }
   };
 
   useEffect(() => {
     if (user) {
-      setAvatarPreview(user.avatar || "");
-      setBannerPreview(user.banner || "");
-      onInputChange({
-        target: {
-          name: "name",
-          value: user.name,
-        },
-      });
-      onInputChange({
-        target: {
-          name: "biography",
-          value: user.biography || "",
-        },
-      });
-      onInputChange({
-        target: {
-          name: "location",
-          value: user.location || "",
-        },
+      setAvatarPreview(user.avatar);
+      setBannerPreview(user?.banner || "");
+      formik.setValues({
+        avatar: user.avatar,
+        banner: user.banner || "",
+        biography: user.biography || "",
+        location: user.location || "",
+        name: user.name,
       });
     }
+  }, [user]);
 
+  useEffect(() => {
     onSetLocation("settings");
     onSetNavbarData({
       isButton: true,
-      buttonOnClick: () => onSave(),
+      buttonOnClick: () => formik.submitForm(),
       buttonText: "Guardar",
       settingText: "Editar perfil",
     });
-  }, [user]);
+  }, []);
 
-  if (isSending) return <FullLoader />;
+  if (formik.isSubmitting) return <FullLoader />;
+
   return (
     <SettingLayout
       title={`${user?.name} (${user?.username}) | Evlun`}
@@ -163,29 +156,41 @@ const SettingProfilePage: NextPage = () => {
       <section className="px-[5%]">
         <AvatarSetting avatar={avatarPreview} loadNewAvatar={onLoadNewAvatar} />
         <div>
-          <Form onSubmit={onSave}>
+          <Form onSubmit={formik.handleSubmit}>
             <FormInputPrimary
-              inputChange={onInputChange}
+              inputChange={formik.handleChange}
               inputName="name"
-              inputValue={name}
+              inputValue={formik.values.name}
               label="Nombre"
               max={30}
             />
             <FormTextareaPrimary
-              inputChange={onInputChange}
+              inputChange={formik.handleChange}
               inputName="biography"
-              inputValue={biography}
+              inputValue={formik.values.biography}
               label="Biografia"
               max={300}
             />
             <FormInputPrimary
-              inputChange={onInputChange}
+              inputChange={formik.handleChange}
               inputName="location"
-              inputValue={location}
+              inputValue={formik.values.location}
               label="Ubicacion"
               max={30}
             />
-            {error ? <FormErrorMessage message={error} /> : null}
+            {Object.keys(formik.errors).length > 0 && (
+              <FormErrorMessage
+                message={
+                  formik.errors.biography ||
+                  formik.errors.location ||
+                  formik.errors.name ||
+                  ""
+                }
+              />
+            )}
+            {formik.status ? (
+              <FormErrorMessage message={formik.status} />
+            ) : null}
           </Form>
         </div>
       </section>
