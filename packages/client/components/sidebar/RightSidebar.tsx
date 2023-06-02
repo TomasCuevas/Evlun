@@ -1,11 +1,12 @@
 //* components *//
 import { Explore, FeedExploreModal } from "@/components/explore";
-import { ProfileInfo, RelevantPersons } from "@/components/sidebar";
+import { ProfileInfo, RelevantPersons, NewToEvlun } from "@/components/sidebar";
 
 //* stores *//
-import { useRightSidebarStore } from "@/store";
+import { useAuthStore, useRightSidebarStore } from "@/store";
 
 export const RightSidebar: React.FC = () => {
+  const { isAuthenticated } = useAuthStore();
   const { sidebarItems } = useRightSidebarStore();
 
   return (
@@ -16,6 +17,7 @@ export const RightSidebar: React.FC = () => {
           <FeedExploreModal />
         </>
       )}
+      {isAuthenticated === "no-authenticated" && <NewToEvlun />}
       {sidebarItems.profile && <ProfileInfo />}
       {sidebarItems.relevant && <RelevantPersons />}
     </aside>
