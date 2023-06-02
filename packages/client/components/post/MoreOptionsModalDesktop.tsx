@@ -21,9 +21,11 @@ export const MoreOptionsModalDesktop: React.FC = () => {
     postModal,
     onUpdateSavedPost,
     onRemovePost,
-    onSetPostModal,
-    onRemovePostModal,
+    onCloseModal,
   } = usePostsStore();
+
+  const IsModalOpenByOwner = postModal?.added_by._id === user?._id;
+  const IsPostSaved = savedPostsList.includes(postModal?._id || "");
 
   const router = useRouter();
 
@@ -34,58 +36,44 @@ export const MoreOptionsModalDesktop: React.FC = () => {
       <div
         onClick={(event) => {
           event.stopPropagation();
-          onRemovePostModal();
+          onCloseModal();
         }}
         className="fixed top-0 left-0 h-screen w-screen cursor-default"
         style={{ backgroundColor: "#5551" }}
-      ></div>
+      />
+
       <div
         className="relative flex w-full flex-col items-center overflow-hidden rounded-xl"
         style={{ backgroundColor: "#05101b" }}
       >
         <ul
+          onClick={(event) => {
+            onCloseModal();
+            event.stopPropagation();
+          }}
           className="flex w-full flex-col"
-          onClick={(event) => event.stopPropagation()}
         >
-          {postModal.added_by._id === user._id ? (
+          {IsModalOpenByOwner ? (
             <MoreOption
               icon={RiDeleteBin6Line}
               text="Eliminar"
               color="#FF2222"
               onClick={() => {
                 onRemovePost(postModal._id);
-                onRemovePostModal();
                 if (router.asPath === `/post/${postModal._id}`) {
                   router.back();
                 }
               }}
             />
           ) : (
-            <MoreOption
-              icon={RiFlag2Line}
-              text="Denunciar post"
-              onClick={() => onRemovePostModal()}
-            />
+            <MoreOption icon={RiFlag2Line} text="Denunciar post" />
           )}
-          {savedPostsList.includes(postModal._id) ? (
-            <MoreOption
-              icon={RiBookmark2Line}
-              text="Quitar de guardados"
-              onClick={() => {
-                onUpdateSavedPost(postModal._id);
-                onRemovePostModal();
-              }}
-            />
-          ) : (
-            <MoreOption
-              icon={RiBookmark3Line}
-              text="Guardar post"
-              onClick={() => {
-                onUpdateSavedPost(postModal._id);
-                onRemovePostModal();
-              }}
-            />
-          )}
+
+          <MoreOption
+            icon={IsPostSaved ? RiBookmark2Line : RiBookmark3Line}
+            text={IsPostSaved ? "Quitar de guardados" : "Guardar post"}
+            onClick={() => onUpdateSavedPost(postModal._id)}
+          />
         </ul>
       </div>
     </section>

@@ -16,7 +16,7 @@ import { MoreOptionsModalDesktop } from "@/components/post";
 import { getRelativeTime } from "@/helpers";
 
 //* services *//
-import { likePostService } from "@/services";
+import { likeOrDislikePostService } from "@/services";
 
 //* query client *//
 import { queryClient } from "@/pages/_app";
@@ -34,11 +34,11 @@ interface Props {
 
 export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
   const { user, isAuthenticated } = useAuthStore();
-  const { postModal, onSetPostModal } = usePostsStore();
+  const { postModal, onOpenModal } = usePostsStore();
 
   const [likesValue, setLikesValue] = useState<number>(post.likes.length);
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string>(getRelativeTime(post.date));
 
   //! like post
   const onLike = async (event: MouseEvent) => {
@@ -46,28 +46,36 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
     if (isAuthenticated !== "authenticated") return;
 
     if (post.likes.includes(user!._id)) {
-      if (isLiked) setLikesValue((prev) => prev - 1);
-      if (!isLiked) setLikesValue(post.likes.length);
+      isLiked
+        ? setLikesValue((prev) => prev - 1)
+        : setLikesValue(post.likes.length);
     } else {
-      if (isLiked) setLikesValue((prev) => prev - 1);
-      if (!isLiked) setLikesValue(post.likes.length + 1);
+      isLiked
+        ? setLikesValue((prev) => prev - 1)
+        : setLikesValue(post.likes.length + 1);
     }
 
     isLiked ? setIsLiked(false) : setIsLiked(true);
 
-    const result = await likePostService(post._id);
-    if (result.ok) {
+    try {
+      await likeOrDislikePostService(post._id);
       if (fromAnswer) {
-        return queryClient.refetchQueries([`/answers/${post.postRef!}`]);
+        queryClient.refetchQueries([`/answers/${post.postRef!}`]);
+        return;
       }
 
-      return queryClient.refetchQueries(["/all"]);
-    }
+      queryClient.refetchQueries(["/all"]);
+    } catch (error) {}
   };
 
   useEffect(() => {
     setIsLiked(post.likes.includes(user ? user._id : "") || false);
-    setDate(getRelativeTime(post.date));
+
+    const updateRelativeTime = setInterval(() => {
+      setDate(getRelativeTime(post.date));
+    }, 1000 * 30);
+
+    return () => clearInterval(updateRelativeTime);
   }, []);
 
   return (
@@ -123,7 +131,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
                 <RiMoreFill
                   onClick={(event) => {
                     event.stopPropagation();
-                    onSetPostModal(post);
+                    onOpenModal(post);
                   }}
                   className="cursor-pointer text-xl text-white hover:text-orange"
                 />

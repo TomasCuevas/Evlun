@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const FeedPosts: React.FC<Props> = ({ url }) => {
-  const { postsQuery } = usePosts(url);
+  const { postsQuery, posts } = usePosts(url);
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export const FeedPosts: React.FC<Props> = ({ url }) => {
 
   return (
     <section className="flex flex-col">
-      {postsQuery.data?.pages.flat().map((post) => (
+      {posts.map((post) => (
         <Post key={post._id} post={post} />
       ))}
       {postsQuery.isFetching ? <Loader /> : null}

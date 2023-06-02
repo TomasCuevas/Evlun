@@ -8,20 +8,14 @@ import "react-quill/dist/quill.snow.css";
 //* components *//
 import { Form, FormButtonPrimary } from "@/components/form";
 
-//* services *//
-import { newPostService } from "@/services";
-
 //* helpers *//
 import { postValidation } from "@/helpers";
 
 //* hooks *//
 import { useQuill } from "@/hooks";
 
-//* query client *//
-import { queryClient } from "@/pages/_app";
-
 //* store *//
-import { useAuthStore } from "@/store";
+import { useAuthStore, usePostsStore } from "@/store";
 
 //* interface *//
 interface Props {
@@ -30,6 +24,7 @@ interface Props {
 
 export const NewPost: React.FC<Props> = ({ postRef }) => {
   const { user } = useAuthStore();
+  const { onCreatePost } = usePostsStore();
 
   const { html, text, onInputChange, reset } = useQuill();
   const [isSending, setIsSending] = useState(false);
@@ -39,26 +34,15 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
     event.preventDefault();
     if (!postValidation(text.trim()) || isSending || text.length < 1) return;
 
-    const formData = new FormData();
-    formData.append("content", html);
-    formData.append("text", text.trim());
-    if (postRef) formData.append("postRef", postRef);
-
     setIsSending(true);
-    const result = await newPostService(formData);
-    setIsSending(false);
-
-    if (postRef) {
-      queryClient.invalidateQueries([`/answers/${postRef}`]);
-    } else {
-      queryClient.invalidateQueries(["/all"]);
-    }
-
-    if (result) {
+    try {
+      await onCreatePost({ content: html, text: text, postRef });
       reset();
-    } else {
-      alert("No se pudo crear el post.");
+    } catch (error) {
+      alert("Error al crear el post.");
     }
+
+    setIsSending(false);
   };
 
   return (
@@ -82,7 +66,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
             placeholder={
               postRef ? "Publica tu respuesta" : "¿Qué está pasando?"
             }
-            className="text-lg text-white placeholder:text-white/50"
+            className="h-full max-h-[calc(100vh_-_150px)] overflow-y-auto text-lg text-white placeholder:text-white/50"
           />
           <div className="my-[10px] mx-0 flex w-full items-center justify-end">
             <FormButtonPrimary

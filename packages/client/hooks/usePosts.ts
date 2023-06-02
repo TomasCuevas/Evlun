@@ -9,8 +9,7 @@ import { IPost } from "@/interfaces";
 export const usePosts = (url: string) => {
   const postsQuery = useInfiniteQuery<IPost[]>(
     [`${url}`],
-    ({ pageParam }) =>
-      getPostsService({ pageParam, url }).then((data) => data.posts!),
+    ({ pageParam }) => getPostsService({ pageParam, url }),
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.length < 20) return;
@@ -21,6 +20,7 @@ export const usePosts = (url: string) => {
   );
 
   return {
+    posts: postsQuery.data?.pages.flat() || [],
     postsQuery,
   };
 };
