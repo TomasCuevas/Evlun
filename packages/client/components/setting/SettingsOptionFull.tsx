@@ -21,7 +21,7 @@ export const SettingsOptionFull: React.FC<Props> = ({
   return (
     <NextLink href={navigateLink} passHref>
       <a>
-        <div className="flex min-h-[50px] cursor-pointer items-center gap-[15px] py-[15px] px-4 transition-all duration-300 hover:bg-orange/5">
+        <div className="flex min-h-[50px] cursor-pointer items-center gap-[15px] py-[15px] px-4 hover:bg-orange/5">
           <div className="mx-[10px]">
             <Icon className="text-2xl text-orange" />
           </div>

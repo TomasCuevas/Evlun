@@ -28,7 +28,7 @@ export const SidebarMobileLink: React.FC<Props> = ({
             onSwitchMobileSidebar();
             onClick ? onClick() : null;
           }}
-          className="flex h-[50px] w-full items-center gap-[10px] px-4 transition-all duration-300 hover:bg-orange/5"
+          className="flex h-[50px] w-full items-center gap-[10px] px-4 hover:bg-orange/5"
         >
           <Icon className="text-2xl text-orange" />
           <span className=" font-light text-white">{text}</span>

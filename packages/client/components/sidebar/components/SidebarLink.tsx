@@ -31,18 +31,18 @@ export const SidebarLink: React.FC<Props> = ({
   return (
     <div className="flex justify-center xl:justify-start">
       <Link href={link} passHref>
-        <a className="flex items-center justify-center gap-4 rounded-full p-3 duration-100 hover:bg-orange/20 xl:pr-7">
+        <a className="flex items-center justify-center gap-4 rounded-full p-3 hover:bg-orange/20 xl:pr-7">
           {router.asPath === link ? (
             <>
               <IconFill className="text-[26px] text-orange" />
-              <span className="hidden text-xl font-semibold text-white xl:block">
+              <span className="hidden text-xl font-bold text-white xl:block">
                 {text}
               </span>
             </>
           ) : (
             <>
               <Icon className="text-[26px] text-orange/70" />
-              <span className="hidden text-xl font-semibold text-white/80 xl:block">
+              <span className="hidden text-xl font-normal text-white/80 xl:block">
                 {text}
               </span>
             </>

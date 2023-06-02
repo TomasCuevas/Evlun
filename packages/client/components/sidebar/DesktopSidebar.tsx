@@ -75,7 +75,7 @@ export const DesktopSidebar: React.FC = () => {
             onClick={() => setIsModalOpen((prev) => !prev)}
             className="mt-auto flex w-full cursor-pointer justify-center overflow-hidden xl:justify-start"
           >
-            <div className="flex w-full items-center justify-center gap-4 rounded-full p-3 duration-100 hover:bg-orange/20 xl:pr-7">
+            <div className="flex w-full items-center justify-center gap-4 rounded-full p-3 hover:bg-orange/20 xl:pr-7">
               <img
                 src={user?.avatar}
                 alt="profile-img"

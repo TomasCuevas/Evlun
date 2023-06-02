@@ -5,7 +5,7 @@ export const ProfileDeactivate: React.FC = () => {
   const { user } = useAuthStore();
 
   return (
-    <section className="flex w-full cursor-pointer flex-col gap-[5px] bg-orange/5 p-[10px] px-4 pt-[30px] transition-all duration-300">
+    <section className="flex w-full cursor-pointer flex-col gap-[5px] bg-orange/5 p-[10px] px-4 pt-[30px]">
       <div>
         <img
           src={user?.avatar}

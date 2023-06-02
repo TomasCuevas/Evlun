@@ -20,7 +20,7 @@ export const SettingsOption: React.FC<Props> = ({
   return (
     <NextLink href={navigateLink} passHref>
       <a>
-        <div className="flex min-h-[60px] w-full cursor-pointer items-center justify-between py-[15px] px-4 transition-all  duration-300 hover:bg-orange/5">
+        <div className="flex min-h-[60px] w-full cursor-pointer items-center justify-between py-[15px] px-4 hover:bg-orange/5">
           <div className="flex flex-col">
             <span className="text-base text-white">{optionTitle}</span>
             {optionText ? (
