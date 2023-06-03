@@ -4,8 +4,6 @@ import { Types } from "mongoose";
 //* models *//
 import { PostModel, ReportPostModel, UserModel } from "../../database/models";
 
-//* controllers *//
-
 //! create post
 export const createPost = async (
   req: Request & { _id?: Types.ObjectId },
@@ -15,7 +13,7 @@ export const createPost = async (
     const { _id } = req;
     const { content, postRef, text } = req.body;
 
-    // crear post
+    //? crear post
     const newPost = await new PostModel({
       added_by: _id,
       content,
@@ -24,7 +22,7 @@ export const createPost = async (
       postRef,
     });
 
-    // verificar si es una respuesta y añadirlo al post de referencia si lo es
+    //? verificar si es una respuesta y añadirlo al post de referencia si lo es
     if (postRef) {
       const post = await PostModel.findById(postRef);
       if (post) {
@@ -33,10 +31,9 @@ export const createPost = async (
       }
     }
 
-    // guardar post
+    //? guardar post en base de datos
     await newPost.save();
 
-    // respuesta al frontend
     return res.status(201).json({
       post: newPost,
     });
@@ -53,7 +50,7 @@ export const getPost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    // obtener post
+    //? obtener post
     const post = await PostModel.findById(id).populate("added_by", {
       _id: true,
       avatar: true,
@@ -66,7 +63,7 @@ export const getPost = async (req: Request, res: Response) => {
       });
     }
 
-    // verificar si el post es una respuesta a otro post y obtener el post de referencia
+    //? verificar si el post es una respuesta a otro post y obtener el post de referencia
     let postRef;
     if (post.postRef) {
       postRef = await PostModel.findById(post.postRef).populate("added_by", {
@@ -95,7 +92,7 @@ export const getUserPosts = async (req: Request, res: Response) => {
     const { page = 0 } = req.query;
     const { id } = req.params;
 
-    // obtener posts del usuario
+    //? obtener posts del usuario
     const posts = await PostModel.find({
       added_by: id,
       state: true,
@@ -110,7 +107,6 @@ export const getUserPosts = async (req: Request, res: Response) => {
       .limit(20)
       .sort({ date: -1 });
 
-    // respuesta al frontend
     return res.status(200).json({
       posts,
     });
@@ -128,7 +124,7 @@ export const getPostAnswers = async (req: Request, res: Response) => {
     const { page } = req.query;
     const { postId } = req.params;
 
-    // obtener posts
+    //? obtener posts
     const posts = await PostModel.find({ postRef: postId, state: true })
       .populate("added_by", {
         _id: true,
@@ -140,7 +136,6 @@ export const getPostAnswers = async (req: Request, res: Response) => {
       .limit(20)
       .sort({ date: -1 });
 
-    // respuesta al frontend
     return res.status(200).json({
       posts,
     });
@@ -157,7 +152,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
   try {
     const { page = 0 } = req.query;
 
-    // obtener los posts
+    //? obtener los posts
     const posts = await PostModel.find({ state: true, postRef: undefined })
       .populate("added_by", {
         _id: true,
@@ -169,7 +164,6 @@ export const getAllPosts = async (req: Request, res: Response) => {
       .limit(20)
       .sort({ date: -1 });
 
-    // respuesta al frontend
     return res.status(200).json({
       posts,
     });
@@ -190,7 +184,7 @@ export const getPostsByFollowings = async (
     const userId = req._id;
     const { page = 0 } = req.query;
 
-    // obtener usuario
+    //? obtener usuario
     const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(400).json({
@@ -198,10 +192,10 @@ export const getPostsByFollowings = async (
       });
     }
 
-    // obtenemos usuarios que sigue el usuario
+    //? obtenemos usuarios que sigue el usuario
     const usersFollowingsIds = user.followings.map((user) => user.toString());
 
-    // obtener posts de los usuarios a los que sigue
+    //? obtener posts de los usuarios a los que sigue
     const posts = await PostModel.find({
       added_by: { $in: usersFollowingsIds },
       state: true,
@@ -216,7 +210,6 @@ export const getPostsByFollowings = async (
       .limit(20)
       .sort({ date: -1 });
 
-    // respuesta al frontend
     return res.status(200).json({
       posts,
     });
@@ -237,7 +230,7 @@ export const getSavedPosts = async (
     const { _id } = req;
     const { page = 0 } = req.query;
 
-    // obtenemos usuarios
+    //? obtenemos usuarios
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(400).json({
@@ -245,7 +238,7 @@ export const getSavedPosts = async (
       });
     }
 
-    // obtenemos post guardados
+    //? obtenemos post guardados
     const posts = await PostModel.find({
       _id: { $in: user.savedPosts },
       state: true,
@@ -260,7 +253,6 @@ export const getSavedPosts = async (
       .limit(20)
       .sort({ date: -1 });
 
-    // respuesta el frontend
     return res.status(200).json({
       posts,
     });
@@ -280,7 +272,7 @@ export const getSavedPostsList = async (
   try {
     const { _id } = req;
 
-    // obtenemos los posts guardados por el usuario
+    //? obtenemos los posts guardados por el usuario
     const user = await UserModel.findById(_id).select("savedPosts -_id");
     if (!user) {
       return res.status(400).json({
@@ -288,7 +280,6 @@ export const getSavedPostsList = async (
       });
     }
 
-    // respuesta al frontend
     return res.status(200).json({
       savedPostsList: user.savedPosts,
     });
@@ -309,7 +300,7 @@ export const addOrRemoveLike = async (
     const { postId } = req.params;
     const { _id } = req;
 
-    // obtener post
+    //? obtener post
     const post = await PostModel.findById(postId).populate("added_by", {
       _id: true,
       avatar: true,
@@ -322,7 +313,7 @@ export const addOrRemoveLike = async (
       });
     }
 
-    // agregar o quitar like
+    //? agregar o quitar like
     if (post.likes?.includes(_id!)) {
       const newLikes = post.likes.filter((userId) => userId.valueOf() !== _id);
       post.likes = newLikes;
@@ -330,9 +321,9 @@ export const addOrRemoveLike = async (
       post.likes.push(_id!);
     }
 
+    //? actualizar post en base de datos
     await post.save();
 
-    // respuesta al frontend
     return res.status(200).json({});
   } catch (error) {
     console.error(error);
@@ -351,7 +342,7 @@ export const saveOrRemoveSavedPost = async (
     const { _id } = req;
     const { postId } = req.params;
 
-    // obtener usuario
+    //? obtener usuario
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(400).json({
@@ -359,7 +350,7 @@ export const saveOrRemoveSavedPost = async (
       });
     }
 
-    // guardar o quitar post de lista de guardados
+    //? guardar o quitar post de lista de guardados
     if (user.savedPosts.includes(postId as any)) {
       const newSaved = user.savedPosts.filter(
         (postIdDatabase) => postIdDatabase.valueOf() !== postId
@@ -369,9 +360,9 @@ export const saveOrRemoveSavedPost = async (
       user.savedPosts.push(postId as any);
     }
 
+    //? actualizar usuario en base de datos
     await user.save();
 
-    // respuesta el frontend
     return res.status(200).json({});
   } catch (error) {
     console.error(error);
@@ -390,14 +381,15 @@ export const reportPost = async (
     const { _id } = req;
     const { id } = req.params;
 
-    // reportar post
+    //? reportar post
     const newReport = await new ReportPostModel({
       postId: id,
       reportedBy: _id,
     });
+
+    //? guardar reporte en base de datos
     await newReport.save();
 
-    // respuesta al frontend
     return res.status(200).json({});
   } catch (error) {
     console.error(error);
@@ -416,7 +408,7 @@ export const deletePost = async (
     const { _id } = req;
     const { postId } = req.params;
 
-    // buscar post a eliminar
+    //? buscar post a eliminar
     const post = await PostModel.findById(postId).populate("added_by", {
       _id: true,
     });
@@ -426,19 +418,17 @@ export const deletePost = async (
       });
     }
 
-    // verificar que el usuario que quiere eliminar el post lo haya creado
+    //? verificar que el usuario que quiere eliminar el post lo haya creado
     if (post.added_by._id.valueOf() !== _id!.valueOf()) {
       return res.status(403).json({
-        ok: false,
         msg: "No tienes permiso para realizar esta operacion.",
       });
     }
 
-    // desactivar post y guardarlo
+    //? desactivar post y guardarlo en base de datos
     post.state = false;
     await post.save();
 
-    // respuesta al frontend
     return res.status(200).json({});
   } catch (error) {
     console.error(error);

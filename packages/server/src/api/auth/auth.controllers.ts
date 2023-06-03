@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Types } from "mongoose";
 import bcryptjs from "bcryptjs";
 
 //* models *//
@@ -6,16 +7,13 @@ import { UserModel } from "../../database/models";
 
 //* helpers *//
 import { generateJWT } from "../../helpers";
-import { Types } from "mongoose";
-
-//* controllers *//
 
 //! register user
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, username, email, password } = req.body;
 
-    // verificar que el email no haya sido registrado previamente
+    //? verificar que el email no haya sido registrado previamente
     const emailExist = await UserModel.findOne({ email });
     if (emailExist) {
       return res.status(400).json({
@@ -23,7 +21,7 @@ export const registerUser = async (req: Request, res: Response) => {
       });
     }
 
-    // verificar que el nombre de usuario ingresado, no exista en la base de datos
+    //? verificar que el nombre de usuario ingresado, no exista en la base de datos
     const usernameExist = await UserModel.findOne({ username });
     if (usernameExist) {
       return res.status(400).json({
@@ -31,11 +29,11 @@ export const registerUser = async (req: Request, res: Response) => {
       });
     }
 
-    // encriptar contraseña
+    //? encriptar contraseña
     const salt = bcryptjs.genSaltSync();
     const encryptedPassword = bcryptjs.hashSync(password, salt);
 
-    // generar usuario
+    //? generar usuario
     const newUser = {
       name,
       username,
@@ -44,13 +42,13 @@ export const registerUser = async (req: Request, res: Response) => {
       date: new Date().getTime(),
     };
 
+    //? guardar usuario en base de datos
     const user = await new UserModel(newUser);
     await user.save();
 
-    // generar token
+    //? generar token
     const token = await generateJWT(user._id, user.name);
 
-    // respuesta al frontend
     return res.status(201).json({
       token,
       user,
@@ -68,7 +66,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    // verificar que exista usuario con el email ingresado
+    //? verificar que exista usuario con el email ingresado
     const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({
@@ -76,7 +74,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    // verificar estado del usuario
+    //? verificar estado del usuario
     if (user.state === false) {
       return res.status(410).json({
         msg: "El usuario ha sido previamente desabilidado.",
@@ -84,7 +82,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    // verificar contraseña
+    //? verificar contraseña
     const passwordVerify = await bcryptjs.compareSync(password, user.password);
     if (!passwordVerify) {
       return res.status(400).json({
@@ -92,10 +90,9 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    // generar token
+    //? generar token
     const token = await generateJWT(user._id, user.username);
 
-    // respuesta al frontend
     return res.status(200).json({
       token,
       user,
@@ -116,25 +113,24 @@ export const checkJWT = async (
   try {
     const { _id, username } = req;
 
-    // obtener usuario por id del jwt recibido
+    //? obtener usuario por id del jwt recibido
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(400).json({
-        message: "No existe usuario con el ID ingresado en el jwt.",
+        msg: "No existe usuario con el ID ingresado en el jwt.",
       });
     }
 
-    // verificar estado del usuario
+    //? verificar estado del usuario
     if (user.state === false) {
       return res.status(405).json({
         msg: "El usuario ha sido previamente desabilidado.",
       });
     }
 
-    // generar nuevo token
+    //? generar nuevo token
     const token = await generateJWT(_id!, username!);
 
-    // respuesta al frontend
     return res.status(200).json({
       token,
       user,
@@ -152,7 +148,7 @@ export const reactivateUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    // obtenemos el usuario a partir del email ingresado
+    //? obtenemos el usuario a partir del email ingresado
     const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({
@@ -160,7 +156,7 @@ export const reactivateUser = async (req: Request, res: Response) => {
       });
     }
 
-    // verificamos que el password ingresado sea el correcto
+    //? verificamos que el password ingresado sea el correcto
     const passwordVerify = await bcryptjs.compareSync(password, user.password);
     if (!passwordVerify) {
       return res.status(400).json({
@@ -168,12 +164,11 @@ export const reactivateUser = async (req: Request, res: Response) => {
       });
     }
 
-    // reactivar usuario
+    //? reactivar usuario y guardar en base de datos
     user.state = true;
     user.save();
 
-    // respuesta al frontend
-    return res.status(200);
+    return res.status(200).json({});
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -191,15 +186,15 @@ export const deactivateUser = async (
     const { _id } = req;
     const { password } = req.body;
 
-    // obtener usuario por id del jwt recibido
+    //? obtener usuario por id del jwt recibido
     const user = await UserModel.findById(_id);
     if (!user) {
       return res.status(500).json({
-        message: "No existe usuario con el ID ingresado en el jwt.",
+        msg: "No existe usuario con el ID ingresado en el jwt.",
       });
     }
 
-    // verificamos que el password ingresado sea el correcto
+    //? verificamos que el password ingresado sea el correcto
     const passwordVerify = await bcryptjs.compareSync(password, user.password);
     if (!passwordVerify) {
       return res.status(400).json({
@@ -207,11 +202,10 @@ export const deactivateUser = async (
       });
     }
 
-    // desactivar usuario
+    //? desactivar usuario y guardarlo en base de datos
     await UserModel.findByIdAndUpdate(_id, { state: false });
 
-    // respuesta al frontend
-    return res.status(200);
+    return res.status(200).json({});
   } catch (error) {
     console.error(error);
     return res.status(500).json({

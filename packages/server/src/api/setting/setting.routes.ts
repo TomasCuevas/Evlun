@@ -1,7 +1,5 @@
-/**
- * user-following-routes
- * /api/settings
- */
+//* api url: /api/settings
+//* api url: /api/settings
 
 import { Router } from "express";
 import { check } from "express-validator";
@@ -29,8 +27,6 @@ import {
   updateProfile,
   updateUsername,
 } from "./setting.controllers";
-
-//* routes *//
 
 //! update profile data
 router.put("/profile", [JWTValidation], updateProfile);

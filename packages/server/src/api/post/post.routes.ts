@@ -1,7 +1,5 @@
-/**
- * post-routes
- * /api/post
- */
+//* api url: /api/post
+//* api url: /api/post
 
 import { Router } from "express";
 import { check, query, param } from "express-validator";
@@ -26,8 +24,6 @@ import {
   reportPost,
   saveOrRemoveSavedPost,
 } from "./post.controllers";
-
-//* routes *//
 
 //! create post
 router.post(
@@ -80,7 +76,7 @@ router.get("/followings", [JWTValidation], getPostsByFollowings);
 router.get("/saved", [JWTValidation], getSavedPosts);
 
 //! get saved posts list
-router.get("/savedList", JWTValidation, getSavedPostsList);
+router.get("/saved/list", JWTValidation, getSavedPostsList);
 
 //! like or unlike post
 router.put(

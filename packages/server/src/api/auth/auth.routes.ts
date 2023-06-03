@@ -1,7 +1,5 @@
-/**
- * auth routes
- * /api/auth
- */
+//* api url: /api/auth
+//* api url: /api/auth
 
 import { Router } from "express";
 import { check } from "express-validator";
@@ -27,8 +25,6 @@ import {
   deactivateUser,
   reactivateUser,
 } from "./auth.controllers";
-
-//* routes *//
 
 //! register user
 router.post(

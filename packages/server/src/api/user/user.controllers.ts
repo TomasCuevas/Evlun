@@ -4,14 +4,12 @@ import { Types } from "mongoose";
 //* models *//
 import { UserModel } from "../../database/models";
 
-//* controllers *//
-
 //! get user
 export const getUser = async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
 
-    // buscar usuario por el username y verificar que exista
+    //? buscar usuario por el username y verificar que exista
     const user = await UserModel.findOne({ username });
     if (!user) {
       return res.status(404).json({
@@ -19,14 +17,13 @@ export const getUser = async (req: Request, res: Response) => {
       });
     }
 
-    // verificar que el usuario no haya sido desactivado
+    //? verificar que el usuario no haya sido desactivado
     if (user.state === false) {
       return res.status(410).json({
         msg: "El usuario ha sido eliminado.",
       });
     }
 
-    // respues al frontend
     return res.status(200).json({
       user,
     });
@@ -43,7 +40,7 @@ export const searchUsers = async (req: Request, res: Response) => {
   try {
     const { search, skip = 0 } = req.query;
 
-    // buscar usuarios
+    //? buscar usuarios
     const users = await UserModel.find({
       username: { $regex: search, $options: "i" },
       state: true,
@@ -71,7 +68,7 @@ export const followUser = async (
     const { userId } = req.params as { userId?: Types.ObjectId };
     const { _id } = req;
 
-    // buscar usuario por el id en la base de datos
+    //? buscar usuario por el id en la base de datos
     const userToFollow = await UserModel.findById(userId);
     if (!userToFollow) {
       return res.status(400).json({
@@ -79,7 +76,7 @@ export const followUser = async (
       });
     }
 
-    // validar que no se siga al usuario previamente
+    //? validar que no se siga al usuario previamente
     const alreadyFollow = userToFollow.followers.find((id) => {
       if (id.valueOf() === userId!.valueOf()) return true;
     });
@@ -89,18 +86,17 @@ export const followUser = async (
       });
     }
 
-    // agregar ID del usuario que comienza a seguir en followers del usuario seguido
+    //? agregar ID del usuario que comienza a seguir en followers del usuario seguido
     userToFollow.followers.push(_id!);
     userToFollow.save();
 
-    // agregar ID del usuario a seguir en followings del usuario que sigue
+    //? agregar ID del usuario a seguir en followings del usuario que sigue
     const followingUser = await UserModel.findById(_id);
     if (followingUser) {
       followingUser.followings.push(userId!);
       followingUser.save();
     }
 
-    // respuesta al frontend
     return res.status(200).json({});
   } catch (error) {
     console.error(error);
@@ -119,7 +115,7 @@ export const unfollowUser = async (
     const { userId } = req.params as { userId?: Types.ObjectId };
     const { _id } = req;
 
-    // buscar usuario por ID en la base de datos
+    //? buscar usuario por ID en la base de datos
     const unfollowUser = await UserModel.findById(userId);
     if (!unfollowUser) {
       return res.status(400).json({
@@ -127,7 +123,7 @@ export const unfollowUser = async (
       });
     }
 
-    // validar que siga al usuario previamente
+    //? validar que siga al usuario previamente
     const alreadyFollow = unfollowUser.followers.find((id) => {
       if (id.valueOf() === _id!.valueOf()) return true;
     });
@@ -137,14 +133,14 @@ export const unfollowUser = async (
       });
     }
 
-    // quitar ID a la coleccion followers del usuario al que se deja de seguir
+    //? quitar ID a la coleccion followers del usuario al que se deja de seguir
     const newFollowers = unfollowUser.followers.filter(
       (id) => id.valueOf() !== _id!.valueOf()
     );
     unfollowUser.followers = newFollowers;
     unfollowUser.save();
 
-    // quitar ID a la coleccion followings del usuario que deja de seguir
+    //? quitar ID a la coleccion followings del usuario que deja de seguir
     const followingUser = await UserModel.findById(_id);
     if (followingUser) {
       const newFollowings = followingUser.followings.filter(
@@ -155,7 +151,6 @@ export const unfollowUser = async (
       followingUser.save();
     }
 
-    // respuesta al frontend
     return res.status(200).json({});
   } catch (error) {
     console.error(error);

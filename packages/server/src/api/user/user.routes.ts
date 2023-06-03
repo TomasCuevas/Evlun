@@ -1,7 +1,5 @@
-/**
- * user-following-routes
- * /api/user
- */
+//* api url: /api/user
+//* api url: /api/user
 
 import { Router } from "express";
 import { check, query } from "express-validator";
@@ -22,8 +20,6 @@ import {
   searchUsers,
   unfollowUser,
 } from "./user.controllers";
-
-//* routes *//
 
 //! get user
 router.get(
