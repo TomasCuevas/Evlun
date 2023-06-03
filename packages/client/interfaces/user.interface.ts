@@ -11,7 +11,7 @@ export interface IUser {
   gender?: "Masculino" | "Femenino";
   location?: string;
   name: string;
-  phone?: number;
+  phone?: string;
   savedPosts?: string[];
   username: string;
 }
