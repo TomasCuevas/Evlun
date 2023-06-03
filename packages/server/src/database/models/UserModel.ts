@@ -36,7 +36,7 @@ const UserSchema = new Schema({
     type: Schema.Types.Mixed,
   },
   phone: {
-    type: Number,
+    type: String,
   },
   date: {
     type: Number,
