@@ -9,10 +9,9 @@ export const differentIdsValidation = async (
     const userToFollowId = req.body.userId;
     const userId = req._id;
 
-    // validar que los id no sean iguales
+    //? validar que los id no sean iguales
     if (userToFollowId === userId) {
       return res.status(400).json({
-        ok: false,
         msg: "Debes enviar un ID diferente al tuyo.",
       });
     }
@@ -20,8 +19,7 @@ export const differentIdsValidation = async (
     next();
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      ok: false,
+    return res.status(500).json({
       msg: "Error en el servidor. Contacte con un administrador.",
     });
   }

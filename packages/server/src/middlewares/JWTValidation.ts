@@ -11,12 +11,11 @@ export const JWTValidation = (
     const { evluntoken: token } = req.headers as { evluntoken: string };
     if (!token) {
       return res.status(400).json({
-        ok: false,
         msg: "No hay token en la petición.",
       });
     }
 
-    // verificar token
+    //? verificar token
     const payload = jwt.verify(token, process.env.PRIVATE_SECRET_KEY_JWT!);
 
     req._id = (payload as { _id: Types.ObjectId })._id;
@@ -24,9 +23,8 @@ export const JWTValidation = (
 
     next();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(401).json({
-      ok: false,
       msg: "El token ingresado no es valido.",
     });
   }

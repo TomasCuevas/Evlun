@@ -52,7 +52,7 @@ class Server {
 
   public listen() {
     this.app.listen(this.port, () => {
-      console.log(`Servidor iniciado en el puerto ${this.port}`);
+      console.log(`------> Servidor iniciado en el puerto ${this.port}`);
     });
   }
 }
