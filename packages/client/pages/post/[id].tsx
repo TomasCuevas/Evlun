@@ -58,20 +58,36 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
       description={post.content}
       withoutAuth
     >
-      {postRef ? <Post post={postRef} fromAnswer={true} /> : null}
+      {postRef && <Post post={postRef} fromAnswer={true} />}
       <FullPost post={post} postRef={postRef ? true : false} />
       {isAuthenticated === "authenticated" && <NewPost postRef={post._id} />}
       <FeedPosts url={`/answers/${post._id}`} />
-      {postModal ? <MoreOptionsModalMobile /> : null}
+      {postModal && <MoreOptionsModalMobile />}
     </MainLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params as { id: string };
-  const result = await getUniquePostService(id);
 
-  if (!result.ok) {
+  try {
+    const result = await getUniquePostService(id);
+
+    if (result.postRef) {
+      return {
+        props: {
+          post: result.post,
+          postRef: result.postRef,
+        },
+      };
+    }
+
+    return {
+      props: {
+        post: result.post,
+      },
+    };
+  } catch (error) {
     return {
       redirect: {
         destination: "/",
@@ -79,21 +95,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
     };
   }
-
-  if (result.postRef) {
-    return {
-      props: {
-        post: result.post,
-        postRef: result.postRef,
-      },
-    };
-  }
-
-  return {
-    props: {
-      post: result.post,
-    },
-  };
 };
 
 export default PostPage;
