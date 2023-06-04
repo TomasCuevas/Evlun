@@ -34,12 +34,31 @@ export const unfollowUserService = async (userId: string): Promise<void> => {
 };
 
 //! get following
-export const getFollowingService = async (pageParam = 0): Promise<IUser[]> => {
+export const getFollowingService = async (
+  userId: string,
+  pageParam = 0
+): Promise<IUser[]> => {
   try {
     const params = new URLSearchParams();
     params.append("page", pageParam.toString());
 
-    const { data } = await userApi.get("/following", { params });
+    const { data } = await userApi.get(`/following/${userId}`, { params });
+    return data.users;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+//! get followers
+export const getFollowersService = async (
+  userId: string,
+  pageParam = 0
+): Promise<IUser[]> => {
+  try {
+    const params = new URLSearchParams();
+    params.append("page", pageParam.toString());
+
+    const { data } = await userApi.get(`/followers/${userId}`, { params });
     return data.users;
   } catch (error: any) {
     throw error.response.data;
