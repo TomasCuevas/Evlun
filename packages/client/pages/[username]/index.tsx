@@ -41,7 +41,7 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
       relevant: false,
     });
     onSetLocation("profile");
-    onSetNavbarData({ profileName: user.name });
+    onSetNavbarData({ profileName: user.name, profileUsername: user.username });
     getUser(user.username);
   }, [router.asPath]);
 
