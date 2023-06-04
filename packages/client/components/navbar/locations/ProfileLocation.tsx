@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 //* components *//
 import { BackArrow, NavText } from "@/components/navbar";
 import { SwitchConnections } from "@/components/connections";
@@ -9,6 +11,7 @@ export const ProfileLocation: React.FC = () => {
   const {
     navbarData: { profileName, profileUsername, connections },
   } = useNavbarTopStore();
+  const router = useRouter();
 
   return (
     <nav
@@ -22,7 +25,12 @@ export const ProfileLocation: React.FC = () => {
         className="flex h-full w-full items-center gap-[20px]"
       >
         <BackArrow />
-        <NavText textBig={profileName!} textSmall={`@${profileUsername}`} />
+        <div
+          className="cursor-pointer"
+          onClick={() => router.push(`/${profileUsername}`)}
+        >
+          <NavText textBig={profileName!} textSmall={`@${profileUsername}`} />
+        </div>
       </div>
       {connections ? <SwitchConnections username={profileUsername!} /> : null}
     </nav>
