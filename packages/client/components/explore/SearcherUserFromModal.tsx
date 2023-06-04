@@ -13,7 +13,7 @@ export const SearchedUserFromModal: React.FC<Props> = ({
   username,
 }) => {
   return (
-    <Link href={`/profile/${username}`}>
+    <Link href={`/${username}`}>
       <article className="flex h-[55px] w-full cursor-pointer items-center gap-3 px-4 hover:bg-orange/10">
         <div className="w-[40px]">
           <img

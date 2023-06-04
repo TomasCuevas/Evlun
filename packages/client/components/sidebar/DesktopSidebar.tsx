@@ -62,7 +62,7 @@ export const DesktopSidebar: React.FC = () => {
         <SidebarLink
           icon={RiUserLine}
           iconFill={RiUserFill}
-          link={`/profile/${user?.username}`}
+          link={`/${user?.username}`}
           text="Perfil"
         />
 

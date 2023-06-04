@@ -93,7 +93,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
         }
       >
         <header className="flex h-[50px] w-full max-w-full justify-between px-4">
-          <Link href={`/profile/${post.added_by.username}`}>
+          <Link href={`/${post.added_by.username}`}>
             <div className="flex h-full w-full gap-[10px]">
               <div>
                 <img

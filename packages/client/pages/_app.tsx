@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (pathname !== "/profile/[username]" && userUpdated) clearUser();
+    if (pathname !== "/[username]" && userUpdated) clearUser();
   }, [pathname]);
 
   return (

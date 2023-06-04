@@ -35,7 +35,7 @@ export const MobileSidebar: React.FC = () => {
             />
           </div>
           <div className="flex w-full cursor-pointer flex-col gap-[5px] p-[10px] px-4">
-            <Link href={`/profile/${user?.username}`} passHref>
+            <Link href={`/${user?.username}`} passHref>
               <a onClick={onSwitchMobileSidebar}>
                 <div>
                   <img
@@ -83,7 +83,7 @@ export const MobileSidebar: React.FC = () => {
               <ul className="flex flex-col">
                 <SidebarMobileLink
                   icon={RiUserLine}
-                  link={`/profile/${user?.username}`}
+                  link={`/${user?.username}`}
                   text="Perfil"
                 />
                 <SidebarMobileLink

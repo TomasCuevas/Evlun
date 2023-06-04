@@ -44,15 +44,13 @@ export const NavbarBottom: React.FC = () => {
           <RiSearchLine className={iconClass} />
         </a>
       </Link>
-      <Link href={`/profile/${user?.username}`} passHref>
+      <Link href={`/${user?.username}`} passHref>
         <a
           className={
-            router.asPath === `/profile/${user?.username}`
-              ? activeClass
-              : noActiveClass
+            router.asPath === `/${user?.username}` ? activeClass : noActiveClass
           }
         >
-          {router.asPath === `/profile/${user?.username}` ? (
+          {router.asPath === `/${user?.username}` ? (
             <RiUserFill className={iconClass} />
           ) : (
             <RiUserLine className={iconClass} />

@@ -21,7 +21,7 @@ export const RelevantPersons: React.FC = () => {
         Personas relevantes
       </h2>
       {relevantPersons.map((person) => (
-        <Link key={person._id} href={`/profile/${person.username}`}>
+        <Link key={person._id} href={`/${person.username}`}>
           <article className="cursor-pointer px-4 py-2 hover:bg-light">
             <div className="flex h-full gap-[10px]">
               <div>

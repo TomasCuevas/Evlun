@@ -86,7 +86,7 @@ const SettingProfilePage: NextPage = () => {
           noBanner: deleteBanner ? true : false,
         });
 
-        router.replace(`/profile/${user?.username}`);
+        router.replace(`/${user?.username}`);
         await onChecking();
       } catch (error: any) {
         formik.setStatus(error.msg);

@@ -12,7 +12,7 @@ export const SearchedUser: React.FC<Props> = ({ avatar, name, username }) => {
 
   return (
     <article
-      onClick={() => router.push(`/profile/${username}`)}
+      onClick={() => router.push(`/${username}`)}
       className="flex h-[85px] w-full cursor-pointer items-center gap-3 px-4 hover:bg-orange/10"
     >
       <div className="w-[55px]">

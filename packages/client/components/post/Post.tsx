@@ -88,7 +88,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
         }
       >
         <section className="relative flex w-full flex-col items-center">
-          <Link href={`/profile/${post.added_by.username}`}>
+          <Link href={`/${post.added_by.username}`}>
             <img
               src={post.added_by.avatar}
               alt={post.added_by.name}
@@ -105,14 +105,14 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
           <header className="mb-[2px] flex h-[24px] max-w-full justify-between">
             <div className="flex h-full w-[90%] items-start justify-start gap-[5px]">
               <div className="max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-white">
-                <Link href={`/profile/${post.added_by.username}`}>
+                <Link href={`/${post.added_by.username}`}>
                   <span className="w-full cursor-pointer text-ellipsis text-sm font-bold">
                     {post.added_by.name}
                   </span>
                 </Link>
               </div>
               <div className="overflow-hidden text-ellipsis whitespace-nowrap text-orange/70">
-                <Link href={`/profile/${post.added_by.username}`}>
+                <Link href={`/${post.added_by.username}`}>
                   <span className="cursor-pointer text-ellipsis text-sm">{`@${post.added_by.username}`}</span>
                 </Link>
               </div>
