@@ -189,3 +189,33 @@ export const getFollowing = async (req: Request, res: Response) => {
     });
   }
 };
+
+//! get followers
+export const getFollowers = async (req: Request, res: Response) => {
+  try {
+    const { page } = req.query;
+    const { userId } = req.params;
+
+    //? obtener usuario por ID y verificamos si existe
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        msg: "No existe usuario con el ID ingresado.",
+      });
+    }
+
+    //? obtener usuarios que siguen al usuario
+    const followers = await UserModel.find({ _id: { $in: user?.followers } })
+      .skip(Number(page) * 20)
+      .limit(20);
+
+    return res.status(200).json({
+      users: followers,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      msg: "Error en el servidor. Contacte con un administrador.",
+    });
+  }
+};
