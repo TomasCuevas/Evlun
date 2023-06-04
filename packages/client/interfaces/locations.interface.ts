@@ -1,8 +1,10 @@
 export interface INavbarData {
   buttonOnClick?: any;
   buttonText?: string;
+  connections?: boolean;
   isButton?: boolean;
   profileName?: string;
+  profileUsername?: string;
   settingText?: string;
 }
 
