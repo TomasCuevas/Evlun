@@ -161,16 +161,18 @@ export const unfollowUser = async (
 };
 
 //! get following
-export const getFollowing = async (
-  req: Request & { _id?: Types.ObjectId },
-  res: Response
-) => {
+export const getFollowing = async (req: Request, res: Response) => {
   try {
-    const { _id } = req;
     const { page } = req.query;
+    const { userId } = req.params;
 
-    //? obtener usuario
-    const user = await UserModel.findById(_id);
+    //? obtener usuario por ID y verificamos si existe
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        msg: "No existe usuario con el ID ingresado.",
+      });
+    }
 
     //? obtener usuarios a los que sigue el usuario
     const following = await UserModel.find({ _id: { $in: user?.followings } })

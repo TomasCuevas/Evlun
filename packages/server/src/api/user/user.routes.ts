@@ -16,6 +16,7 @@ import {
 //* controllers *//
 import {
   followUser,
+  getFollowing,
   getUser,
   searchUsers,
   unfollowUser,
@@ -71,6 +72,13 @@ router.put(
     fieldsValidation,
   ],
   unfollowUser
+);
+
+//! get following
+router.get(
+  "/following/:userId",
+  [JWTValidation, fieldsValidation],
+  getFollowing
 );
 
 export default router;
