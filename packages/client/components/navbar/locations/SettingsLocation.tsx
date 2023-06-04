@@ -11,7 +11,7 @@ export const SettingsLocation: React.FC = () => {
   const { settingText, buttonOnClick, buttonText } = navbarData;
 
   return (
-    <nav className="mx-auto flex h-full w-full items-center gap-[30px]">
+    <nav className="mx-auto flex h-full w-full items-center">
       <div className="flex h-full w-full items-center gap-[20px]">
         <BackArrow />
         <NavText textBig={settingText!} textSmall={`@${user?.username}`} />

@@ -8,7 +8,10 @@ export const HomeLocation: React.FC = () => {
   const { onSwitchMobileSidebar } = useUiStore();
 
   return (
-    <nav className="flex h-full w-full items-center gap-[30px]">
+    <nav
+      style={{ padding: "13px 5%" }}
+      className="flex h-full w-full items-center gap-[30px]"
+    >
       <div className="max-h-[30px] min-h-[30px] min-w-[30px] max-w-[30px] xs:hidden">
         <img
           onClick={onSwitchMobileSidebar}

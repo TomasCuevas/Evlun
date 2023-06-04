@@ -14,7 +14,7 @@ export const NavbarTop: React.FC = () => {
   const { location } = useNavbarTopStore();
 
   return (
-    <div className="sticky top-0 z-10 h-[55px] w-full border-b-2 border-orange/50 bg-background/5 px-[5%] backdrop-blur-3xl xs:h-[60px]">
+    <div className="sticky top-0 z-10 w-full border-b-2 border-orange/50 bg-background/5 backdrop-blur-3xl [&>nav]:px-[5%] [&>nav]:py-2">
       {location === "home" && <HomeLocation />}
       {location === "post" && <PostLocation />}
       {location === "profile" && <ProfileLocation />}
