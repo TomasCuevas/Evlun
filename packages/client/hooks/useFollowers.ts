@@ -9,7 +9,7 @@ import { IUser } from "@/interfaces";
 export const useFollowers = (userId: string) => {
   const followersQuery = useInfiniteQuery<IUser[]>(
     [`/${userId}/followers`],
-    ({ pageParam }) => getFollowersService(pageParam),
+    ({ pageParam }) => getFollowersService(userId, pageParam),
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.length < 20) return;
