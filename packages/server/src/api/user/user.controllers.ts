@@ -159,3 +159,31 @@ export const unfollowUser = async (
     });
   }
 };
+
+//! get following
+export const getFollowing = async (
+  req: Request & { _id?: Types.ObjectId },
+  res: Response
+) => {
+  try {
+    const { _id } = req;
+    const { page } = req.query;
+
+    //? obtener usuario
+    const user = await UserModel.findById(_id);
+
+    //? obtener usuarios a los que sigue el usuario
+    const following = await UserModel.find({ _id: { $in: user?.followings } })
+      .skip(Number(page) * 20)
+      .limit(20);
+
+    return res.status(200).json({
+      users: following,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      msg: "Error en el servidor. Contacte con un administrador.",
+    });
+  }
+};

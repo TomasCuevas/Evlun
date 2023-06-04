@@ -32,3 +32,16 @@ export const unfollowUserService = async (userId: string): Promise<void> => {
     throw error.response.data;
   }
 };
+
+//! get following
+export const getFollowingService = async (pageParam = 0): Promise<IUser[]> => {
+  try {
+    const params = new URLSearchParams();
+    params.append("page", pageParam.toString());
+
+    const { data } = await userApi.get("/following", { params });
+    return data.users;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
