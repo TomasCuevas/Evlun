@@ -93,15 +93,19 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
         </span>
       </section>
 
-      <section className="flex gap-[10px] border-b border-orange py-[15px] px-4 [&>div>span]:text-base [&>div>span]:font-bold [&>div>span]:text-white [&>div>p]:text-sm [&>div>p]:font-light [&>div>p]:text-orange">
-        <div className="flex items-center gap-[5px]">
-          <span>{user.followings.length}</span>
-          <p>Siguiendo</p>
-        </div>
-        <div className="flex items-center gap-[5px]">
-          <span>{user.followers.length}</span>
-          <p>Seguidores</p>
-        </div>
+      <section className="flex gap-[10px] border-b border-orange py-[15px] px-4 [&>div>span]:text-base [&>div>span]:font-bold [&>div>span]:text-white [&>div]:cursor-pointer [&>div]:text-white [&>div>p]:text-sm [&>div>p]:font-light [&>div>p]:text-orange">
+        <Link href={`/${user.username}/following`}>
+          <div className="flex items-center gap-[5px] hover:underline">
+            <span>{user.followings.length}</span>
+            <p>Siguiendo</p>
+          </div>
+        </Link>
+        <Link href={`/${user.username}/followers`}>
+          <div className="flex items-center gap-[5px] hover:underline">
+            <span>{user.followers.length}</span>
+            <p>Seguidores</p>
+          </div>
+        </Link>
       </section>
     </article>
   );
