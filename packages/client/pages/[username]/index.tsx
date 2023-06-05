@@ -12,12 +12,14 @@ import { MainLayout } from "@/layouts";
 import { FeedPosts, MoreOptionsModalMobile } from "@/components/post";
 import { ProfileHero } from "@/components/profile";
 
+//* hook *//
+import { useUser } from "@/hooks";
+
 //* stores *//
 import {
   useNavbarTopStore,
   usePostsStore,
   useRightSidebarStore,
-  useUserStore,
 } from "@/store";
 
 //* interfaces *//
@@ -31,7 +33,8 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { postModal } = usePostsStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
-  const { getUser, userUpdated } = useUserStore();
+  const { user: userByHook } = useUser(user.username);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -42,7 +45,6 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
     });
     onSetLocation("profile");
     onSetNavbarData({ profileName: user.name, profileUsername: user.username });
-    getUser(user.username);
   }, [router.asPath]);
 
   return (
@@ -51,7 +53,7 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
       description={user.biography}
       withoutAuth
     >
-      <ProfileHero user={userUpdated ? userUpdated : user} />
+      <ProfileHero user={userByHook ? userByHook : user} />
       <FeedPosts url={`/user/${user._id}`} />
       {postModal ? <MoreOptionsModalMobile /> : null}
     </MainLayout>
