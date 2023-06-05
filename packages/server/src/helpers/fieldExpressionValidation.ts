@@ -10,7 +10,7 @@ export const usernameValidation = (value: string): boolean => {
 
 export const emailValidation = (value: string): boolean => {
   const regex =
-    /^[a-zA-Z0-9À-ÿ\u00f1\u00d1\-\_]+@[a-zA-Z0-9Á-ÿ\u00f1\u00d1\-\_]+\.[a-zA-Z0-9Ä-ÿ\u00f1\u00d1\-\_]+$/;
+    /^[a-zA-Z0-9À-ÿ\u00f1\u00d1\-\._]+@[a-zA-Z0-9Á-ÿ\u00f1\u00d1\-\_]+\.[a-zA-Z0-9Ä-ÿ\u00f1\u00d1\-\_]+$/;
   return regex.test(value);
 };
 
