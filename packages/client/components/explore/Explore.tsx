@@ -21,7 +21,11 @@ export const Explore: React.FC = () => {
     onSubmit: async (formValues) => {
       const { search } = formValues;
 
-      if (search.length < 1) return onSwitchExploreModal(false);
+      if (search.length < 1) {
+        onSwitchExploreModal(false);
+        resetUsers();
+        return;
+      }
 
       try {
         await onSearchUsers(search);
@@ -48,7 +52,6 @@ export const Explore: React.FC = () => {
           className="h-[80%] w-full border-none bg-transparent text-base font-light text-white outline-none placeholder:text-white/50"
           name="search"
           value={formik.values.search}
-          onKeyUp={formik.submitForm}
           onFocus={() => {
             if (usersSearched.length > 0) onSwitchExploreModal(true);
           }}
@@ -57,7 +60,10 @@ export const Explore: React.FC = () => {
               onSwitchExploreModal(false);
             }, 100);
           }}
-          onChange={formik.handleChange}
+          onChange={(event) => {
+            formik.handleChange(event);
+            formik.submitForm();
+          }}
           placeholder="Buscar usuario en Evlun"
         />
       </Form>
