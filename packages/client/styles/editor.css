@@ -8,6 +8,9 @@
 
 .ql-editor {
   font-size: 18px;
+  font-weight: 500 !important;
+  padding: 0 !important;
+  padding: 0 15px !important;
 }
 
 .ql-editor p {
@@ -28,9 +31,4 @@
 .ql-editor.ql-blank::before {
   color: #fff6 !important;
   font-weight: 300 !important;
-}
-
-.ql-editor {
-  padding: 0 !important;
-  padding: 0 15px !important;
 }

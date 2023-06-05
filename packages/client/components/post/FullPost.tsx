@@ -133,7 +133,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
         <div className="mt-[20px] px-4">
           <div
             id="post"
-            className="w-full break-words"
+            className="w-full break-words text-lg"
             dangerouslySetInnerHTML={{
               __html: post.content,
             }}

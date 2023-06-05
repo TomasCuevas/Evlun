@@ -22,9 +22,11 @@ export const SearchedUserFromModal: React.FC<Props> = ({
             className="h-[40px] min-w-[40px] rounded-full object-cover object-center"
           />
         </div>
-        <div className="flex w-full flex-col">
-          <span className="text-base font-black text-white">{name}</span>
-          <span className="text-sm font-light text-orange/70">@{username}</span>
+        <div className="mb-1 flex w-full flex-col">
+          <span className="text-base font-bold text-white">{name}</span>
+          <span className="text-sm font-light leading-4 text-orange/70">
+            @{username}
+          </span>
         </div>
       </article>
     </Link>

@@ -22,9 +22,11 @@ export const SearchedUser: React.FC<Props> = ({ avatar, name, username }) => {
           className="h-[55px] min-w-[55px] rounded-full object-cover object-center"
         />
       </div>
-      <div className="flex w-full flex-col">
-        <span className="text-lg font-black text-white">{name}</span>
-        <span className="text-sm font-light text-orange/70">@{username}</span>
+      <div className="mb-1 flex w-full flex-col">
+        <span className="text-lg font-bold text-white">{name}</span>
+        <span className="text-sm font-light leading-3 text-orange/70">
+          @{username}
+        </span>
       </div>
     </article>
   );

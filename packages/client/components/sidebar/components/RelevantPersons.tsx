@@ -16,13 +16,13 @@ export const RelevantPersons: React.FC = () => {
   if (relevantPersons.length === 0) return <></>;
 
   return (
-    <div className="mt-4 flex w-full flex-col overflow-hidden rounded-2xl bg-grayLight">
+    <div className="mt-4 flex w-full flex-col overflow-hidden rounded-2xl border border-white/20 bg-grayLight">
       <h2 className="my-2 px-4 text-xl font-bold text-white">
         Personas relevantes
       </h2>
       {relevantPersons.map((person) => (
         <Link key={person._id} href={`/${person.username}`}>
-          <article className="cursor-pointer px-4 py-2 hover:bg-light">
+          <article className="cursor-pointer px-4 py-2 hover:bg-gray-800">
             <div className="flex h-full gap-[10px]">
               <div>
                 <img
@@ -35,7 +35,7 @@ export const RelevantPersons: React.FC = () => {
                 <span className="cursor-pointer overflow-hidden text-ellipsis text-base font-semibold  text-white">
                   {person.name}
                 </span>
-                <span className="cursor-pointer overflow-hidden text-ellipsis text-base font-light text-orange">
+                <span className="cursor-pointer overflow-hidden text-ellipsis text-sm font-light text-orange">
                   @{person.username}
                 </span>
               </div>

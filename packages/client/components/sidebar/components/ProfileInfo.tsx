@@ -7,7 +7,7 @@ export const ProfileInfo: React.FC = () => {
   if (isAuthenticated !== "authenticated") return <></>;
 
   return (
-    <div className="mt-4 w-full overflow-hidden rounded-2xl">
+    <div className="mt-4 w-full overflow-hidden rounded-2xl border border-white/20">
       <section>
         <div className="relative h-32 bg-orange/30">
           {user?.banner ? (

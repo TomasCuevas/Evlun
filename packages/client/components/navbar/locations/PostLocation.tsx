@@ -1,12 +1,15 @@
 //* components *//
-import { BackArrow } from "@/components/navbar";
+import { BackArrow, NavText } from "@/components/navbar";
 
 export const PostLocation: React.FC = () => {
   return (
-    <nav className="mx-auto flex h-full w-full items-center">
+    <nav
+      style={{ padding: "13px 16px" }}
+      className="mx-auto flex h-full w-full items-center"
+    >
       <div className="flex h-full w-full items-center gap-[20px]">
         <BackArrow />
-        <span className="font-bold text-orange">Post</span>
+        <NavText textBig="Post" />
       </div>
     </nav>
   );

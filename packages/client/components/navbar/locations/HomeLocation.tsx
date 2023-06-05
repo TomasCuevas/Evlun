@@ -9,7 +9,7 @@ export const HomeLocation: React.FC = () => {
 
   return (
     <nav
-      style={{ padding: "13px 5%" }}
+      style={{ padding: "13px 16px" }}
       className="flex h-full w-full items-center gap-[30px]"
     >
       <div className="max-h-[30px] min-h-[30px] min-w-[30px] max-w-[30px] xs:hidden">
@@ -22,7 +22,7 @@ export const HomeLocation: React.FC = () => {
       </div>
       <div>
         <NextLink href="/" passHref>
-          <a className="cursor-pointer text-lg font-bold text-orange xs:text-xl">
+          <a className="cursor-pointer text-xl font-bold text-orange xs:text-xl">
             Inicio
           </a>
         </NextLink>
