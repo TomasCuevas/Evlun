@@ -2,7 +2,10 @@
 import { followUserService } from "@/services";
 
 //* store *//
-import { useAuthStore, useUserStore } from "@/store";
+import { useAuthStore } from "@/store";
+
+//* query client *//
+import { queryClient } from "@/pages/_app";
 
 //* interface *//
 import { IUser } from "@/interfaces";
@@ -13,15 +16,16 @@ interface Props {
 
 export const Follow: React.FC<Props> = ({ userToFollow }) => {
   const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
-  const { getUser } = useUserStore();
 
   const follow = async () => {
     if (isAuthenticated !== "authenticated") return;
 
     try {
       await followUserService(userToFollow._id);
-      getUser(userToFollow.username);
       onCheckingWithoutLoader();
+      queryClient.invalidateQueries({
+        queryKey: [`/user/${userToFollow.username}`],
+      });
     } catch (error) {}
   };
 

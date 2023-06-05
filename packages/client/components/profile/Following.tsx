@@ -4,7 +4,10 @@ import { useState } from "react";
 import { unfollowUserService } from "@/services";
 
 //* store *//
-import { useAuthStore, useUserStore } from "@/store";
+import { useAuthStore } from "@/store";
+
+//* query client *//
+import { queryClient } from "@/pages/_app";
 
 //* interface *//
 import { IUser } from "@/interfaces";
@@ -15,7 +18,6 @@ interface Props {
 
 export const Following: React.FC<Props> = ({ userToUnfollow }) => {
   const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
-  const { getUser } = useUserStore();
 
   const [text, setText] = useState("Siguiendo");
   const onChangeValue = () => setText("Dejar de seguir");
@@ -27,7 +29,9 @@ export const Following: React.FC<Props> = ({ userToUnfollow }) => {
     try {
       await unfollowUserService(userToUnfollow._id);
       onCheckingWithoutLoader();
-      getUser(userToUnfollow.username);
+      queryClient.invalidateQueries({
+        queryKey: [`/user/${userToUnfollow.username}`],
+      });
     } catch (error) {}
   };
 
