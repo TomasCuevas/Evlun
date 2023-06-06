@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 //* components *//
 import { ConnectionsFeed } from "@/components/connections";
+import { Loader } from "@/components/ui";
 
 //* layout *//
 import { MainLayout } from "@/layouts";
@@ -15,7 +16,7 @@ import { getUserService } from "@/services";
 import { useFollowers } from "@/hooks";
 
 //* stores *//
-import { useNavbarTopStore, useRightSidebarStore, useUserStore } from "@/store";
+import { useNavbarTopStore, useRightSidebarStore } from "@/store";
 
 //* interfaces *//
 import { IUser } from "@/interfaces";
@@ -27,8 +28,7 @@ interface Props {
 const FollowersPage: NextPage<Props> = ({ user }) => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
-  const { getUser } = useUserStore();
-  const { followers } = useFollowers(user._id);
+  const { followers, followersQuery } = useFollowers(user._id);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,13 +43,13 @@ const FollowersPage: NextPage<Props> = ({ user }) => {
       profileUsername: user.username,
       connections: true,
     });
-    getUser(user.username);
   }, [router.asPath]);
 
   return (
     <MainLayout
       title={`Personas que siguen a ${user.name} (${user.username}) | Evlun`}
     >
+      {followersQuery.isLoading && <Loader />}
       <ConnectionsFeed users={followers} />
     </MainLayout>
   );
