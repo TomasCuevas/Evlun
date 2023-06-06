@@ -38,11 +38,7 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
   const { onChangeSidebarItems, setRelevantPersons } = useRightSidebarStore();
   const { postModal } = usePostsStore();
   const { onSetLocation } = useNavbarTopStore();
-  const {
-    post: postByHook,
-    postRef: postRefByHook,
-    postQuery,
-  } = usePost(post._id);
+  const { post: postByHook, postRef: postRefByHook } = usePost(post._id);
 
   useEffect(() => {
     onChangeSidebarItems({

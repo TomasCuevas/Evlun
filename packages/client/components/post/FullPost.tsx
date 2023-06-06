@@ -14,6 +14,9 @@ import {
 //* components *//
 import { MoreOptionsModalDesktop } from "@/components/post";
 
+//* query-client *//
+import { queryClient } from "@/pages/_app";
+
 //* store *//
 import { useAuthStore, usePostsStore } from "@/store";
 
@@ -57,6 +60,13 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
     }
 
     IsLiked ? setIsLiked(false) : setIsLiked(true);
+
+    try {
+      await onLikeOrDislikePost(post._id);
+
+      queryClient.refetchQueries([`/post/${post._id}`]);
+      queryClient.refetchQueries(["/all"]);
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -182,18 +192,12 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
           <button>
             {IsLiked ? (
               <RiHeartFill
-                onClick={(event) => {
-                  onLike(event);
-                  onLikeOrDislikePost(post._id);
-                }}
+                onClick={onLike}
                 className="text-2xl text-orange hover:text-orange/50"
               />
             ) : (
               <RiHeartLine
-                onClick={(event) => {
-                  onLike(event);
-                  onLikeOrDislikePost(post._id);
-                }}
+                onClick={onLike}
                 className="text-2xl hover:text-orange"
               />
             )}

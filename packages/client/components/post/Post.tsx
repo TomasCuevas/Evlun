@@ -18,7 +18,7 @@ import { getRelativeTime } from "@/helpers";
 //* services *//
 import { likeOrDislikePostService } from "@/services";
 
-//* query client *//
+//* query-client *//
 import { queryClient } from "@/pages/_app";
 
 //* stores *//
@@ -64,6 +64,7 @@ export const Post: React.FC<Props> = ({ post, fromAnswer }) => {
         return;
       }
 
+      queryClient.refetchQueries([`/post/${post._id}`]);
       queryClient.refetchQueries(["/all"]);
     } catch (error) {}
   };
