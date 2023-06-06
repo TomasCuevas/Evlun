@@ -19,12 +19,19 @@ interface Props {
 export const Following: React.FC<Props> = ({ userToUnfollow }) => {
   const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
 
+  const isFetching = queryClient.isFetching([
+    `/user/${userToUnfollow.username}`,
+  ]);
+
+  const [isSending, setIsSending] = useState(false);
   const [text, setText] = useState("Siguiendo");
   const onChangeValue = () => setText("Dejar de seguir");
   const defaultValue = () => setText("Siguiendo");
 
   const unfollow = async () => {
     if (isAuthenticated !== "authenticated") return;
+
+    setIsSending(true);
 
     try {
       await unfollowUserService(userToUnfollow._id);
@@ -33,14 +40,17 @@ export const Following: React.FC<Props> = ({ userToUnfollow }) => {
         queryKey: [`/user/${userToUnfollow.username}`],
       });
     } catch (error) {}
+
+    setIsSending(false);
   };
 
   return (
     <button
+      disabled={isSending || isFetching === 1}
       onClick={unfollow}
       onMouseOver={onChangeValue}
       onMouseLeave={defaultValue}
-      className="flex h-[35px] cursor-pointer items-center justify-center whitespace-nowrap rounded-full border border-orange text-white hover:border-error hover:bg-error/5 hover:text-error"
+      className="flex h-[35px] cursor-pointer items-center justify-center whitespace-nowrap rounded-full border border-orange text-white hover:border-error hover:bg-error/5 hover:text-error disabled:cursor-not-allowed disabled:opacity-40"
     >
       <span className="block h-full w-full py-[7px] px-[15px] leading-[18px]">
         {text}
