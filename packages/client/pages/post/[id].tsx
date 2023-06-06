@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NextPage, GetServerSideProps } from "next";
+import { NextPage, GetStaticPaths, GetStaticProps } from "next";
 
 //* service *//
 import { getUniquePostService } from "@/services";
@@ -26,6 +26,7 @@ import {
 
 //* interfaces *//
 import { IPost } from "@/interfaces";
+import { usePost } from "@/hooks";
 
 interface Props {
   post: IPost;
@@ -37,6 +38,11 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
   const { onChangeSidebarItems, setRelevantPersons } = useRightSidebarStore();
   const { postModal } = usePostsStore();
   const { onSetLocation } = useNavbarTopStore();
+  const {
+    post: postByHook,
+    postRef: postRefByHook,
+    postQuery,
+  } = usePost(post._id);
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -58,16 +64,34 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
       description={post.content}
       withoutAuth
     >
-      {postRef && <Post post={postRef} fromAnswer={true} />}
-      <FullPost post={post} postRef={postRef ? true : false} />
+      {postRef && (
+        <Post
+          post={postRefByHook ? postRefByHook : postRef}
+          fromAnswer={true}
+        />
+      )}
+
+      <FullPost
+        post={postByHook ? postByHook : post}
+        postRef={postRef ? true : false}
+      />
+
       {isAuthenticated === "authenticated" && <NewPost postRef={post._id} />}
       <FeedPosts url={`/answers/${post._id}`} />
+
       {postModal && <MoreOptionsModalMobile />}
     </MainLayout>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params as { id: string };
 
   try {
