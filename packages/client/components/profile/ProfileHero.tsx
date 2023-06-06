@@ -40,18 +40,14 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
 
       <section className="relative flex min-h-[50px] items-center justify-end px-4 sm:h-16">
         <div className="absolute left-4 bottom-2 sm:bottom-3">
-          {user.avatar ? (
-            <img
-              src={user.avatar}
-              alt="user img"
-              className="h-[90px] w-[90px] rounded-full border-[2px] border-orange bg-orange/30 object-cover object-center sm:h-32 sm:w-32"
-            />
-          ) : (
-            <div className="h-[90px] w-[90px] rounded-full border-[2px] border-orange bg-orange/30 sm:h-32 sm:w-32"></div>
-          )}
+          <img
+            src={user.avatar}
+            alt="user img"
+            className="h-[90px] w-[90px] rounded-full border-[2px] border-orange bg-orange/30 object-cover object-center sm:h-32 sm:w-32"
+          />
         </div>
         <div className="flex w-full items-center justify-end gap-[10px]">
-          {userByStore?.username === user.username ? (
+          {userByStore && userByStore.username === user.username && (
             <Link href="/settings/profile">
               <button className="flex h-full cursor-pointer items-center justify-center rounded-full border border-orange py-[7px] px-[10px] hover:bg-orange/10">
                 <span className="text-[15px] font-bold text-white">
@@ -59,9 +55,11 @@ export const ProfileHero: React.FC<Props> = ({ user }) => {
                 </span>
               </button>
             </Link>
-          ) : (
+          )}
+
+          {userByStore && userByStore.username !== user.username && (
             <div>
-              {user.followers.includes(userByStore?._id || "") ? (
+              {userByStore.followings.includes(user._id) ? (
                 <Following userToUnfollow={user} />
               ) : (
                 <Follow userToFollow={user} />
