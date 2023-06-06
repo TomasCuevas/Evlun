@@ -61,7 +61,7 @@ import { settingServices } from "@/services";
 import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingProfilePage: NextPage = () => {
-  const { user, onChecking } = useAuthStore();
+  const { user, onCheckingWithoutLoader } = useAuthStore();
   const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
 
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar || "");
@@ -87,7 +87,7 @@ const SettingProfilePage: NextPage = () => {
         });
 
         router.replace(`/${user?.username}`);
-        await onChecking();
+        onCheckingWithoutLoader();
       } catch (error: any) {
         formik.setStatus(error.msg);
       }
