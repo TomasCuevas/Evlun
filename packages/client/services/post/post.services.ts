@@ -39,7 +39,7 @@ export const getPostsService = async ({
 export const getUniquePostService = async (
   postId: string
 ): Promise<{
-  post?: IPost;
+  post: IPost;
   postRef?: IPost;
 }> => {
   try {
