@@ -52,9 +52,9 @@ export const usePostsStore = create<usePostsState>((set, get) => ({
       const result = await newPostService(postData);
 
       if (postRef) {
-        queryClient.invalidateQueries([`/answers/${postRef}`]);
+        queryClient.refetchQueries([`/answers/${postRef}`]);
       } else {
-        queryClient.invalidateQueries(["/all"]);
+        queryClient.refetchQueries(["/all"]);
       }
 
       return result;

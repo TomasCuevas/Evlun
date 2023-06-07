@@ -84,7 +84,7 @@ export const FullPost: React.FC<Props> = ({ post, postRef }) => {
         year: "numeric",
       }),
     });
-  }, []);
+  }, [post]);
 
   return (
     <>
