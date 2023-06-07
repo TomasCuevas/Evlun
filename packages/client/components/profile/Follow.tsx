@@ -20,8 +20,6 @@ export const Follow: React.FC<Props> = ({ userToFollow }) => {
   const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
   const [isSending, setIsSending] = useState(false);
 
-  const isFetching = queryClient.isFetching([`/user/${userToFollow.username}`]);
-
   const follow = async () => {
     if (isAuthenticated !== "authenticated") return;
 
@@ -30,7 +28,7 @@ export const Follow: React.FC<Props> = ({ userToFollow }) => {
     try {
       await followUserService(userToFollow._id);
       onCheckingWithoutLoader();
-      queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: [`/user/${userToFollow.username}`],
       });
     } catch (error) {}
@@ -41,7 +39,7 @@ export const Follow: React.FC<Props> = ({ userToFollow }) => {
   return (
     <button
       onClick={follow}
-      disabled={isSending || isFetching === 1}
+      disabled={isSending}
       className="flex h-[35px] cursor-pointer items-center justify-center rounded-full bg-orange/80 py-[7px] px-[15px] hover:bg-orange disabled:cursor-not-allowed disabled:opacity-40"
     >
       <span className="text-[15px] font-bold text-white">Seguir</span>

@@ -19,10 +19,6 @@ interface Props {
 export const Following: React.FC<Props> = ({ userToUnfollow }) => {
   const { isAuthenticated, onCheckingWithoutLoader } = useAuthStore();
 
-  const isFetching = queryClient.isFetching([
-    `/user/${userToUnfollow.username}`,
-  ]);
-
   const [isSending, setIsSending] = useState(false);
   const [text, setText] = useState("Siguiendo");
   const onChangeValue = () => setText("Dejar de seguir");
@@ -36,7 +32,7 @@ export const Following: React.FC<Props> = ({ userToUnfollow }) => {
     try {
       await unfollowUserService(userToUnfollow._id);
       onCheckingWithoutLoader();
-      queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: [`/user/${userToUnfollow.username}`],
       });
     } catch (error) {}
@@ -46,7 +42,7 @@ export const Following: React.FC<Props> = ({ userToUnfollow }) => {
 
   return (
     <button
-      disabled={isSending || isFetching === 1}
+      disabled={isSending}
       onClick={unfollow}
       onMouseOver={onChangeValue}
       onMouseLeave={defaultValue}
