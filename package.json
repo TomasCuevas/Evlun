@@ -11,7 +11,9 @@
     "install:server": "yarn --cwd server install",
     "install:client": "yarn --cwd client install",
     "dev:server": "yarn --cwd packages/server dev",
-    "dev:client": "yarn --cwd packages/client dev"
+    "dev:client": "yarn --cwd packages/client dev",
+    "build:client": "yarn --cwd packages/client build",
+    "start:client": "yarn --cwd packages/client start"
   },
   "keywords": [],
   "author": "Tomas Cuevas",
