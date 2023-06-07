@@ -22,7 +22,7 @@ export const HomeLocation: React.FC = () => {
       </div>
       <div>
         <NextLink href="/" passHref>
-          <a className="cursor-pointer text-xl font-bold text-orange xs:text-xl">
+          <a className="cursor-pointer text-lg font-bold text-orange xs:text-xl">
             Inicio
           </a>
         </NextLink>
