@@ -16,7 +16,9 @@ import {
 const HomePage = () => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { postModal } = usePostsStore();
-  const { onSetLocation } = useNavbarTopStore();
+  const {
+    navbarData: { homeLocation },
+  } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -24,13 +26,15 @@ const HomePage = () => {
       profile: true,
       relevant: false,
     });
-    onSetLocation("home");
   }, []);
 
   return (
     <MainLayout title="Inicio | Evlun" description="Pagina principal de Evlun">
       <NewPost />
-      <FeedPosts url="/all" />
+
+      {homeLocation === "all" && <FeedPosts url="/all" />}
+      {homeLocation === "following" && <FeedPosts url="/following" />}
+
       {postModal ? <MoreOptionsModalMobile /> : null}
     </MainLayout>
   );
