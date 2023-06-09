@@ -75,7 +75,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
               }
               label="Postear"
               type="submit"
-              className="cursor-pointer rounded-2xl bg-orange py-[10px] px-[20px] text-sm font-medium text-white disabled:bg-orange/10 disabled:text-white/10"
+              className="cursor-pointer rounded-full bg-orange py-[6px] px-5 text-base font-bold text-white hover:bg-orange/80 disabled:bg-orange/20 disabled:text-white/20"
             />
           </div>
         </Form>

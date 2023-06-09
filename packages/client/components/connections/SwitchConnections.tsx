@@ -15,7 +15,7 @@ export const SwitchConnections: React.FC<Props> = ({ username }) => {
   return (
     <div className="flex w-full">
       <Link href={`/${username}/following`}>
-        <div className="flex w-full cursor-pointer items-center justify-center hover:bg-grayLight">
+        <div className="flex w-full cursor-pointer items-center justify-center hover:bg-white/5">
           <span
             style={{
               borderBottom: IS_IN_FOLLOWING ? "4px solid #e86d33" : "",
@@ -29,7 +29,7 @@ export const SwitchConnections: React.FC<Props> = ({ username }) => {
         </div>
       </Link>
       <Link href={`/${username}/followers`}>
-        <div className="flex w-full cursor-pointer justify-center hover:bg-grayLight">
+        <div className="flex w-full cursor-pointer justify-center hover:bg-white/5">
           <span
             style={{
               borderBottom: IS_IN_FOLLOWERS ? "4px solid #e86d33" : "",
