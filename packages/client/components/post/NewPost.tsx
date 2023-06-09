@@ -36,7 +36,7 @@ export const NewPost: React.FC<Props> = ({ postRef }) => {
 
     setIsSending(true);
     try {
-      await onCreatePost({ content: html, text: text, postRef });
+      await onCreatePost({ content: html, text, postRef }, postRef);
       reset();
     } catch (error) {
       alert("Error al crear el post.");
