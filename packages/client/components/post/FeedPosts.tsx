@@ -25,6 +25,7 @@ export const FeedPosts: React.FC<Props> = ({ url }) => {
 
   return (
     <section className="flex flex-col">
+      {postsQuery.isFetching && posts.length > 0 ? <Loader /> : null}
       {posts.map((post) => (
         <Post key={post._id} post={post} />
       ))}
