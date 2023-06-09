@@ -23,7 +23,7 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsGenderPage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const formik = useFormik({
     initialValues: { gender: user?.gender || "" },
@@ -45,7 +45,6 @@ const SettingsGenderPage: NextPage = () => {
   }, [user]);
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Género" });
   }, []);
 

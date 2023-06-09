@@ -27,7 +27,7 @@ interface Props {
 
 const FollowersPage: NextPage<Props> = ({ user }) => {
   const { onChangeSidebarItems } = useRightSidebarStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
   const { followers, followersQuery } = useFollowers(user._id);
   const router = useRouter();
 
@@ -37,11 +37,9 @@ const FollowersPage: NextPage<Props> = ({ user }) => {
       profile: false,
       relevant: false,
     });
-    onSetLocation("profile");
     onSetNavbarData({
       profileName: user.name,
       profileUsername: user.username,
-      connections: true,
     });
   }, [router.asPath]);
 

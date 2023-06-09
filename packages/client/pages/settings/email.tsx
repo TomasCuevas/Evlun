@@ -26,7 +26,7 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsEmailPage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const formik = useFormik({
     initialValues: { email: user?.email || "" },
@@ -48,7 +48,6 @@ const SettingsEmailPage: NextPage = () => {
   }, [user]);
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Cambiar el correo electrónico" });
   }, []);
 

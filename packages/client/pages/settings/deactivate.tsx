@@ -29,7 +29,7 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsDeactivatePage: NextPage = () => {
   const { onChecking } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const formik = useFormik({
     initialValues: { password: "" },
@@ -49,7 +49,6 @@ const SettingsDeactivatePage: NextPage = () => {
   });
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Desactivar tu cuenta" });
   }, []);
 

@@ -7,9 +7,13 @@ import { SwitchConnections } from "@/components/connections";
 //* store *//
 import { useNavbarTopStore } from "@/store";
 
-export const ProfileLocation: React.FC = () => {
+interface Props {
+  connections?: boolean;
+}
+
+export const ProfileLocation: React.FC<Props> = ({ connections }) => {
   const {
-    navbarData: { profileName, profileUsername, connections },
+    navbarData: { profileName, profileUsername },
   } = useNavbarTopStore();
   const router = useRouter();
 
@@ -20,7 +24,7 @@ export const ProfileLocation: React.FC = () => {
       }}
       className="mx-auto flex h-full w-full flex-col items-center gap-2"
     >
-      <div
+      <section
         style={{ padding: connections ? "0px 5%" : "0px 0px" }}
         className="flex h-full w-full items-center gap-[20px]"
       >
@@ -31,8 +35,10 @@ export const ProfileLocation: React.FC = () => {
         >
           <NavText textBig={profileName!} textSmall={`@${profileUsername}`} />
         </div>
-      </div>
-      {connections ? <SwitchConnections username={profileUsername!} /> : null}
+      </section>
+      <section className="w-full">
+        {connections ? <SwitchConnections username={profileUsername!} /> : null}
+      </section>
     </nav>
   );
 };

@@ -26,7 +26,7 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsUsernamePage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const formik = useFormik({
     initialValues: { username: user?.username || "" },
@@ -51,7 +51,6 @@ const SettingsUsernamePage: NextPage = () => {
   }, [user]);
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Cambiar nombre de usuario" });
   }, []);
 

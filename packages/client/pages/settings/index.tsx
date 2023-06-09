@@ -11,10 +11,9 @@ import { SettingsOption } from "@/components/setting";
 import { useNavbarTopStore } from "@/store";
 
 const SettingsPage: NextPage = () => {
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Configuración" });
   }, []);
 

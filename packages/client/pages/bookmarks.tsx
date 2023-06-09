@@ -16,7 +16,7 @@ import {
 const BookmarksPage = () => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { postModal } = usePostsStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -24,7 +24,6 @@ const BookmarksPage = () => {
       profile: true,
       relevant: false,
     });
-    onSetLocation("bookmarks");
     onSetNavbarData({ settingText: "Guardados" });
   }, []);
 

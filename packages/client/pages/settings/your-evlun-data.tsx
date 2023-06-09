@@ -12,10 +12,9 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsYourDataPage: NextPage = () => {
   const { user } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Información de la cuenta" });
   }, []);
 

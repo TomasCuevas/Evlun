@@ -62,7 +62,7 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingProfilePage: NextPage = () => {
   const { user, onCheckingWithoutLoader } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar || "");
   const [bannerPreview, setBannerPreview] = useState(user?.banner || "");
@@ -132,7 +132,6 @@ const SettingProfilePage: NextPage = () => {
   }, [user]);
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({
       isButton: true,
       buttonOnClick: () => formik.submitForm(),

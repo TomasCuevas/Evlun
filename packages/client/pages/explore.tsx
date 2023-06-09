@@ -8,11 +8,10 @@ import { MainLayout } from "@/layouts";
 import { FeedExplore } from "@/components/explore";
 
 //* context *//
-import { useNavbarTopStore, useRightSidebarStore } from "@/store";
+import { useRightSidebarStore } from "@/store";
 
 const ExplorePage: NextPage = () => {
   const { onChangeSidebarItems } = useRightSidebarStore();
-  const { onSetLocation } = useNavbarTopStore();
 
   useEffect(() => {
     onChangeSidebarItems({
@@ -20,7 +19,6 @@ const ExplorePage: NextPage = () => {
       profile: true,
       relevant: false,
     });
-    onSetLocation("explore");
   }, []);
 
   return (

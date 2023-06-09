@@ -17,12 +17,7 @@ import {
 import { MainLayout } from "@/layouts";
 
 //* stores *//
-import {
-  useAuthStore,
-  useNavbarTopStore,
-  usePostsStore,
-  useRightSidebarStore,
-} from "@/store";
+import { useAuthStore, usePostsStore, useRightSidebarStore } from "@/store";
 
 //* interfaces *//
 import { IPost } from "@/interfaces";
@@ -37,7 +32,6 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
   const { isAuthenticated } = useAuthStore();
   const { onChangeSidebarItems, setRelevantPersons } = useRightSidebarStore();
   const { postModal } = usePostsStore();
-  const { onSetLocation } = useNavbarTopStore();
   const { post: postByHook, postRef: postRefByHook } = usePost(post._id);
 
   useEffect(() => {
@@ -51,7 +45,6 @@ const PostPage: NextPage<Props> = ({ post, postRef }) => {
         ? [postRef.added_by, post.added_by]
         : [post.added_by]
     );
-    onSetLocation("post");
   }, [post]);
 
   return (

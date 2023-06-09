@@ -23,7 +23,7 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsPhonePage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const formik = useFormik({
     initialValues: { phone: user?.phone || "" },
@@ -49,7 +49,6 @@ const SettingsPhonePage: NextPage = () => {
   }, [user]);
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Cambiar número de teléfono" });
   }, []);
 

@@ -32,7 +32,7 @@ interface Props {
 const ProfilePage: NextPage<Props> = ({ user }) => {
   const { onChangeSidebarItems } = useRightSidebarStore();
   const { postModal } = usePostsStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
   const { user: userByHook } = useUser(user.username);
 
   const router = useRouter();
@@ -43,7 +43,6 @@ const ProfilePage: NextPage<Props> = ({ user }) => {
       profile: false,
       relevant: false,
     });
-    onSetLocation("profile");
     onSetNavbarData({ profileName: user.name, profileUsername: user.username });
   }, [router.asPath]);
 

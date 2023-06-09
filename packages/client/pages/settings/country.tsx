@@ -30,7 +30,7 @@ for (const country in fullCountries) {
 
 const SettingsCountryPage: NextPage = () => {
   const { user, onChecking } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const formik = useFormik({
     initialValues: { country: user?.country || "" },
@@ -49,7 +49,6 @@ const SettingsCountryPage: NextPage = () => {
   }, [user]);
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Cambiar país" });
   }, []);
 

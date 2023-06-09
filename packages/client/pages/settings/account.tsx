@@ -14,10 +14,9 @@ import { SettingLayout } from "@/layouts";
 import { useNavbarTopStore } from "@/store";
 
 const SettingsAccountPage: NextPage = () => {
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Tu cuenta" });
   }, []);
 

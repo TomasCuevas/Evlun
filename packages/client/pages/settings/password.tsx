@@ -47,7 +47,7 @@ import { useAuthStore, useNavbarTopStore } from "@/store";
 
 const SettingsPasswordPage: NextPage = () => {
   const { onChecking } = useAuthStore();
-  const { onSetLocation, onSetNavbarData } = useNavbarTopStore();
+  const { onSetNavbarData } = useNavbarTopStore();
 
   const formik = useFormik({
     initialValues: formValues(),
@@ -64,7 +64,6 @@ const SettingsPasswordPage: NextPage = () => {
   });
 
   useEffect(() => {
-    onSetLocation("settings");
     onSetNavbarData({ settingText: "Cambiar tu contraseña" });
   }, []);
 
