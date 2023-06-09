@@ -12,7 +12,10 @@ export const SwitchPost: React.FC = () => {
   return (
     <div className="flex w-full">
       <div
-        onClick={() => onSetNavbarData({ homeLocation: "all" })}
+        onClick={() => {
+          window.scrollTo(0, 0);
+          onSetNavbarData({ homeLocation: "all" });
+        }}
         className="flex w-full cursor-pointer items-center justify-center hover:bg-white/5"
       >
         <span
@@ -27,7 +30,10 @@ export const SwitchPost: React.FC = () => {
         </span>
       </div>
       <div
-        onClick={() => onSetNavbarData({ homeLocation: "following" })}
+        onClick={() => {
+          window.scrollTo(0, 0);
+          onSetNavbarData({ homeLocation: "following" });
+        }}
         className="flex w-full cursor-pointer justify-center hover:bg-white/5"
       >
         <span
