@@ -69,8 +69,8 @@ router.get(
 //! get all posts
 router.get("/all", [JWTValidation], getAllPosts);
 
-//! get followings posts
-router.get("/followings", [JWTValidation], getPostsByFollowings);
+//! get following posts
+router.get("/following", [JWTValidation], getPostsByFollowings);
 
 //! get saved posts
 router.get("/saved", [JWTValidation], getSavedPosts);

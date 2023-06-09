@@ -175,9 +175,9 @@ export const getAllPosts = async (req: Request, res: Response) => {
   }
 };
 
-//! get followings posts
+//! get following posts
 export const getPostsByFollowings = async (
-  req: Request & { _id?: Types.ObjectId },
+  req: Request & { _id?: string },
   res: Response
 ) => {
   try {
@@ -193,11 +193,12 @@ export const getPostsByFollowings = async (
     }
 
     //? obtenemos usuarios que sigue el usuario
-    const usersFollowingsIds = user.followings.map((user) => user.toString());
+    const usersFollowingIds = user.followings.map((user) => user.toString());
+    usersFollowingIds.push(userId!);
 
     //? obtener posts de los usuarios a los que sigue
     const posts = await PostModel.find({
-      added_by: { $in: usersFollowingsIds },
+      added_by: { $in: usersFollowingIds },
       state: true,
     })
       .populate("added_by", {
@@ -419,7 +420,7 @@ export const deletePost = async (
     }
 
     //? verificar que el usuario que quiere eliminar el post lo haya creado
-    if (post.added_by._id.valueOf() !== _id!.valueOf()) {
+    if (post.added_by!._id.valueOf() !== _id!.valueOf()) {
       return res.status(403).json({
         msg: "No tienes permiso para realizar esta operacion.",
       });
