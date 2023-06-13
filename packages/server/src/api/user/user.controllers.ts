@@ -42,7 +42,10 @@ export const searchUsers = async (req: Request, res: Response) => {
 
     //? buscar usuarios
     const users = await UserModel.find({
-      username: { $regex: search, $options: "i" },
+      $or: [
+        { username: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: "i" } },
+      ],
       state: true,
     })
       .skip(Number(skip) * 20)
